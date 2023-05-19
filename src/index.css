@@ -1,0 +1,83 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Manrope:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .gradient-primary {
+    @apply bg-gradient-to-r from-[#00404c] to-[#08d0b0];
+  }
+
+  .box-shadow {
+    box-shadow: 0px 4px 4px rgba(181, 181, 181, 0.25);
+  }
+}
+
+@layer base {
+  html {
+    @apply scroll-smooth;
+  }
+
+  h1 {
+    @apply text-lg;
+  }
+
+  h2 {
+    @apply text-base;
+  }
+
+  input {
+    @apply text-qss-inputText bg-qss-input text-sm disabled:bg-gray-300;
+  }
+
+  input[type="radio"] {
+    @apply appearance-none w-3 h-3 bg-white rounded-full checked:bg-qss-secondary border border-qss-base-200;
+  }
+
+  input[type="text"] {
+    @apply py-2 px-4 rounded-full w-full focus:outline-qss-base-200;
+  }
+
+  input[type="number"] {
+    @apply py-2 px-4 rounded-full w-full focus:outline-qss-base-200;
+  }
+
+  input::placeholder {
+    @apply font-medium text-qss-base-300;
+  }
+
+  select {
+    @apply text-qss-inputText appearance-none bg-qss-input py-2 px-4 rounded-full outline-none focus:text-qss-secondary focus:border focus:border-qss-base-200;
+  }
+
+  option {
+    @apply text-xs py-2 appearance-none;
+  }
+
+  p {
+    @apply text-sm;
+  }
+
+  .stage-box {
+    @apply transition-all bg-qss-border w-full max-w-[235px] rounded-full text-black px-[42px] py-2.5;
+  }
+
+  .stage-box.active {
+    @apply bg-qss-primary -translate-x-10 rounded-full text-white px-[42px] py-2.5;
+  }
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
