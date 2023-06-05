@@ -4,22 +4,17 @@ import {
   useGetQuestionsQuery,
   useGetStageQuery,
 } from "../../../services/stage";
-import Radio from "../../RadioInput";
-import Select from "../../Select";
 import LinkButton from "../../LinkButton";
 import { updateStageForm } from "../../../state/stages/stageFormSlice";
 import { useAppDispatch, useAppSelector } from "../../../state/hooks";
 import { GeneralQuestionsFormProps } from "../Education/GeneralQuestionsForm";
-import TextInput from "../../TextInput";
+import MultiLeveling from "../../MultiLeveling";
 
-export type SpecialSkillsFormValues = {
-  haveSpecialSkills: string;
-  specialSkills: { id: number; answer: string };
-  levelSkill: string;
-  certSkill: "";
+export type OptionalLanguangeQuestionsFormValues = {
+  optionalLanguange: { id: number; name: string; level: string | number }[];
 };
 
-const SpecialSkillsForm = ({
+const OptionalLanguangeQuestionsForm = ({
   stageIndex,
   subStageSlug,
 }: GeneralQuestionsFormProps) => {
@@ -40,9 +35,9 @@ const SpecialSkillsForm = ({
   } = stagesData?.[1] || {};
 
   const { slug: prevSubSlugName, stage_name: prevSubStageName } =
-    prevStageChildren?.[1] || {};
+    prevStageChildren?.[stageIndex - 1] || {};
 
-  const { slug: subSlugName } = stage_children?.[0] || {};
+  const { slug: subSlugName } = stage_children?.[1] || {};
 
   const { slug: nextSubSlugName, stage_name: nextSubStageName } =
     nextStageChildren?.[0] || {};
@@ -58,20 +53,18 @@ const SpecialSkillsForm = ({
   const { formData } =
     (useAppSelector((state) => state.stageForm)?.find(
       ({ name }) => name === subStageSlug
-    ) as { formData: SpecialSkillsFormValues }) || {};
+    ) as { formData: OptionalLanguangeQuestionsFormValues }) || {};
 
   const { register, handleSubmit, watch, reset } =
-    useForm<SpecialSkillsFormValues>({
+    useForm<OptionalLanguangeQuestionsFormValues>({
       defaultValues: {
-        haveSpecialSkills: "",
-        specialSkills: { id: 0, answer: "" },
-        levelSkill: "",
-        certSkill: "",
+        optionalLanguange: [],
       },
     });
 
-  const onSubmit: SubmitHandler<SpecialSkillsFormValues> = (data) =>
-    console.log(data);
+  const onSubmit: SubmitHandler<OptionalLanguangeQuestionsFormValues> = (
+    data
+  ) => console.log(data);
 
   useEffect(() => {
     const subscription = watch((value) => {
@@ -79,7 +72,7 @@ const SpecialSkillsForm = ({
       dispatch(
         updateStageForm({
           name: subStageSlug,
-          formData: value as SpecialSkillsFormValues,
+          formData: value as OptionalLanguangeQuestionsFormValues,
         })
       );
     });
@@ -94,23 +87,26 @@ const SpecialSkillsForm = ({
 
   const questions = questionsData?.[0]?.questions;
 
-  const inputProps = [
-    { register: register("haveSpecialSkills") },
-    { register: register("specialSkills") },
-    { register: register("levelSkill") },
-    { register: register("certSkill") },
-  ];
+  const inputProps = [{ register: register("optionalLanguange") }];
 
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="mt-7 flex-col flex gap-5"
+      className="mt-5 flex-col flex gap-5"
     >
-      <div className="space-y-7">
+      <div className="space-y-4">
         <div className="space-y-2">
-          <label className="pl-2">{questions?.[0]?.question_title}*</label>
-
-          <div className="flex gap-5">
+          <MultiLeveling
+            placeholder="Əlavə et"
+            label={`${questions?.[0]?.question_title}*`}
+            register={inputProps[0].register}
+            value={formData?.optionalLanguange}
+            data={questions?.[0]?.answers}
+          />
+          {/* {formData?.optionalLanguange.map((d) => (
+            <div>{d}</div>
+          ))} */}
+          {/* <div className="flex gap-5">
             {questions?.[0]?.answers?.map(({ answer_title, id }, idx) => (
               <Radio
                 key={id}
@@ -119,49 +115,8 @@ const SpecialSkillsForm = ({
                 register={inputProps[0].register}
               />
             ))}
-          </div>
+          </div> */}
         </div>
-
-        {formData?.haveSpecialSkills === "0" && (
-          <>
-            <div className="space-y-2">
-              <label className="pl-2">{questions?.[1]?.question_title}*</label>
-
-              <div className="flex gap-5 flex-wrap w-full">
-                {questions?.[1]?.answers?.map(({ answer_title, id }, idx) => (
-                  <Radio
-                    key={id}
-                    label={answer_title}
-                    value={idx}
-                    register={inputProps[1].register}
-                  />
-                ))}
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <label className="pl-2">{questions?.[2]?.question_title}*</label>
-
-              <div className="flex gap-5">
-                {questions?.[2]?.answers?.map(({ answer_title, id }, idx) => (
-                  <Radio
-                    key={id}
-                    label={answer_title}
-                    value={idx}
-                    register={inputProps[2].register}
-                  />
-                ))}
-              </div>
-            </div>
-
-            <TextInput
-              value={watch("certSkill")}
-              label={`${questions?.[3]?.question_title}*`}
-              register={inputProps[3].register}
-              haveRadio
-            />
-          </>
-        )}
       </div>
 
       <LinkButton
@@ -186,4 +141,4 @@ const SpecialSkillsForm = ({
   );
 };
 
-export default SpecialSkillsForm;
+export default OptionalLanguangeQuestionsForm;

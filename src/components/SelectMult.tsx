@@ -2,34 +2,38 @@ import { Fragment, useState } from "react";
 import { IAnswer } from "../types";
 import { Listbox } from "@headlessui/react";
 import { Icon } from "@iconify/react";
+
 interface ISelectMult {
+  placeholder: string;
   label: string;
   options?: IAnswer[];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   register?: any;
-  value?: string;
+  value?: string[];
 }
 
-const SelectMult = ({ label, options, register, value }: ISelectMult) => {
-  const [selected, setSelected] = useState(value || options?.[0]?.answer_title);
-
-  const getAnswerId = (answerTitle: string) =>
-    options?.find(({ answer_title }) => answerTitle === answer_title)?.id;
+const SelectMult = ({
+  label,
+  options,
+  register,
+  value,
+  placeholder,
+}: ISelectMult) => {
+  const [selected, setSelected] = useState(value);
 
   return (
     <Listbox
       multiple
       as="div"
-      placeholder={selected}
+      placeholder={"Rus Dili"}
       value={selected}
       className="flex flex-col gap-2"
       onChange={(value) => {
         setSelected(value);
-        const curId = getAnswerId(value);
         register.onChange({
           target: {
             name: register.name,
-            value: { id: curId, answer: value },
+            value: value,
           },
         });
       }}
@@ -43,7 +47,9 @@ const SelectMult = ({ label, options, register, value }: ISelectMult) => {
                 open && "  text-qss-secondary border border-qss-base-200"
               }`}
             >
-              {value}
+              <span className="w-96 overflow-hidden whitespace-nowrap flex">
+                {value.join(", ") || placeholder}
+              </span>
               <span className={`absolute right-6 ${open && "rotate-180"}`}>
                 <Icon
                   width={"1.5rem"}

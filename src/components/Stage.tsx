@@ -10,6 +10,7 @@ import LanguangeQuestionsForm from "./Stages/Languange/LanguangeQuestionsForm";
 import SpecialSkillsForm from "./Stages/SpecialSkills/SpecialSkillsQuestionsForm";
 import SportForm from "./Stages/Sport/SportQuestionsForm";
 import ProgramSkills from "./Stages/ProgramSkills/ProgramSkillsQuestionsForm";
+import OptionalLanguangeQuestionsForm from "./Stages/Languange/OptionalLanguangeQuestionsForm";
 
 const Stage = () => {
   const { data, error, isLoading } = useGetStageQuery();
@@ -82,6 +83,13 @@ const Stage = () => {
             subStageSlug={subStageSlug || ""}
           />
         );
+      case "elave-dil-bilikleri-substage":
+        return (
+          <OptionalLanguangeQuestionsForm
+            stageIndex={stageIndex}
+            subStageSlug={subStageSlug || ""}
+          />
+        );
       case "xususi-bacariqlar-substage":
         return (
           <SpecialSkillsForm
@@ -123,7 +131,7 @@ const Stage = () => {
     <Fragment>
       <div className="flex-1 flex justify-end pr-32 mt-10 min-w-[1130px] max-w-[1175px] relative">
         <div className="w-full z-10 relative rounded-xl bg-white py-8 px-11 h-[611px] shadow max-w-xl">
-          <h1 className="mb-[18px] mt-5">
+          <h1 className="mb-4">
             <span className=" text-qss-secondary">
               {subStageName === "Dil Bilikləri substage"
                 ? "Dil Bilikləri"

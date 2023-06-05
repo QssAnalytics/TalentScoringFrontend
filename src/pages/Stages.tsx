@@ -9,11 +9,10 @@ import { ReactComponent as StageSport } from "../assets/sport.svg";
 import { ReactComponent as StageProg } from "../assets/programmer.svg";
 
 import Stage from "../components/Stage";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 const Stages = () => {
   const { stageSlug } = useParams();
-  console.log(stageSlug);
 
   const getFrame = () => {
     switch (stageSlug) {
@@ -56,7 +55,9 @@ const Stages = () => {
       <div className="flex justify-between relative pl-10 pt-10">
         <div className="space-y-8 text-white">
           <div className="space-y-2">
-            <Logo className="w-52 h-7" />
+            <Link to="/">
+              <Logo className="w-52 h-7" />
+            </Link>
             <p>Süni intelekt sistemi</p>
           </div>
 

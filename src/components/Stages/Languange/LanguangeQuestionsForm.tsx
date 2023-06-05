@@ -11,14 +11,14 @@ import { updateStageForm } from "../../../state/stages/stageFormSlice";
 import { useAppDispatch, useAppSelector } from "../../../state/hooks";
 import { GeneralQuestionsFormProps } from "../Education/GeneralQuestionsForm";
 import TextInput from "../../TextInput";
+import SelectMult from "../../SelectMult";
 
 export type LanguangeQuestionsFormValues = {
   haveLanguageSkills: string;
-  languageSkills: { id: number; answer: string };
+  languageSkills: string[];
   enlangCert: string;
-  ielstScore: { id: number; answer: string };
-  toelfScore: { id: number; answer: string };
-  otherCert: string[];
+  engLevel: { id: number; answer: string };
+  ruLevel: { id: number; answer: string };
 };
 
 const LanguangeQuestionsForm = ({
@@ -33,7 +33,7 @@ const LanguangeQuestionsForm = ({
     slug: nextSlugName,
     stage_name: nextStageName,
     stage_children: nextStageChildren,
-  } = stagesData?.[stageIndex + 1] || {};
+  } = stagesData?.[stageIndex] || {};
 
   const {
     slug: prevSlugName,
@@ -47,7 +47,9 @@ const LanguangeQuestionsForm = ({
   const { slug: subSlugName } = stage_children?.[0] || {};
 
   const { slug: nextSubSlugName, stage_name: nextSubStageName } =
-    nextStageChildren?.[0] || {};
+    nextStageChildren?.[1] || {};
+
+  console.log(nextSubStageName);
 
   const {
     data: questionsData,
@@ -66,11 +68,10 @@ const LanguangeQuestionsForm = ({
     useForm<LanguangeQuestionsFormValues>({
       defaultValues: {
         haveLanguageSkills: "",
-        languageSkills: { id: 0, answer: "" },
+        languageSkills: [],
         enlangCert: "",
-        ielstScore: { id: 0, answer: "" },
-        toelfScore: { id: 0, answer: "" },
-        otherCert: [],
+        engLevel: { id: 0, answer: "" },
+        ruLevel: { id: 0, answer: "" },
       },
     });
 
@@ -102,17 +103,16 @@ const LanguangeQuestionsForm = ({
     { register: register("haveLanguageSkills") },
     { register: register("languageSkills") },
     { register: register("enlangCert") },
-    { register: register("ielstScore") },
-    { register: register("toelfScore") },
-    { register: register("otherCert") },
+    { register: register("engLevel") },
+    { register: register("ruLevel") },
   ];
 
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="mt-7 flex-col flex gap-5"
+      className="mt-5 flex-col flex gap-5"
     >
-      <div className="space-y-7">
+      <div className="space-y-4">
         <div className="space-y-2">
           <label className="pl-2">{questions?.[0]?.question_title}*</label>
 
@@ -130,13 +130,16 @@ const LanguangeQuestionsForm = ({
 
         {formData?.haveLanguageSkills === "0" && (
           <>
-            <Select
+            <SelectMult
+              placeholder="Dil Seçimi"
               label={`${questions?.[1]?.question_title}*`}
               options={questions?.[1]?.answers}
               register={inputProps[1].register}
-              value={formData?.languageSkills?.answer}
+              value={formData?.languageSkills}
             />
-            {formData?.languageSkills?.answer === "İngilis dili" && (
+            {formData?.languageSkills?.find(
+              (lang) => lang === "İngilis dili"
+            ) && (
               <>
                 <div className="space-y-2">
                   <label className="pl-2">
@@ -162,21 +165,72 @@ const LanguangeQuestionsForm = ({
                     label={`${questions?.[3]?.question_title}*`}
                     options={questions?.[3]?.answers}
                     register={inputProps[3].register}
-                    value={formData?.ielstScore?.answer}
+                    value={formData?.engLevel?.answer}
                   />
                 ) : formData?.enlangCert === "1" ? (
-                  <Select
+                  <TextInput
                     label={`${questions?.[4]?.question_title}*`}
-                    options={questions?.[4]?.answers}
-                    register={inputProps[4].register}
-                    value={formData?.toelfScore?.answer}
+                    register={inputProps[3].register}
                   />
                 ) : formData?.enlangCert === "2" ? (
-                  <TextInput
-                    label={`${questions?.[5]?.question_title}*`}
-                    register={inputProps[5].register}
-                  />
+                  <div className="space-y-2">
+                    <label className="pl-2">
+                      {questions?.[6]?.question_title}*
+                    </label>
+                    <div className="grid grid-cols-3 gap-3">
+                      {questions?.[5]?.answers?.map(
+                        ({ answer_title, id }, idx) => (
+                          <Radio
+                            key={id}
+                            label={answer_title}
+                            value={idx}
+                            type="button"
+                            register={inputProps[3].register}
+                          />
+                        )
+                      )}
+                    </div>
+                  </div>
                 ) : null}
+              </>
+            )}
+
+            {formData?.languageSkills?.find((lang) => lang === "Rus dili") && (
+              <>
+                <div className="space-y-2">
+                  <label className="pl-2">
+                    {questions?.[5]?.question_title}*
+                  </label>
+                  {formData?.languageSkills?.length > 1 ? (
+                    <div className="flex gap-5">
+                      {questions?.[5]?.answers?.map(
+                        ({ answer_title, id }, idx) => (
+                          <Radio
+                            key={id}
+                            label={answer_title.split(" ")[0]}
+                            value={idx}
+                            type="button"
+                            register={inputProps[4].register}
+                          />
+                        )
+                      )}
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-3 gap-3">
+                      {questions?.[5]?.answers?.map(
+                        ({ answer_title, id }, idx) => (
+                          <Radio
+                            key={id}
+                            label={answer_title}
+                            value={idx}
+                            type="button"
+                            register={inputProps[4].register}
+                          />
+                        )
+                      )}
+                    </div>
+                  )}
+                </div>
               </>
             )}
           </>
