@@ -29,37 +29,39 @@ const MultiLeveling = ({ value, data, register }: IMultiLeveling) => {
     <Fragment>
       <div className="relative">
         <button
-          className="w-full bg-qss-input py-2 flexCenter rounded-full gap-1"
+          className="w-full bg-qss-input py-2 border flexCenter rounded-full gap-1"
           onClick={() => setDropdown(!dropDown)}
         >
           Əlavə et <PlusCircleIcon className="w-4 h-4" />
         </button>
 
         {dropDown && (
-          <ul className="w-full p-4 absolute z-10 rounded-xl mt-2 space-y-2 bg-qss-input">
-            {list.map(({ id, answer_title }) => (
-              <li
-                key={id}
-                className="p-2 bg-white rounded-lg cursor-pointer"
-                onClick={() => {
-                  setDropdown(false);
-                  setSelected((prev) =>
-                    prev?.find((p) => p.name === answer_title)
-                      ? prev
-                      : prev && [
-                          ...prev,
-                          { id: id, name: answer_title, level: "" },
-                        ]
-                  );
-                }}
-              >
-                {answer_title}
-              </li>
-            ))}
-          </ul>
+          <div className="px-4 w-full z-10 absolute">
+            <ul className="w-full z-10 rounded-b-md bg-qss-input">
+              {list.map(({ id, answer_title }) => (
+                <li
+                  key={id}
+                  className="rounded-lg px-4 py-2.5 text-sm cursor-pointer"
+                  onClick={() => {
+                    setDropdown(false);
+                    setSelected((prev) =>
+                      prev?.find((p) => p.name === answer_title)
+                        ? prev
+                        : prev && [
+                            ...prev,
+                            { id: id, name: answer_title, level: "" },
+                          ]
+                    );
+                  }}
+                >
+                  {answer_title}
+                </li>
+              ))}
+            </ul>
+          </div>
         )}
 
-        <div className="mt-5">
+        {/* <div className="mt-5">
           <ul className="space-y-5">
             {selected?.map(({ id, name }) => (
               <li key={id} className="flex justify-between gap-5">
@@ -123,7 +125,7 @@ const MultiLeveling = ({ value, data, register }: IMultiLeveling) => {
               </li>
             ))}
           </ul>
-        </div>
+        </div> */}
       </div>
     </Fragment>
   );

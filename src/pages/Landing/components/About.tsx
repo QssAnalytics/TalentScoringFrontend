@@ -21,6 +21,7 @@ const About = () => {
       icon: <AboutThirdIcon />,
     },
   ];
+
   return (
     <Fragment>
       <ul className="py-20 grid gap-10">

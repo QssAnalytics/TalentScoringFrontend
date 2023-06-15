@@ -1,4 +1,5 @@
 import { Fragment } from "react";
+import { Link, useParams } from "react-router-dom";
 
 import { ReactComponent as Pattern } from "../assets/pattern.svg";
 import { ReactComponent as Logo } from "../assets/logo.svg";
@@ -8,8 +9,7 @@ import { ReactComponent as StageSkills } from "../assets/skills.svg";
 import { ReactComponent as StageSport } from "../assets/sport.svg";
 import { ReactComponent as StageProg } from "../assets/programmer.svg";
 
-import Stage from "../components/Stage";
-import { Link, useParams } from "react-router-dom";
+import Stage from "components/Stage";
 
 const Stages = () => {
   const { stageSlug } = useParams();

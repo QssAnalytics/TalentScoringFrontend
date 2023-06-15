@@ -12,7 +12,7 @@ import { GeneralQuestionsFormProps } from "../Education/GeneralQuestionsForm";
 import SelectMult from "components/SelectMult";
 import { XCircleIcon } from "@heroicons/react/24/outline";
 
-export type SpecialSkillsFormValues = {
+export type SpecialSkillsCertifcateQuestionsFormValues = {
   haveSpecialSkills: string;
   specialSkills: string[];
   levelSkill: string;
@@ -24,7 +24,7 @@ const levels = [
   { answer_title: "Peşəkar", id: 1 },
 ];
 
-const SpecialSkillsForm = ({
+const SpecialSkillsCertifcateQuestionsForm = ({
   stageIndex,
   subStageSlug,
 }: GeneralQuestionsFormProps) => {
@@ -36,21 +36,21 @@ const SpecialSkillsForm = ({
     slug: nextSlugName,
     stage_name: nextStageName,
     stage_children: nextStageChildren,
-  } = stagesData?.[stageIndex] || {};
+  } = stagesData?.[stageIndex + 1] || {};
 
   const {
     slug: prevSlugName,
     stage_name: prevStageName,
     stage_children: prevStageChildren,
-  } = stagesData?.[1] || {};
+  } = stagesData?.[2] || {};
 
   const { slug: prevSubSlugName, stage_name: prevSubStageName } =
-    prevStageChildren?.[1] || {};
+    prevStageChildren?.[0] || {};
 
   const { slug: subSlugName } = stage_children?.[0] || {};
 
   const { slug: nextSubSlugName, stage_name: nextSubStageName } =
-    nextStageChildren?.[1] || {};
+    nextStageChildren?.[0] || {};
 
   const {
     data: questionsData,
@@ -63,10 +63,10 @@ const SpecialSkillsForm = ({
   const { formData } =
     (useAppSelector((state) => state.stageForm)?.find(
       ({ name }) => name === subStageSlug
-    ) as { formData: SpecialSkillsFormValues }) || {};
+    ) as { formData: SpecialSkillsCertifcateQuestionsFormValues }) || {};
 
   const { register, handleSubmit, watch, reset, setValue } = useForm<
-    SpecialSkillsFormValues | any
+    SpecialSkillsCertifcateQuestionsFormValues | any
   >({
     defaultValues: {
       haveSpecialSkills: "",
@@ -76,8 +76,9 @@ const SpecialSkillsForm = ({
     },
   });
 
-  const onSubmit: SubmitHandler<SpecialSkillsFormValues> = (data) =>
-    console.log(data);
+  const onSubmit: SubmitHandler<SpecialSkillsCertifcateQuestionsFormValues> = (
+    data
+  ) => console.log(data);
 
   useEffect(() => {
     const subscription = watch((value) => {
@@ -85,7 +86,7 @@ const SpecialSkillsForm = ({
       dispatch(
         updateStageForm({
           name: subStageSlug,
-          formData: value as SpecialSkillsFormValues,
+          formData: value as SpecialSkillsCertifcateQuestionsFormValues,
         })
       );
     });
@@ -218,4 +219,4 @@ const SpecialSkillsForm = ({
   );
 };
 
-export default SpecialSkillsForm;
+export default SpecialSkillsCertifcateQuestionsForm;

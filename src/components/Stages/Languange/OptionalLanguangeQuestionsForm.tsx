@@ -9,6 +9,7 @@ import { updateStageForm } from "../../../state/stages/stageFormSlice";
 import { useAppDispatch, useAppSelector } from "../../../state/hooks";
 import { GeneralQuestionsFormProps } from "../Education/GeneralQuestionsForm";
 import MultiLeveling from "../../MultiLeveling";
+import Select from "../../Select";
 
 export type OptionalLanguangeQuestionsFormValues = {
   optionalLanguange: { id: number; name: string; level: string | number }[];
@@ -95,28 +96,7 @@ const OptionalLanguangeQuestionsForm = ({
       className="mt-5 flex-col flex gap-5"
     >
       <div className="space-y-4">
-        <div className="space-y-2">
-          <MultiLeveling
-            placeholder="Əlavə et"
-            label={`${questions?.[0]?.question_title}*`}
-            register={inputProps[0].register}
-            value={formData?.optionalLanguange}
-            data={questions?.[0]?.answers}
-          />
-          {/* {formData?.optionalLanguange.map((d) => (
-            <div>{d}</div>
-          ))} */}
-          {/* <div className="flex gap-5">
-            {questions?.[0]?.answers?.map(({ answer_title, id }, idx) => (
-              <Radio
-                key={id}
-                label={answer_title}
-                value={idx}
-                register={inputProps[0].register}
-              />
-            ))}
-          </div> */}
-        </div>
+        <div className="space-y-2"></div>
       </div>
 
       <LinkButton

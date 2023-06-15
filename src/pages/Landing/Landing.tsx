@@ -1,8 +1,8 @@
-import About from "../components/Landing/About";
-import Footer from "../components/Landing/Footer";
-import HeroSection from "../components/Landing/HeroSection";
-import NavBar from "../components/Landing/NavBar";
-import Process from "../components/Landing/Process";
+import About from "./components/About";
+import Footer from "./components/Footer";
+import HeroSection from "./components/HeroSection";
+import NavBar from "./components/NavBar";
+import Process from "./components/Process";
 
 const Landing = () => {
   return (
