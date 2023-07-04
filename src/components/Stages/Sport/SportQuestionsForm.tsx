@@ -54,10 +54,10 @@ const SportForm = ({ stageIndex, subStageSlug }: GeneralQuestionsFormProps) => {
   const { formData } =
     (useAppSelector((state) => state.stageForm)?.find(
       ({ name }) => name === subStageSlug
-    ) as { formData: SportFormValues }) || {};
+    ) as { formData: SportFormValues & any }) || ({} as any);
 
   const { register, handleSubmit, watch, reset } = useForm<
-    SportFormValues | any
+    SportFormValues & any
   >({
     defaultValues: {
       haveSportCar: "",
@@ -75,7 +75,7 @@ const SportForm = ({ stageIndex, subStageSlug }: GeneralQuestionsFormProps) => {
       dispatch(
         updateStageForm({
           name: subStageSlug,
-          formData: value as SportFormValues as any,
+          formData: value as SportFormValues,
         })
       );
       // console.log(value);
@@ -94,7 +94,6 @@ const SportForm = ({ stageIndex, subStageSlug }: GeneralQuestionsFormProps) => {
     { register: register("haveSportCar") },
     { register: register("whichSport") },
     { register: register("whichScore") },
-    { register: register("whichPlace") },
   ];
 
   return (
@@ -130,7 +129,7 @@ const SportForm = ({ stageIndex, subStageSlug }: GeneralQuestionsFormProps) => {
 
             <div className="h-[275px] overflow-y-auto pr-2">
               {formData?.whichSport?.length !== 0 &&
-                formData?.whichSport?.map((item, index) => (
+                formData?.whichSport?.map((item: any, index: any) => (
                   <div
                     className=" border rounded-xl border-[#D8D8D8] p-2.5 mb-5 relative"
                     key={index}
@@ -147,7 +146,7 @@ const SportForm = ({ stageIndex, subStageSlug }: GeneralQuestionsFormProps) => {
                         className="cursor-pointer text-2xl text-[#EE4A4A]/75 hover:text-[#EE4A4A]"
                         onClick={() => {
                           const newWhichSport = formData?.whichSport?.filter(
-                            (el) => el !== item
+                            (el: any) => el !== item
                           );
                           dispatch(
                             updateStageForm({
