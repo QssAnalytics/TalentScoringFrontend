@@ -56,7 +56,9 @@ const SportForm = ({ stageIndex, subStageSlug }: GeneralQuestionsFormProps) => {
       ({ name }) => name === subStageSlug
     ) as { formData: SportFormValues }) || {};
 
-  const { register, handleSubmit, watch, reset } = useForm<SportFormValues>({
+  const { register, handleSubmit, watch, reset } = useForm<
+    SportFormValues | any
+  >({
     defaultValues: {
       haveSportCar: "",
       whichSport: [],
@@ -73,7 +75,7 @@ const SportForm = ({ stageIndex, subStageSlug }: GeneralQuestionsFormProps) => {
       dispatch(
         updateStageForm({
           name: subStageSlug,
-          formData: value as SportFormValues,
+          formData: value as SportFormValues as any,
         })
       );
       // console.log(value);
@@ -126,39 +128,40 @@ const SportForm = ({ stageIndex, subStageSlug }: GeneralQuestionsFormProps) => {
               value={formData?.whichSport}
             />
 
-            <div className="h-[275px] overflow-y-auto pr-5 mr-[-20px]">
+            <div className="h-[275px] overflow-y-auto pr-2">
               {formData?.whichSport?.length !== 0 &&
                 formData?.whichSport?.map((item, index) => (
                   <div
-                    className="border rounded-xl border-[#D8D8D8] p-2.5 mb-5 relative pr-5"
+                    className=" border rounded-xl border-[#D8D8D8] p-2.5 mb-5 relative"
                     key={index}
                   >
-                    <Icon
-                      icon="zondicons:close-outline"
-                      color="#ee4a4a"
-                      width="24"
-                      className="absolute top-1.5 right-1.5 cursor-pointer"
-                      onClick={() => {
-                        const newWhichSport = formData?.whichSport?.filter(
-                          (el) => el !== item
-                        );
-                        dispatch(
-                          updateStageForm({
-                            name: subStageSlug,
-                            formData: {
-                              ...formData,
-                              whichSport: newWhichSport,
-                            },
-                          })
-                        );
-                      }}
-                    />
-                    <label>
-                      <span className="text-qss-secondary font-semibold">
-                        {item}
-                      </span>{" "}
-                      üzrə, hansı turda,neçənci yer əldə etmisiniz?
-                    </label>
+                    <div className="flex justify-between">
+                      <label>
+                        <span className="text-qss-secondary font-semibold">
+                          {item}
+                        </span>{" "}
+                        üzrə, hansı turda,neçənci yer əldə etmisiniz?
+                      </label>
+                      <Icon
+                        icon="typcn:delete-outline"
+                        className="cursor-pointer text-2xl text-[#EE4A4A]/75 hover:text-[#EE4A4A]"
+                        onClick={() => {
+                          const newWhichSport = formData?.whichSport?.filter(
+                            (el) => el !== item
+                          );
+                          dispatch(
+                            updateStageForm({
+                              name: subStageSlug,
+                              formData: {
+                                ...formData,
+                                whichSport: newWhichSport,
+                              },
+                            })
+                          );
+                        }}
+                      />
+                    </div>
+
                     <div className="grid grid-cols-3 gap-4">
                       <div className="col-span-2">
                         <Select
