@@ -8,6 +8,7 @@ import { SpecialSkillsFormValues } from "../../components/Stages/SpecialSkills/S
 import { SportFormValues } from "../../components/Stages/Sport/SportQuestionsForm";
 import { ProgramSkillsValues } from "../../components/Stages/ProgramSkills/ProgramSkillsQuestionsForm";
 import { OptionalLanguangeQuestionsFormValues } from "../../components/Stages/Languange/OptionalLanguangeQuestionsForm";
+import { JobExperienceValues } from '../../components/Stages/JobExperience/JobExperienceForm';
 export interface IInitialState<T> {
   name: string;
   formData: T;
@@ -21,7 +22,8 @@ type FormDataTypes =
   | SpecialSkillsFormValues
   | ProgramSkillsValues
   | SportFormValues
-  | OptionalLanguangeQuestionsFormValues;
+  | OptionalLanguangeQuestionsFormValues
+  | JobExperienceValues;
 
 const initialState = [] as IInitialState<FormDataTypes>[];
 

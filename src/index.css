@@ -36,11 +36,18 @@
   input[type="text"] {
     @apply py-2 px-4 rounded-full w-full focus:outline-qss-base-200;
   }
-
+  input[type="date"] {
+    @apply py-2 px-4 rounded-full w-full focus:outline-qss-base-200;
+  }
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    opacity:0;
+}
   input[type="number"] {
     @apply py-2 px-4 rounded-full w-full focus:outline-qss-base-200;
   }
-
+  input[type="checkbox"]{
+    accent-color: #038477;
+  }
   input::placeholder {
     @apply font-medium text-qss-base-300;
   }

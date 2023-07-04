@@ -7,6 +7,7 @@ import { ReactComponent as StageLang } from "../assets/Teacher.svg";
 import { ReactComponent as StageSkills } from "../assets/skills.svg";
 import { ReactComponent as StageSport } from "../assets/sport.svg";
 import { ReactComponent as StageProg } from "../assets/programmer.svg";
+import { ReactComponent as StageExperience} from "../assets/programmerBoy.svg";
 
 import Stage from "../components/Stage";
 import { Link, useParams } from "react-router-dom";
@@ -34,6 +35,10 @@ const Stages = () => {
       case "idman":
         return (
           <StageSport className="absolute w-80 h-72 left-[220px] top-[522px]" />
+        );
+      case "is-tecrubesi":
+        return (
+          <StageExperience className="absolute w-80 h-72 left-[220px] top-[460px]" />
         );
 
       case "proqram-bilikleri":

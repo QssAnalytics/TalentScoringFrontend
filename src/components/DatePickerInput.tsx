@@ -7,7 +7,6 @@ import {
 } from "../utils/date";
 
 type DatePickerInputType = {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   register: any;
 };
 
@@ -31,10 +30,10 @@ const DatePickerInput = ({ register }: DatePickerInputType) => {
         <div className="form-control w-full">
           <select
             className="w-full select select-bordered bg-white focus:border-primary focus:outline-none focus:ring-0 shadow-sm"
-            {...register("day")}
             id="day"
             value={selectedDay}
             onChange={(e) => setSelectedDay(Number(e.target.value))}
+            {...register}
           >
             <option hidden value="0">
               Gün
@@ -50,10 +49,10 @@ const DatePickerInput = ({ register }: DatePickerInputType) => {
         <div className="form-control w-full">
           <select
             className="w-full select select-bordered bg-white focus:border-primary focus:outline-none focus:ring-0 shadow-sm"
-            {...register("month")}
             id="month"
             value={selectedMonth}
             onChange={(e) => setSelectedMonth(Number(e.target.value))}
+            {...register}
           >
             <option hidden value="0">
               Ay
@@ -69,10 +68,10 @@ const DatePickerInput = ({ register }: DatePickerInputType) => {
         <div className="form-control w-full">
           <select
             className="w-full select select-bordered bg-white focus:border-primary focus:outline-none focus:ring-0 shadow-sm"
-            {...register("year")}
             id="year"
             value={selectedYear}
             onChange={(e) => setSelectedYear(Number(e.target.value))}
+            {...register}
           >
             <option hidden value="0">
               İl

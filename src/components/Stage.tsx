@@ -11,10 +11,11 @@ import SpecialSkillsForm from "./Stages/SpecialSkills/SpecialSkillsQuestionsForm
 import SportForm from "./Stages/Sport/SportQuestionsForm";
 import ProgramSkills from "./Stages/ProgramSkills/ProgramSkillsQuestionsForm";
 import OptionalLanguangeQuestionsForm from "./Stages/Languange/OptionalLanguangeQuestionsForm";
+import JobExperienceForm from "./Stages/JobExperience/JobExperienceForm";
 
 const Stage = () => {
   const { data, error, isLoading } = useGetStageQuery();
-
+  
   const { stageName } = (useLocation().state as {
     stageName: string;
   }) || { subStageName: "", stageName: "" };
@@ -104,6 +105,13 @@ const Stage = () => {
             subStageSlug={subStageSlug || ""}
           />
         );
+      case "is-tecrubesi-substage":
+        return (
+          <JobExperienceForm
+            stageIndex={stageIndex}
+            subStageSlug={subStageSlug || ""}
+          />
+        );
       case "proqram-bilikleri-substage":
         return (
           <ProgramSkills
@@ -139,7 +147,9 @@ const Stage = () => {
                 ? "Xüsusi bacarıqlar"
                 : subStageName === "Idman substage"
                 ? "İdman"
-                : subStageName}
+                : subStageName === "İş təcrübəsi substage"
+                ? "İş təcrübəsi"
+                :subStageName}
             </span>
           </h1>
           <ProgressBar progress={progress} />

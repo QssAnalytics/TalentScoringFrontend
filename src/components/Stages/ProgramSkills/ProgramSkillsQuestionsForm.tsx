@@ -39,7 +39,7 @@ const ProgramSkills = ({
     slug: prevSlugName,
     stage_name: prevStageName,
     stage_children: prevStageChildren,
-  } = stagesData?.[3] || {};
+  } = stagesData?.[4] || {};
 
   const { slug: prevSubSlugName, stage_name: prevSubStageName } =
     prevStageChildren?.[0] || {};
@@ -104,7 +104,7 @@ const ProgramSkills = ({
     { register: register("whichLang") },
     { register: register("whichLevel") },
   ];
-
+ 
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
@@ -204,21 +204,21 @@ const ProgramSkills = ({
         className="absolute left-0 -bottom-20"
       />
 
-      <button
+      {/* <button
         className={`absolute -bottom-[79px] right-0 w-[180px] flex rounded-full justify-center items-center py-3.5 gap-4 bg-qss-secondary flex-row text-white text-white"}`}
         onClick={() => dispatch(setShowReport(!showReport))}
-      >
-        {/* <LinkButton
+      > */}
+        <LinkButton
           nav={{
             state: { stageName: nextStageName, subStageName: nextSubStageName },
-            path: { slugName: slug, subSlugName: nextSubSlugName },
+            path: { slugName: nextSlugName, subSlugName: nextSubSlugName },
           }}
           haveIcon={false}
           label="Yekunlaşdır"
           className="absolute right-0 -bottom-20"
-        /> */}
-        Yekunlaşdır
-      </button>
+        />
+        {/* Yekunlaşdır
+      </button> */}
     </form>
   );
 };

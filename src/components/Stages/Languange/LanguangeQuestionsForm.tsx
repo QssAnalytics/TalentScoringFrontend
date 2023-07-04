@@ -34,7 +34,6 @@ const LanguangeQuestionsForm = ({
     stage_name: nextStageName,
     stage_children: nextStageChildren,
   } = stagesData?.[stageIndex] || {};
-
   const {
     slug: prevSlugName,
     stage_name: prevStageName,
@@ -49,7 +48,7 @@ const LanguangeQuestionsForm = ({
   const { slug: nextSubSlugName, stage_name: nextSubStageName } =
     nextStageChildren?.[1] || {};
 
-  console.log(nextSubStageName);
+  console.log(nextSlugName);
 
   const {
     data: questionsData,
