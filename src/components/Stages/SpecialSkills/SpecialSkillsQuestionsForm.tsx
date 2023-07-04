@@ -185,13 +185,6 @@ const SpecialSkillsForm = ({
                 </div>
               </div>
             ) : null}
-
-            {/* <TextInput
-              value={watch("certSkill")}
-              label={`${questions?.[3]?.question_title}*`}
-              register={inputProps[3].register}
-              haveRadio
-            /> */}
           </>
         )}
       </div>

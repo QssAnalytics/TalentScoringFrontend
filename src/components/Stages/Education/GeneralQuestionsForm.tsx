@@ -36,7 +36,7 @@ const GeneralQuestionsForm = ({
     slug: slugName,
     stage_name: stageName,
     stage_children,
-  } = stagesData?.[stageIndex] || {};
+  } = stagesData?.[0] || {};
 
   const { slug: subSlugName, stage_name: subStageName } =
     stage_children?.[stageIndex + 1] || {};

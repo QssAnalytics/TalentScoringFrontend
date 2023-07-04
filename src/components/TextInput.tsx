@@ -7,7 +7,6 @@ interface IInputProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   register?: any;
   value?: string;
-  haveRadio?: boolean;
 }
 
 const TextInput = ({

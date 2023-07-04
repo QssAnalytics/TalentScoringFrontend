@@ -8,9 +8,16 @@ interface ISelect {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   register?: any;
   value?: string;
+  disabled?: boolean;
 }
 
-const Select = ({ label, options, register, value }: ISelect) => {
+const Select = ({
+  label,
+  options,
+  register,
+  value,
+  disabled = false,
+}: ISelect) => {
   const [selected, setSelected] = useState(value || options?.[0]?.answer_title);
 
   const getAnswerId = (answerTitle: string) =>
@@ -29,7 +36,6 @@ const Select = ({ label, options, register, value }: ISelect) => {
       onChange={(value) => {
         setSelected(value);
         const curId = getAnswerId(value);
-        console.log(value);
         register.onChange({
           target: {
             name: register.name,
@@ -37,6 +43,7 @@ const Select = ({ label, options, register, value }: ISelect) => {
           },
         });
       }}
+      disabled={disabled}
     >
       <Listbox.Label>{label}</Listbox.Label>
       <div className="w-full relative">

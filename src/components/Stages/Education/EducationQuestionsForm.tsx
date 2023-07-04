@@ -92,6 +92,7 @@ const EducationQuestionsForm = ({
     });
 
     reset(formData);
+
     if (
       education?.id === 0 ||
       questions?.length === 0 ||
