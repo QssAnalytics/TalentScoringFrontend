@@ -30,11 +30,17 @@ module.exports = {
 
       animation: {
         heart: "heart 4s ease-in-out infinite",
+        "fade-in": "fade-in 0.2s ease-in",
       },
       keyframes: {
         heart: {
           "0%,100%": { transform: "translate(-1%,-2%)" },
           "50%": { transform: "translate(0)" },
+        },
+
+        "fade-in": {
+          "0%": { opacity: 0 },
+          "100%": { opacity: 1 },
         },
       },
     },

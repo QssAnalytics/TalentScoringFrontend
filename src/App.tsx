@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import Stages from "./pages/Stages";
-import Landing from "./pages/Landing";
+import Landing from "./pages/Landing/Landing";
 import ReportFront from "./assets/report-front.png";
 import ReportBack from "./assets/report-back.png";
 import { useAppDispatch, useAppSelector } from "./state/hooks";

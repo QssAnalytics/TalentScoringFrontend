@@ -1,9 +1,9 @@
-import { ReactComponent as RegistrationIcon } from "../../assets/registration.svg";
-import { ReactComponent as TestingIcon } from "../../assets/testing.svg";
-import { ReactComponent as ReportIcon } from "../../assets/report.svg";
-import { ReactComponent as ChatBotIcon } from "../../assets/chatbot.svg";
+import { ReactComponent as RegistrationIcon } from "assets/registration.svg";
+import { ReactComponent as TestingIcon } from "assets/testing.svg";
+import { ReactComponent as ReportIcon } from "assets/report.svg";
+import { ReactComponent as ChatBotIcon } from "assets/chatbot.svg";
 import { Link } from "react-router-dom";
-import { useGetStageQuery } from "../../services/stage";
+import { useGetStageQuery } from "services/stage";
 
 const Process = () => {
   const { data } = useGetStageQuery();

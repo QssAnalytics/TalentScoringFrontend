@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ReactComponent as Logo } from "../../assets/logo-second.svg";
+import { ReactComponent as Logo } from "assets/logo-second.svg";
 import { Bars3Icon } from "@heroicons/react/24/outline";
 
 export interface IWebMenu {

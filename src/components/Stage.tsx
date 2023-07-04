@@ -11,6 +11,7 @@ import SpecialSkillsForm from "./Stages/SpecialSkills/SpecialSkillsQuestionsForm
 import SportForm from "./Stages/Sport/SportQuestionsForm";
 import ProgramSkills from "./Stages/ProgramSkills/ProgramSkillsQuestionsForm";
 import OptionalLanguangeQuestionsForm from "./Stages/Languange/OptionalLanguangeQuestionsForm";
+import SpecialSkillsCertifcateQuestionsForm from "./Stages/SpecialSkills/SpecialSkillsCertifcateQuestionsForm";
 
 const Stage = () => {
   const { data, error, isLoading } = useGetStageQuery();
@@ -92,6 +93,13 @@ const Stage = () => {
       case "xususi-bacariqlar-substage":
         return (
           <SpecialSkillsForm
+            stageIndex={stageIndex}
+            subStageSlug={subStageSlug || ""}
+          />
+        );
+      case "xususi-bacariqlar-sertifikat-substage":
+        return (
+          <SpecialSkillsCertifcateQuestionsForm
             stageIndex={stageIndex}
             subStageSlug={subStageSlug || ""}
           />

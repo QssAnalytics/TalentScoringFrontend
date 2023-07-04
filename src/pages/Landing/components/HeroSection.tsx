@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
-import HeroImg from "../../assets/hero-image.png";
-import { useGetStageQuery } from "../../services/stage";
-import { Circle, VectorTrip } from "../../pages/Landing";
+import HeroImg from "assets/hero-image.png";
+import { useGetStageQuery } from "services/stage";
 
 const HeroSection = () => {
   const { data } = useGetStageQuery();
