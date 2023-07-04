@@ -14,7 +14,6 @@ import OptionalLanguangeQuestionsForm from "./Stages/Languange/OptionalLanguange
 
 const Stage = () => {
   const { data, error, isLoading } = useGetStageQuery();
-
   const { stageName } = (useLocation().state as {
     stageName: string;
   }) || { subStageName: "", stageName: "" };
@@ -130,7 +129,7 @@ const Stage = () => {
   return (
     <Fragment>
       <div className="flex-1 flex justify-end pr-32 mt-10 min-w-[1130px] max-w-[1175px] relative">
-        <div className="w-full z-10 relative rounded-xl bg-white py-8 px-11 h-[611px] shadow max-w-xl">
+        <div className="w-full z-10 relative rounded-xl bg-white py-8 px-11 h-[611px] shadow max-w-xl ">
           <h1 className="mb-4">
             <span className=" text-qss-secondary">
               {subStageName === "Dil Bilikləri substage"

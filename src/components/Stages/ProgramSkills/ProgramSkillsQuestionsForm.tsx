@@ -34,20 +34,20 @@ const ProgramSkills = ({
     stage_name: nextStageName,
     stage_children: nextStageChildren,
   } = stagesData?.[stageIndex + 1] || {};
-
   const {
     slug: prevSlugName,
     stage_name: prevStageName,
     stage_children: prevStageChildren,
   } = stagesData?.[3] || {};
-
+  
   const { slug: prevSubSlugName, stage_name: prevSubStageName } =
-    prevStageChildren?.[0] || {};
-
+  prevStageChildren?.[0] || {};
+  
   const { slug: subSlugName } = stage_children?.[0] || {};
-
+  
   const { slug: nextSubSlugName, stage_name: nextSubStageName } =
-    nextStageChildren?.[0] || {};
+  nextStageChildren?.[0] || {};
+  console.log(subSlugName );
 
   const {
     data: questionsData,

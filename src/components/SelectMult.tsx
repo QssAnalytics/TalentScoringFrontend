@@ -20,7 +20,7 @@ const SelectMult = ({
   placeholder,
 }: ISelectMult) => {
   const [selected, setSelected] = useState(value);
-
+ 
   return (
     <Listbox
       multiple
@@ -47,7 +47,7 @@ const SelectMult = ({
                 open && "  text-qss-secondary border border-qss-base-200"
               }`}
             >
-              <span className="w-96 overflow-hidden whitespace-nowrap flex">
+              <span className={`w-96 overflow-hidden whitespace-nowrap flex ${value.length>0 ? "text-qss-inputText" : "text-qss-base-300"}`}>
                 {value.join(", ") || placeholder}
               </span>
               <span className={`absolute right-6 ${open && "rotate-180"}`}>
