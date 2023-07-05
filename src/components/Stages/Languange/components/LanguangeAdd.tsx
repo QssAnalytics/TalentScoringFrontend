@@ -71,9 +71,9 @@ const LanguangeAdd = ({
           <div className="flex-1">
             <Select
               disabled={editData ? true : false}
-              label={data?.[0].question_title || ""}
-              options={data?.[0].answers}
-              register={inputProps?.[0].register}
+              label={data?.[0]?.question_title || ""}
+              options={data?.[0]?.answers}
+              register={inputProps?.[0]?.register}
               value={watch()?.addLang?.answer}
             />
           </div>
@@ -83,7 +83,7 @@ const LanguangeAdd = ({
             <div className="space-y-2">
               <label className="pl-2">
                 {`${watch()?.addLang?.answer?.split(" ")[0]} ${
-                  data?.[1].question_title
+                  data?.[1]?.question_title
                 }`}
                 *
               </label>
@@ -102,10 +102,10 @@ const LanguangeAdd = ({
             <div>
               <label>
                 {watch()?.addLang?.answer?.split(" ")[0]}{" "}
-                {data?.[2].question_title}
+                {data?.[2]?.question_title}
               </label>
               <div className="flex gap-4 mt-2">
-                {data?.[2].answers.map(({ id, answer_title }) => (
+                {data?.[2]?.answers?.map(({ id, answer_title }) => (
                   <Radio
                     key={id}
                     value={answer_title}
@@ -119,7 +119,7 @@ const LanguangeAdd = ({
               <TextInput
                 register={inputProps[3].register}
                 label={`${watch()?.addLang?.answer?.split(" ")[0]} ${
-                  data?.[3].question_title
+                  data?.[3]?.question_title
                 }`}
               />
             ) : null}
