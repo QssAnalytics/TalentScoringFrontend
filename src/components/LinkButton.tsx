@@ -33,6 +33,7 @@ const LinkButton = ({
       className={className}
     >
       <button
+        type="submit"
         className={`w-[180px] flex rounded-full justify-center items-center py-3.5 gap-4 ${
           type === "outline"
             ? "flex-row-reverse border border-qss-secondary text-qss-secondary bg-transparent"

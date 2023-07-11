@@ -66,9 +66,12 @@ const OlympiadQuestionsForm = ({
       },
     });
 
-  const onSubmit: SubmitHandler<OlympiadQuestionsFormValues> = (data) =>
-    console.log(data);
+  const allData = useAppSelector((state) => state?.stageForm);
 
+  const onSubmit: SubmitHandler<OlympiadQuestionsFormValues> = (data) =>
+    console.log(allData);
+
+  console.log(allData);
   useEffect(() => {
     const subscription = watch((value) => {
       console.log(value);

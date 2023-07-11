@@ -98,7 +98,6 @@ const EducationQuestionsForm = ({
       questions?.length === 0 ||
       education?.answer === "Orta təhsil"
     ) {
-      console.log(state);
       state.subStageName === "Olimpiada sualları"
         ? nav(`/stages/${slugName}/${prevSubSlugName}`, {
             state: { subStageName: prevSubStageName, stageName: stageName },

@@ -54,7 +54,6 @@ const Select = ({
                 open && "text-qss-secondary border border-qss-base-200"
               } ${value ? "text-qss-secondary" : "text-qss-base-300"} `}
             >
-              
               {value || defaultVal}
               <span className={`absolute right-6 ${open && "rotate-180"}`}>
                 <Icon

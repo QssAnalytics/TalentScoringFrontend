@@ -12,6 +12,7 @@ import SportForm from "./Stages/Sport/SportQuestionsForm";
 import ProgramSkills from "./Stages/ProgramSkills/ProgramSkillsQuestionsForm";
 import OptionalLanguangeQuestionsForm from "./Stages/Languange/OptionalLanguangeQuestionsForm";
 import SpecialSkillsCertifcateQuestionsForm from "./Stages/SpecialSkills/SpecialSkillsCertifcateQuestionsForm";
+import Work from "./Stages/Work/Work";
 
 const Stage = () => {
   const { data, error, isLoading } = useGetStageQuery();
@@ -110,6 +111,10 @@ const Stage = () => {
             stageIndex={stageIndex}
             subStageSlug={subStageSlug || ""}
           />
+        );
+      case "is-tecrubesi-substage":
+        return (
+          <Work stageIndex={stageIndex} subStageSlug={subStageSlug || ""} />
         );
       case "proqram-bilikleri-substage":
         return (

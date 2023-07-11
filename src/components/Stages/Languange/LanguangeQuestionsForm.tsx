@@ -106,7 +106,6 @@ const LanguangeQuestionsForm = ({
     { register: register("engLevel") },
     { register: register("ruLevel") },
   ];
-
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
@@ -137,7 +136,7 @@ const LanguangeQuestionsForm = ({
               register={inputProps[1].register}
               value={formData?.languageSkills}
             />
-            
+
             {formData?.languageSkills?.find(
               (lang) => lang === "İngilis dili"
             ) && (

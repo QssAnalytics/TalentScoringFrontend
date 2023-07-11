@@ -175,7 +175,7 @@ const SpecialSkillsForm = ({
                           <Radio
                             key={id}
                             label={answer_title}
-                            value={id}
+                            value={answer_title}
                             register={register(item)}
                           />
                         ))}

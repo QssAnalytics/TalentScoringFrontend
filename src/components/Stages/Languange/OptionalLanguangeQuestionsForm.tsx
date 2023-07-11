@@ -210,7 +210,7 @@ const OptionalLanguangeQuestionsForm = ({
 
                 <p className="truncate flex-1 bg-qss-input whitespace-nowrap rounded-full px-4 py-2">
                   {lang?.haveCertLang.includes("Bəli")
-                    ? lang?.certLang
+                    ? lang?.certLang.concat(" ", lang?.certResult)
                     : "Məlumat yoxdur"}
                 </p>
 

@@ -23,6 +23,7 @@ const schema = yup
     levelLang: yup.string().required(),
     haveCertLang: yup.string().required(),
     certLang: yup.string().required(),
+    certResult: yup.string().required(),
   })
   .required();
 
@@ -56,6 +57,7 @@ const LanguangeAdd = ({
     { register: register("levelLang") },
     { register: register("haveCertLang") },
     { register: register("certLang") },
+    { register: register("certResult") },
   ];
 
   return (
@@ -116,12 +118,24 @@ const LanguangeAdd = ({
               </div>
             </div>{" "}
             {watch()?.haveCertLang?.toLowerCase()?.includes("bəli") ? (
-              <TextInput
-                register={inputProps[3].register}
-                label={`${watch()?.addLang?.answer?.split(" ")[0]} ${
-                  data?.[3]?.question_title
-                }`}
-              />
+              <>
+                <label className="inline-flex">
+                  {watch()?.addLang?.answer?.split(" ")[0]}{" "}
+                  {data?.[3]?.question_title}
+                </label>
+                <div className="flex justify-between">
+                  <TextInput
+                    register={inputProps[3].register}
+                    label={""}
+                    placeholder="Certifcate Name"
+                  />
+                  <TextInput
+                    register={inputProps[4].register}
+                    label={""}
+                    placeholder="Certifcate Result"
+                  />
+                </div>
+              </>
             ) : null}
           </>
         )}
