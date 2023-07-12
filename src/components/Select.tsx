@@ -19,7 +19,7 @@ const Select = ({
   disabled = false,
 }: ISelect) => {
   const [selected, setSelected] = useState(value || options?.[0]?.answer_title);
-  console.log(selected);
+  // console.log(selected);
   const getAnswerId = (answerTitle: string) =>
     options?.find(({ answer_title }) => answerTitle === answer_title)?.id;
 
