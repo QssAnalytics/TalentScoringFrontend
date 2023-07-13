@@ -40,7 +40,6 @@ const Stages = () => {
         return (
           <StageExperience className="absolute w-80 h-72 left-[220px] top-[460px]" />
         );
-
       case "proqram-bilikleri":
         return (
           <StageProg className="absolute w-80 h-80  left-[220px] top-[462px]" />

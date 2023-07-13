@@ -50,7 +50,7 @@ const stageFormSlice = createSlice({
           ...state.slice(0, index),
           { ...state[index], formData: action.payload.formData },
           ...state.slice(index + 1),
-        ];
+        ]; 
       }
 
       state.push(action.payload);

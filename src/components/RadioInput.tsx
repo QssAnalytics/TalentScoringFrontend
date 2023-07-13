@@ -8,7 +8,7 @@ interface IRadioProps {
   type?: string;
 }
 
-const Radio = ({ label, value, register, type = "default" }: IRadioProps) => (
+const Radio = ({ label, value, register, type = "default"}: IRadioProps) => (
   <label className="bg-qss-input cursor-pointer relative py-2 max-w-[142px] w-full justify-center items-center flex rounded-full px-4">
     <input
       className={`peer absolute cursor-pointer ${
@@ -19,6 +19,7 @@ const Radio = ({ label, value, register, type = "default" }: IRadioProps) => (
       type="radio"
       value={value}
       {...register}
+      onChange={ register.onChange}
     />
     <span
       className={`text-qss-inputText whitespace-nowrap relative ${

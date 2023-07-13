@@ -10,7 +10,6 @@ import LinkButton from "../../LinkButton";
 import { updateStageForm } from "../../../state/stages/stageFormSlice";
 import { useAppDispatch, useAppSelector } from "../../../state/hooks";
 import { GeneralQuestionsFormProps } from "../Education/GeneralQuestionsForm";
-import { setShowReport } from "../../../state/report/reportSlice";
 
 export type ProgramSkillsValues = {
   haveProgramSkills: string;

@@ -48,7 +48,6 @@ const LanguangeQuestionsForm = ({
   const { slug: nextSubSlugName, stage_name: nextSubStageName } =
     nextStageChildren?.[1] || {};
 
-  console.log(nextSlugName);
 
   const {
     data: questionsData,

@@ -25,7 +25,7 @@ const Select = ({ label, options, register, value }: ISelect) => {
       as="div"
       placeholder={selected}
       value={selected}
-      className="flex flex-col gap-2"
+      className="flex flex-col gap-2 w-full"
       onChange={(value) => {
         setSelected(value);
         const curId = getAnswerId(value);

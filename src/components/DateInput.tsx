@@ -1,14 +1,16 @@
 import React from 'react'
- import calendar from './Stages/JobExperience/images/Vector (2).png'
+ import calendar from '../assets/Vector (1).svg';
 export interface IDateInputProps {
     label?: string;
     type?: string;
     placeholder?: string;
     register?: any;
+    inputClassName?:string;
+    disabled?:boolean;
 }
-const DateInput = ({ label, type, placeholder, register }: IDateInputProps) => {
+const DateInput = ({ label, type, placeholder, register,inputClassName,disabled }: IDateInputProps) => {
     return (
-        <div className="space-y-2 relative">
+        <div className={`relative w-full space-y-2 ${inputClassName}`}>
             <label className="pl-2 inline-flex">{label}</label>
             <div className="w-full relative">
                 <input
@@ -17,6 +19,7 @@ const DateInput = ({ label, type, placeholder, register }: IDateInputProps) => {
                     {...register}
                     autoComplete="off"
                     className='"w-full'
+                    disabled={disabled}
                 />
                 <img src={calendar} alt="calendar" className='absolute top-2 right-4' />
             </div>
