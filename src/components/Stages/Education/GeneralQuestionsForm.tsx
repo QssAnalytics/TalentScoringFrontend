@@ -10,15 +10,31 @@ import Select from "../../Select";
 import LinkButton from "../../LinkButton";
 import { updateStageForm } from "../../../state/stages/stageFormSlice";
 import { useAppDispatch, useAppSelector } from "../../../state/hooks";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 
-export type GeneralQuestionsFormValues = {
-  firstName: string;
-  lastName: string;
-  workExp: string;
-  curOccupation: { id: number; answer: string };
-  education: { id: number; answer: string };
-  educationGrant: { id: number; answer: string };
-};
+const schema = yup.object({
+  firstName: yup.string(),
+  lastName: yup.string(),
+  workExp: yup.string(),
+  curOccupation: yup.object({
+    id: yup.number(),
+    answer: yup.string(),
+    weight: yup.string(),
+  }),
+  education: yup.object({
+    id: yup.number(),
+    answer: yup.string(),
+    weight: yup.string(),
+  }),
+  educationGrant: yup.object({
+    id: yup.number(),
+    answer: yup.string(),
+    weight: yup.string(),
+  }),
+});
+
+export type GeneralQuestionsFormValues = yup.InferType<typeof schema>;
 
 export type GeneralQuestionsFormProps = {
   subStageSlug: string;
@@ -54,17 +70,22 @@ const GeneralQuestionsForm = ({
       ({ name }) => name === subStageSlug
     ) as { formData: GeneralQuestionsFormValues }) || {};
 
-  const { register, handleSubmit, watch, reset } =
-    useForm<GeneralQuestionsFormValues>({
-      defaultValues: {
-        firstName: "",
-        lastName: "",
-        workExp: "",
-        curOccupation: { id: 0, answer: "" },
-        education: { id: 0, answer: "" },
-        educationGrant: { id: 0, answer: "" },
-      },
-    });
+  const {
+    register,
+    handleSubmit,
+    watch,
+    reset,
+    formState: { errors },
+  } = useForm<GeneralQuestionsFormValues>({
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      workExp: "",
+      curOccupation: { id: 0, answer: "", weight: "" },
+      education: { id: 0, answer: "", weight: "" },
+      educationGrant: { id: 0, answer: "", weight: "" },
+    },
+  });
 
   const onSubmit: SubmitHandler<GeneralQuestionsFormValues> = (data) => data;
 
@@ -87,7 +108,6 @@ const GeneralQuestionsForm = ({
   if (questionsError) return <div>Error</div>;
 
   const questions = questionsData?.[0]?.questions;
-
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
@@ -122,7 +142,7 @@ const GeneralQuestionsForm = ({
             label={`${questions?.[1]?.question_title}*`}
             options={questions?.[1]?.answers?.filter(
               ({ answer_dependens_on }) =>
-                answer_dependens_on === parseInt(formData?.workExp)
+                answer_dependens_on === parseInt(formData?.workExp || "")
             )}
             register={register("curOccupation")}
             value={formData?.curOccupation?.answer}

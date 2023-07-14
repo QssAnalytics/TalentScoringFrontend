@@ -39,7 +39,7 @@ const Select = ({
         register.onChange({
           target: {
             name: register.name,
-            value: { id: curId, answer: value },
+            value: { id: curId, answer: value, weight: "" },
           },
         });
       }}
