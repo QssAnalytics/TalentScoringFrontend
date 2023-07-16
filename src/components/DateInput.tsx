@@ -1,5 +1,4 @@
-import React from 'react'
- import calendar from '../assets/Vector (1).svg';
+import calendar from '../assets/Vector (1).svg';
 export interface IDateInputProps {
     label?: string;
     type?: string;
@@ -20,6 +19,7 @@ const DateInput = ({ label, type, placeholder, register,inputClassName,disabled 
                     autoComplete="off"
                     className='"w-full'
                     disabled={disabled}
+                    value={disabled? null : register.value}
                 />
                 <img src={calendar} alt="calendar" className='absolute top-2 right-4' />
             </div>
