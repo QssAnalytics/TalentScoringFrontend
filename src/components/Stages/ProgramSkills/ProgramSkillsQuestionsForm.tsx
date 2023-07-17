@@ -10,13 +10,18 @@ import LinkButton from "../../LinkButton";
 import { updateStageForm } from "../../../state/stages/stageFormSlice";
 import { useAppDispatch, useAppSelector } from "../../../state/hooks";
 import { GeneralQuestionsFormProps } from "../Education/GeneralQuestionsForm";
+import { setShowReport } from "../../../state/report/reportSlice";
+import SelectMult from "components/SelectMult";
 
 export type ProgramSkillsValues = {
   haveProgramSkills: string;
-  whichProgram: { id: number; answer: string };
-  whichScore: { id: number; answer: string };
+  whichProgram: string[];
+  whichScore: string[];
   whichLevel: { id: number; answer: string };
   whichLang: { id: number; answer: string };
+  msOffice: string[];
+  programs: string[];
+  design: string[];
 };
 
 const ProgramSkills = ({
@@ -65,9 +70,12 @@ const ProgramSkills = ({
     {
       defaultValues: {
         haveProgramSkills: "0",
-        whichProgram: { id: 0, answer: "" },
-        whichScore: { id: 0, answer: "" },
+        whichProgram: [],
+        whichScore: [],
         whichLang: { id: 0, answer: "" },
+        msOffice: [],
+        programs: [],
+        design: [],
       },
     }
   );
@@ -97,12 +105,14 @@ const ProgramSkills = ({
   const questions = questionsData?.[0]?.questions;
 
   const inputProps = [
-    { register: register("haveProgramSkills") },
     { register: register("whichProgram") },
-    { register: register("whichScore") },
-    { register: register("whichLang") },
+    { register: register("msOffice") },
+    { register: register("programs") },
+    { register: register("design") },
     { register: register("whichLevel") },
   ];
+
+  console.log(questions);
 
   return (
     <form
@@ -110,87 +120,183 @@ const ProgramSkills = ({
       className="mt-7 flex-col flex gap-5"
     >
       <div className="space-y-5">
-        <div className="space-y-2">
-          <label className="pl-2">
-            {questions?.[questions.length - 1]?.question_title}*
-          </label>
+        {/* <div className="space-y-2"> */}
+        {/* <label className="pl-2">{questions?.[0]?.question_title}*</label>
 
           <div className="flex gap-5">
-            {questions?.[questions.length - 1]?.answers?.map(
-              ({ answer_title, id }, idx) => (
-                <Radio
-                  key={id}
-                  label={answer_title}
-                  value={idx}
-                  register={inputProps[0].register}
+            {questions?.[0]?.answers?.map(({ answer_title, id }, idx) => (
+              <Radio
+                key={id}
+                label={answer_title}
+                value={idx}
+                register={inputProps[0].register}
+              />
+            ))}
+          </div>
+        </div> */}
+
+        <SelectMult
+          label={`${questions?.[0]?.question_title}*`}
+          options={questions?.[0]?.answers}
+          register={inputProps[0].register}
+          value={formData?.whichProgram}
+          placeholder="Select Programs"
+        />
+
+        {formData?.whichProgram?.length > 0 ? (
+          <div className="overflow-y-auto h-96 pb-4 space-y-4">
+            {formData?.whichProgram?.includes("MS Office") && (
+              <>
+                <SelectMult
+                  label={`${questions?.[1]?.question_title}*`}
+                  options={questions?.[1]?.answers.slice(0, 3)}
+                  register={inputProps[1]?.register}
+                  value={formData?.msOffice}
+                  placeholder="Select Programs"
                 />
-              )
+                {formData.msOffice.length > 0 &&
+                  formData?.msOffice?.map((lang, index) => (
+                    <div key={index} className="space-y-2">
+                      <label className="pl-2">
+                        {lang + " " + questions?.[2]?.question_title}*
+                      </label>
+                      <div className="flex gap-5">
+                        {questions?.[2]?.answers?.map(
+                          ({ answer_title, id }, idx) => (
+                            <Radio
+                              key={id}
+                              label={answer_title}
+                              value={answer_title}
+                              register={register(`whichLevel${lang}`)}
+                            />
+                          )
+                        )}
+                      </div>
+                    </div>
+                  ))}
+              </>
+            )}
+            {formData?.whichProgram?.includes("Proqramlaşdırma dilləri") && (
+              <>
+                <SelectMult
+                  label={`${questions?.[3]?.question_title}*`}
+                  options={questions?.[3]?.answers.slice(0, 3)}
+                  register={inputProps[2]?.register}
+                  value={formData?.programs}
+                  placeholder="Select Programs"
+                />
+                {formData.programs.length > 0 &&
+                  formData?.programs?.map((lang, index) => (
+                    <div key={index} className="space-y-2">
+                      <label className="pl-2">
+                        {lang + " " + questions?.[2]?.question_title}*
+                      </label>
+                      <div className="flex gap-1">
+                        {questions?.[4]?.answers?.map(
+                          ({ answer_title, id }, idx) => (
+                            <Radio
+                              key={id}
+                              label={answer_title}
+                              value={answer_title}
+                              register={register(`whichLevel${lang}`)}
+                            />
+                          )
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                {/* <Select
+                label={`${questions?.[3]?.question_title}*`}
+                options={questions?.[3]?.answers}
+                register={inputProps[3].register}
+                value={formData?.whichLang?.answer}
+              /> */}
+                {formData.whichLang.answer && (
+                  <div className="space-y-2">
+                    <label className="pl-2">
+                      {formData.whichLang.answer +
+                        " " +
+                        questions?.[4]?.question_title}
+                      *
+                    </label>
+                    <div className="flex gap-5">
+                      {questions?.[4]?.answers?.map(
+                        ({ answer_title, id }, idx) => (
+                          <Radio
+                            key={id}
+                            label={answer_title}
+                            value={idx}
+                            register={inputProps[4].register}
+                          />
+                        )
+                      )}
+                    </div>
+                  </div>
+                )}
+              </>
+            )}
+
+            {formData?.whichProgram?.includes("Dizayn Proqramları") && (
+              <>
+                <SelectMult
+                  label={`${questions?.[5]?.question_title}*`}
+                  options={questions?.[5]?.answers.slice(0, 3)}
+                  register={inputProps[3]?.register}
+                  value={formData?.design}
+                  placeholder="Select Programs"
+                />
+                {formData.design.length > 0 &&
+                  formData?.design?.map((lang, index) => (
+                    <div key={index} className="space-y-2">
+                      <label className="pl-2">
+                        {lang + " " + questions?.[2]?.question_title}*
+                      </label>
+                      <div className="flex gap-1">
+                        {questions?.[4]?.answers?.map(
+                          ({ answer_title, id }, idx) => (
+                            <Radio
+                              key={id}
+                              label={answer_title}
+                              value={answer_title}
+                              register={register(`whichLevel${lang}`)}
+                            />
+                          )
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                {/* <Select
+                label={`${questions?.[3]?.question_title}*`}
+                options={questions?.[3]?.answers}
+                register={inputProps[3].register}
+                value={formData?.whichLang?.answer}
+              /> */}
+                {formData.whichLang.answer && (
+                  <div className="space-y-2">
+                    <label className="pl-2">
+                      {formData.whichLang.answer +
+                        " " +
+                        questions?.[4]?.question_title}
+                      *
+                    </label>
+                    <div className="flex gap-5">
+                      {questions?.[4]?.answers?.map(
+                        ({ answer_title, id }, idx) => (
+                          <Radio
+                            key={id}
+                            label={answer_title}
+                            value={idx}
+                            register={inputProps[4].register}
+                          />
+                        )
+                      )}
+                    </div>
+                  </div>
+                )}
+              </>
             )}
           </div>
-        </div>
-
-        {formData?.haveProgramSkills === "0" && (
-          <>
-            <Select
-              label={`${questions?.[0]?.question_title}*`}
-              options={questions?.[0]?.answers}
-              register={inputProps[1].register}
-              value={formData?.whichProgram?.answer}
-            />
-            <Select
-              label={`${questions?.[1]?.question_title}*`}
-              options={questions?.[1]?.answers.slice(0, 3)}
-              register={inputProps[2]?.register}
-              value={formData?.whichScore?.answer}
-            />
-            {formData.whichScore.answer && (
-              <div className="space-y-2">
-                <label className="pl-2">
-                  {formData.whichProgram.answer +
-                    " " +
-                    questions?.[2]?.question_title}
-                  *
-                </label>
-                <div className="flex gap-5">
-                  {questions?.[2]?.answers?.map(({ answer_title, id }, idx) => (
-                    <Radio
-                      key={id}
-                      label={answer_title}
-                      value={idx}
-                      register={inputProps[3].register}
-                    />
-                  ))}
-                </div>
-              </div>
-            )}
-            {/* <Select
-              label={`${questions?.[3]?.question_title}*`}
-              options={questions?.[3]?.answers}
-              register={inputProps[3].register}
-              value={formData?.whichLang?.answer}
-            /> */}
-            {formData.whichLang.answer && (
-              <div className="space-y-2">
-                <label className="pl-2">
-                  {formData.whichLang.answer +
-                    " " +
-                    questions?.[4]?.question_title}
-                  *
-                </label>
-                <div className="flex gap-5">
-                  {questions?.[4]?.answers?.map(({ answer_title, id }, idx) => (
-                    <Radio
-                      key={id}
-                      label={answer_title}
-                      value={idx}
-                      register={inputProps[4].register}
-                    />
-                  ))}
-                </div>
-              </div>
-            )}
-          </>
-        )}
+        ) : null}
       </div>
 
       <LinkButton
@@ -203,21 +309,21 @@ const ProgramSkills = ({
         className="absolute left-0 -bottom-20"
       />
 
-      {/* <button
+      <button
         className={`absolute -bottom-[79px] right-0 w-[180px] flex rounded-full justify-center items-center py-3.5 gap-4 bg-qss-secondary flex-row text-white text-white"}`}
         onClick={() => dispatch(setShowReport(!showReport))}
-      > */}
-      <LinkButton
-        nav={{
-          state: { stageName: nextStageName, subStageName: nextSubStageName },
-          path: { slugName: nextSlugName, subSlugName: nextSubSlugName },
-        }}
-        haveIcon={false}
-        label="Yekunlaşdır"
-        className="absolute right-0 -bottom-20"
-      />
-      {/* Yekunlaşdır
-      </button> */}
+      >
+        {/* <LinkButton
+          nav={{
+            state: { stageName: nextStageName, subStageName: nextSubStageName },
+            path: { slugName: slug, subSlugName: nextSubSlugName },
+          }}
+          haveIcon={false}
+          label="Yekunlaşdır"
+          className="absolute right-0 -bottom-20"
+        /> */}
+        Yekunlaşdır
+      </button>
     </form>
   );
 };
