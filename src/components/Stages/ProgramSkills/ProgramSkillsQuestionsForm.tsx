@@ -10,7 +10,6 @@ import LinkButton from "../../LinkButton";
 import { updateStageForm } from "../../../state/stages/stageFormSlice";
 import { useAppDispatch, useAppSelector } from "../../../state/hooks";
 import { GeneralQuestionsFormProps } from "../Education/GeneralQuestionsForm";
-import { setShowReport } from "../../../state/report/reportSlice";
 
 export type ProgramSkillsValues = {
   haveProgramSkills: string;
@@ -38,16 +37,16 @@ const ProgramSkills = ({
     slug: prevSlugName,
     stage_name: prevStageName,
     stage_children: prevStageChildren,
-  } = stagesData?.[3] || {};
-  
+  } = stagesData?.[4] || {};
+
   const { slug: prevSubSlugName, stage_name: prevSubStageName } =
-  prevStageChildren?.[0] || {};
-  
+    prevStageChildren?.[0] || {};
+
   const { slug: subSlugName } = stage_children?.[0] || {};
-  
+
   const { slug: nextSubSlugName, stage_name: nextSubStageName } =
-  nextStageChildren?.[0] || {};
-  console.log(subSlugName );
+    nextStageChildren?.[0] || {};
+  console.log(subSlugName);
 
   const {
     data: questionsData,
@@ -204,21 +203,21 @@ const ProgramSkills = ({
         className="absolute left-0 -bottom-20"
       />
 
-      <button
+      {/* <button
         className={`absolute -bottom-[79px] right-0 w-[180px] flex rounded-full justify-center items-center py-3.5 gap-4 bg-qss-secondary flex-row text-white text-white"}`}
         onClick={() => dispatch(setShowReport(!showReport))}
-      >
-        {/* <LinkButton
-          nav={{
-            state: { stageName: nextStageName, subStageName: nextSubStageName },
-            path: { slugName: slug, subSlugName: nextSubSlugName },
-          }}
-          haveIcon={false}
-          label="Yekunlaşdır"
-          className="absolute right-0 -bottom-20"
-        /> */}
-        Yekunlaşdır
-      </button>
+      > */}
+      <LinkButton
+        nav={{
+          state: { stageName: nextStageName, subStageName: nextSubStageName },
+          path: { slugName: nextSlugName, subSlugName: nextSubSlugName },
+        }}
+        haveIcon={false}
+        label="Yekunlaşdır"
+        className="absolute right-0 -bottom-20"
+      />
+      {/* Yekunlaşdır
+      </button> */}
     </form>
   );
 };

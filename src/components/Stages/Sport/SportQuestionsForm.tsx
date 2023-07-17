@@ -95,7 +95,7 @@ const SportForm = ({ stageIndex, subStageSlug }: GeneralQuestionsFormProps) => {
     { register: register("whichSport") },
     { register: register("whichScore") },
   ];
-
+  console.log(stagesData);
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}

@@ -10,7 +10,9 @@ export const store = configureStore({
     reportState: reportReducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(stageApi.middleware),
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }).concat(stageApi.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

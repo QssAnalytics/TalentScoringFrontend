@@ -34,7 +34,6 @@ const LanguangeQuestionsForm = ({
     stage_name: nextStageName,
     stage_children: nextStageChildren,
   } = stagesData?.[stageIndex] || {};
-
   const {
     slug: prevSlugName,
     stage_name: prevStageName,
@@ -48,8 +47,6 @@ const LanguangeQuestionsForm = ({
 
   const { slug: nextSubSlugName, stage_name: nextSubStageName } =
     nextStageChildren?.[1] || {};
-
-  console.log(nextSubStageName);
 
   const {
     data: questionsData,
@@ -137,7 +134,7 @@ const LanguangeQuestionsForm = ({
               register={inputProps[1].register}
               value={formData?.languageSkills}
             />
-            
+
             {formData?.languageSkills?.find(
               (lang) => lang === "İngilis dili"
             ) && (

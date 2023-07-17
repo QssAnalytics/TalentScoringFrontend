@@ -7,6 +7,7 @@ interface ILinkButton {
   nav: navType;
   className: string;
   haveIcon?: boolean;
+  onClick?:()=>void;
 }
 
 type btnType = "outline";
@@ -22,6 +23,7 @@ const LinkButton = ({
   nav,
   className,
   haveIcon = true,
+  onClick
 }: ILinkButton) => {
   return (
     <Link
@@ -31,6 +33,7 @@ const LinkButton = ({
         stageName: nav.state.stageName,
       }}
       className={className}
+      onClick={onClick}
     >
       <button
         className={`w-[180px] flex rounded-full justify-center items-center py-3.5 gap-4 ${

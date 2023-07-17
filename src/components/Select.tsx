@@ -32,7 +32,7 @@ const Select = ({
       as="div"
       placeholder={selected}
       value={selected}
-      className="flex flex-col gap-2"
+      className="flex flex-col gap-2 w-full"
       onChange={(value) => {
         setSelected(value);
         const curId = getAnswerId(value);
@@ -54,7 +54,6 @@ const Select = ({
                 open && "text-qss-secondary border border-qss-base-200"
               } ${value ? "text-qss-secondary" : "text-qss-base-300"} `}
             >
-              
               {value || defaultVal}
               <span className={`absolute right-6 ${open && "rotate-180"}`}>
                 <Icon
