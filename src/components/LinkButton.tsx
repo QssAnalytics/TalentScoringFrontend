@@ -1,73 +1,64 @@
-import { Link } from "react-router-dom";
-import { Icon } from "@iconify/react";
+import { Link } from 'react-router-dom'
+import { Icon } from '@iconify/react'
 
 interface ILinkButton {
-  label: string;
-  type?: any;
-  typeOf?: btnType;
-  nav: navType ;
-  className: string;
-  haveIcon?: boolean; 
-  onClick?: any;
-  disabled?:boolean;
+  label: string
+  type?: any
+  typeOf?: btnType
+  nav: navType
+  className: string
+  haveIcon?: boolean 
+  disabled?: boolean
 }
 
-type btnType = "outline";
+type btnType = 'outline'
 
 type navType = {
-
-  path: { slugName?: string; subSlugName?: string };
-  state: { subStageName?: string; stageName?: string };
-};
+  path: { slugName?: string; subSlugName?: string }
+  state: { subStageName?: string; stageName?: string }
+}
 
 const LinkButton = ({
   label,
-  type,
+  type='submit',
   nav,
   className, 
-  onClick,
   typeOf,
-  haveIcon = true,disabled=false
+  haveIcon = true,
+  disabled = false
 }: ILinkButton) => {
   return (
-  <button  
-      onClick={onClick}
+    <button 
+      disabled={disabled}
       type={type}
       className={`w-[180px] flex rounded-full justify-center items-center py-3.5 gap-4 ${
-        typeOf === "outline"
-          ? "flex-row-reverse border border-qss-secondary text-qss-secondary bg-transparent"
-          : "bg-qss-secondary flex-row text-white"
+        typeOf === 'outline'
+          ? 'flex-row-reverse border border-qss-secondary text-qss-secondary bg-transparent'
+          : 'bg-qss-secondary flex-row text-white'
       } ${className}`}
-
-       
-      > 
-      {!disabled ?
-
-        <Link
-        to={`/stages/${nav.path.slugName}/${nav.path.subSlugName}`}
-        state={{
-          subStageName: nav.state.subStageName,
-          stageName: nav.state.stageName,
-      }}
-   
     >
-     
-        {label}
-        {haveIcon && (
-          <Icon
-          icon="material-symbols:arrow-right-alt-rounded"
-          className={typeOf === "outline" ? "rotate-180" : "rotate-0"}
-          width="1.5rem"
-          />
+      {!disabled ? (
+        <Link
+          to={`/stages/${nav.path.slugName}/${nav.path.subSlugName}`}
+          state={{
+            subStageName: nav.state.subStageName,
+            stageName: nav.state.stageName
+          }}
+        >
+          {label}
+          {haveIcon && (
+            <Icon
+              icon='material-symbols:arrow-right-alt-rounded'
+              className={typeOf === 'outline' ? 'rotate-180' : 'rotate-0'}
+              width='1.5rem'
+            />
           )}
-    </Link>
-      : <div>
+        </Link>
+      ) : (
+        <div>{label}</div>
+      )}
+    </button>
+  )
+}
 
-        {label}
-      </div>
-          } 
-      </button>
-  );
-};
-
-export default LinkButton;
+export default LinkButton

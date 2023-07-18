@@ -9,10 +9,12 @@ interface ISelect {
   register?: any;
   value?: string;
   disabled?: boolean;
+  className?: string;
 }
 
 const Select = ({
   label,
+  className,
   options,
   register,
   value,
@@ -32,7 +34,7 @@ const Select = ({
       as="div"
       placeholder={selected}
       value={selected}
-      className="flex flex-col gap-2"
+      className='flex flex-col gap-2 '
       onChange={(value) => {
         setSelected(value);
         const curId = getAnswerId(value);
@@ -50,7 +52,7 @@ const Select = ({
         <Listbox.Button as={Fragment}>
           {({ value: defaultVal, open }) => (
             <Listbox.Label
-              className={`relative w-full text-left flex items-center border  bg-qss-input py-2 px-4 rounded-full outline-none ${
+              className={`relative w-full text-left flex items-center border ${className}  bg-qss-input py-2 px-4 rounded-full outline-none ${
                 open && "text-qss-secondary border border-qss-base-200"
               } ${value ? "text-qss-secondary" : "text-qss-base-300"} `}
             >

@@ -10,13 +10,34 @@ import LinkButton from "../../LinkButton";
 import { updateStageForm } from "../../../state/stages/stageFormSlice";
 import { useAppDispatch, useAppSelector } from "../../../state/hooks";
 import { GeneralQuestionsFormProps } from "./GeneralQuestionsForm";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as Yup from "yup";
 
-export type OlympiadQuestionsFormValues = {
-  wonOlympics: string;
-  subjectOlympiad: { id: number; answer: string };
-  highestOlympiad: { id: number; answer: string };
-  rankOlympiad: { id: number; answer: string };
-};
+
+const validationSchema = Yup.object({ 
+  wonOlympics: Yup.string().required("Bu section tələb olunur"),
+
+  subjectOlympiad: Yup.object({
+    id: Yup.number(),
+    answer: Yup.string().required("Bu section tələb olunur"),
+  }),
+  highestOlympiad: Yup.object({
+    id: Yup.number(),
+    answer: Yup.string().required("Bu section tələb olunur"),
+  }),
+  rankOlympiad: Yup.object({
+    id: Yup.number(),
+    answer: Yup.string().required("Bu section tələb olunur"),
+  }),
+});
+export type OlympiadQuestionsFormValues = Yup.InferType<typeof validationSchema>;
+
+// export type OlympiadQuestionsFormValues = {
+//   wonOlympics: string,
+//   subjectOlympiad: { id: number; answer: string },
+//   highestOlympiad: { id: number; answer: string },
+//   rankOlympiad: { id: number; answer: string },
+// };
 
 const OlympiadQuestionsForm = ({
   stageIndex,
@@ -56,8 +77,9 @@ const OlympiadQuestionsForm = ({
       ({ name }) => name === subStageSlug
     ) as { formData: OlympiadQuestionsFormValues }) || {};
 
-  const { register, handleSubmit, watch, reset } =
+  const { register, handleSubmit, watch, formState: { errors }, reset } =
     useForm<OlympiadQuestionsFormValues>({
+      resolver: yupResolver(validationSchema),
       defaultValues: {
         wonOlympics: "",
         subjectOlympiad: { id: 0, answer: "" },
@@ -112,9 +134,10 @@ const OlympiadQuestionsForm = ({
                 label={answer_title}
                 value={idx}
                 register={inputProps[0].register}
-              />
-            ))}
-          </div>
+                inputClassName={errors.wonOlympics && " outline outline-1 outline-red-400"}
+              /> 
+            ))} 
+          </div> 
         </div>
 
         {formData?.wonOlympics === "0" && (
@@ -124,23 +147,37 @@ const OlympiadQuestionsForm = ({
               options={questions?.[1]?.answers}
               register={inputProps[1].register}
               value={formData?.subjectOlympiad?.answer}
+              className={errors.subjectOlympiad && " border border-1 border-red-400"} 
             />
+            
 
             <Select
               label={`${questions?.[2]?.question_title}*`}
               options={questions?.[2]?.answers}
               register={inputProps[2].register}
               value={formData?.highestOlympiad?.answer}
+              className={errors.highestOlympiad && " border border-1 border-red-400"} 
             />
+              
 
             <Select
               label={`${questions?.[3]?.question_title}*`}
               options={questions?.[3]?.answers}
               register={inputProps[3].register}
               value={formData?.rankOlympiad?.answer}
+              className={errors.rankOlympiad && " border border-1 border-red-400"}
             />
+            
           </>
         )}
+        {(errors.wonOlympics ||
+        errors.rankOlympiad ||
+        errors.highestOlympiad||
+        errors.subjectOlympiad ) && (
+        <span className="text-xs text-red-500 px-1 ">
+          Xanalar boş buraxılmamalıdır
+        </span>
+      )}
       </div>
 
       <LinkButton
@@ -148,7 +185,7 @@ const OlympiadQuestionsForm = ({
           state: { stageName, subStageName },
           path: { slugName, subSlugName: prevSubSlugName },
         }}
-        type="outline"
+        typeOf="outline"
         label="Geri"
         className="absolute left-0 -bottom-20"
       />
