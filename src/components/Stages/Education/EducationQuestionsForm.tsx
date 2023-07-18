@@ -14,43 +14,44 @@ import * as Yup from 'yup'
 
 const validationSchema = Yup.object({
   vocationalScore: Yup.string()
-    .required('Xana boş buraxılmamalıdı')
-    .matches(/([1-4]{1}[0-9]{1})|([1-5]{1}[^1-9]{1})$/, {
-      message: 'Daxil etdiyiniz reqem 0-50 araliginda olmalidi'
-    })
-    .max(2, 'Maxsimum dəyər 50 olmalıdı'),
+    .required('Xana boş buraxılmamalıdı') 
+    .max(2, 'Maxsimum dəyər 50 olmalıdı')
+    .test(
+      'maxValue',
+      'Maxsimum dəyər 50 olmalıdı',
+      (value) => value === null || parseInt(value) <= 50 
+    ),
   bachelorsScore: Yup.string()
-    .required('Xana boş buraxılmamalıdı')
-    .matches(/([1-6]{1}[0-9 ]{2})|([7]{1}[^1-9]{2})/, {
-      message: 'Daxil etdiyiniz reqem 0-700 araliginda olmalidi'
-    })
-    .max(3, 'Maxsimum dəyər 700 olmalıdı'),
+    .required('Xana boş buraxılmamalıdı') 
+    .max(3, 'Maxsimum dəyər 700 olmalıdı')
+    .test(
+      'maxValue',
+      'Maxsimum dəyər 700 olmalıdı',
+      (value) => value === null || parseInt(value) <= 700 
+    ),
   masterScore: Yup.string()
     .required('Xana boş buraxılmamalıdı')
-    .matches(/([1-9]{1}[0-9 ]{1})|(100)/, {
-      message: 'Daxil etdiyiniz reqem 0-100 araliginda olmalidi'
-    })
-    .max(3, 'Maxsimum dəyər 100 olmalıdı'),
+    .max(3, 'Maxsimum dəyər 100 olmalıdı')
+    .test(
+      'maxValue',
+      'Maxsimum dəyər 100 olmalıdı',
+      (value) => value === null || parseInt(value) <= 100  
+    ),
   phdScore: Yup.string()
-    .required('Xana boş buraxılmamalıdı')
-    .matches(/([1-8]{1})/, {
-      message: 'Daxil etdiyiniz reqem 0-8 araliginda olmalidi'
-    })
+    .required('Xana boş buraxılmamalıdı') 
     .max(1, 'Maxsimum dəyər 8 olmalıdı')
+    .test(
+      'maxValue',
+      'Maxsimum dəyər 8 olmalıdı',
+      (value) => value === null || parseInt(value) <= 8 
+    ),
 })
 export type EducationQuestionsFormValues = Yup.InferType<typeof validationSchema>;
 
 import {
   GeneralQuestionsFormProps,
   GeneralQuestionsFormValues
-} from './GeneralQuestionsForm'
-
-// export type EducationQuestionsFormValues = {
-//   vocationalScore: string
-//   bachelorsScore: string
-//   masterScore: string
-//   phdScore: string
-// }
+} from './GeneralQuestionsForm' 
 
 const EducationQuestionsForm = ({
   subStageSlug,
@@ -117,14 +118,7 @@ const EducationQuestionsForm = ({
 
   useEffect(() => {
     const subscription = watch(value => {
-      // console.log(value);
-      if(value.bachelorsScore){
-        value.bachelorsScore = value.bachelorsScore.slice(0,3);
-        
-        // console.log(value.bachelorsScore)
-      }else{}
-       console.log(value);
-
+      console.log(value);
       dispatch(
         updateStageForm({
           name: subStageSlug,
@@ -219,14 +213,7 @@ const EducationQuestionsForm = ({
           </>
         ))}
       </div>
-      {/* {(errors?.vocationalScore ||
-        errors?.phdScore ||
-        errors?.bachelorsScore||
-        errors?.masterScore )  && (
-        <span className="text-xs text-red-500 px-1 ">
-          Xanalar boş buraxılmamalıdır
-        </span>
-      )} */}
+    
 
       <LinkButton
         nav={{
