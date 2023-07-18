@@ -60,7 +60,6 @@ const SportForm = ({ stageIndex, subStageSlug }: GeneralQuestionsFormProps) => {
     defaultValues: {
       haveSportCar: "",
       whichSport: { id: 0, answer: "" },
-
       whichScore: { id: 0, answer: "" },
       whichPlace: { id: 0, answer: "" },
     },

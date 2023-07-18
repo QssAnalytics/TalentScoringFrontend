@@ -7,7 +7,6 @@ import Radio from "../../../components/RadioInput";
 import TextInput from "../../../components/TextInput";
 import ok from '../../../assets/ok.svg';
 import DateInput from "../../DateInput";
-import { useState } from "react";
 type ExperienceAdd = {
     data: IQuestionQuestion[] | undefined;
     addExp: any;
