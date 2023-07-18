@@ -15,34 +15,34 @@ import * as Yup from 'yup'
 const validationSchema = Yup.object({
   vocationalScore: Yup.string()
     .required('Xana boş buraxılmamalıdı') 
-    .max(2, 'Maxsimum dəyər 50 olmalıdı')
-    .test(
-      'maxValue',
-      'Maxsimum dəyər 50 olmalıdı',
+    .test('isPositive', 'Mənfi dəyər olmamalıdır', value => {
+      return !value || parseInt(value) >= 0;
+    })
+    .test('maxValue', 'Maxsimum dəyər 50 olmalıdı',
       (value) => value === null || parseInt(value) <= 50 
     ),
   bachelorsScore: Yup.string()
     .required('Xana boş buraxılmamalıdı') 
-    .max(3, 'Maxsimum dəyər 700 olmalıdı')
-    .test(
-      'maxValue',
-      'Maxsimum dəyər 700 olmalıdı',
+    .test('isPositive', 'Mənfi dəyər olmamalıdır', value => {
+      return !value || parseInt(value) >= 0;
+    })
+    .test('maxValue', 'Maxsimum dəyər 700 olmalıdı',
       (value) => value === null || parseInt(value) <= 700 
     ),
   masterScore: Yup.string()
-    .required('Xana boş buraxılmamalıdı')
-    .max(3, 'Maxsimum dəyər 100 olmalıdı')
-    .test(
-      'maxValue',
-      'Maxsimum dəyər 100 olmalıdı',
+    .required('Xana boş buraxılmamalıdı') 
+    .test('isPositive', 'Mənfi dəyər olmamalıdır', value => {
+      return !value || parseInt(value) >= 0;
+    })
+    .test('maxValue', 'Maxsimum dəyər 100 olmalıdı',
       (value) => value === null || parseInt(value) <= 100  
     ),
   phdScore: Yup.string()
-    .required('Xana boş buraxılmamalıdı') 
-    .max(1, 'Maxsimum dəyər 8 olmalıdı')
-    .test(
-      'maxValue',
-      'Maxsimum dəyər 8 olmalıdı',
+    .required('Xana boş buraxılmamalıdı')
+    .test('isPositive', 'Mənfi dəyər olmamalıdır', value => {
+      return !value || parseInt(value) >= 0;
+    })
+    .test('maxValue', 'Maxsimum dəyər 8 olmalıdı',
       (value) => value === null || parseInt(value) <= 8 
     ),
 })
