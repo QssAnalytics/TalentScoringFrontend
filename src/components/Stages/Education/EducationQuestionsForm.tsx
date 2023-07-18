@@ -154,22 +154,22 @@ const EducationQuestionsForm = ({
 
   const inputProps = [
     {
-      register: register('vocationalScore',{ maxLength: 2 }),
+      register: register('vocationalScore'),
       placeholder: '0-50',
       error: errors?.vocationalScore?.message
     },
     {
-      register: register('bachelorsScore',{ maxLength: 2 }),
+      register: register('bachelorsScore'),
       placeholder: '0-700',
       error: errors?.bachelorsScore?.message
     },
     {
-      register: register('masterScore',{ maxLength: 2 }),
+      register: register('masterScore'),
       placeholder: '0-100',
       error: errors?.masterScore?.message
     },
     {
-      register: register('phdScore',{ maxLength: 2 }),
+      register: register('phdScore'),
       placeholder: '0-8',
       error: errors?.phdScore?.message
     }

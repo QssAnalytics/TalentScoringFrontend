@@ -64,7 +64,7 @@ const LanguangeQuestionsForm = ({
       ({ name }) => name === subStageSlug
     ) as { formData: LanguangeQuestionsFormValues }) || {};
 
-  const { register, handleSubmit, watch, reset, setValue } =
+  const { register, handleSubmit, watch, reset } =
     useForm<LanguangeQuestionsFormValues>({
       defaultValues: {
         haveLanguageSkills: "",
