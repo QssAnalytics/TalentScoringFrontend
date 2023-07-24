@@ -40,7 +40,7 @@ const SpecialSkillsForm = ({
   } = stagesData?.[1] || {};
 
   const { slug: prevSubSlugName, stage_name: prevSubStageName } =
-    prevStageChildren?.[1] || {};
+    prevStageChildren?.[0] || {};
 
   const { slug: subSlugName } = stage_children?.[0] || {};
 

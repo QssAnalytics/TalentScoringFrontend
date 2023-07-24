@@ -35,6 +35,9 @@
  .save,.add,.separator{
   @apply  bg-qss-input
  }
+ .background{
+  background-image: linear-gradient(to right,#f4f4f4 30%, white 30% 84%, #f4f4f4 80%)
+ }
 
   input[type="text"] {
     @apply py-2 px-4 rounded-full w-full focus:outline-qss-base-200;
@@ -55,6 +58,9 @@
   }
   input[type="checkbox"]{
     accent-color: #038477;
+  }
+  .level{
+    color: #038477;
   }
   input::placeholder {
     @apply font-medium text-qss-base-300;
