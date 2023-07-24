@@ -130,7 +130,7 @@ const Stage = () => {
   return (
     <Fragment>
       <div className="flex-1 flex justify-end pr-32 mt-10 min-w-[1130px] max-w-[1175px] relative">
-        <div className="w-full z-10 relative rounded-xl bg-white py-8 px-11 h-[660px] shadow max-w-xl">
+        <div className="w-full z-10 relative rounded-xl bg-white py-8 px-11 h-[690px] shadow max-w-xl">
           <h1 className="mb-4">
             <span className=" text-qss-secondary">
               {subStageName === "Dil Bilikləri substage"

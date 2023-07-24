@@ -79,7 +79,7 @@ const LanguageAdd = ({
     return (
         <>
             <>
-             <img src={back} alt="go back" className=' w-8 h-6' onClick={() => setChooseLang(false)} />
+             <img src={back} alt="go back" className='cursor-pointer w-8 h-6' onClick={() => setChooseLang(false)} />
                 <Select
                     label={`${data?.[0]?.question_title}*`}
                     options={data?.[0]?.answers}
