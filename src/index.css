@@ -58,6 +58,9 @@
   input[type="checkbox"] {
     accent-color: #038477;
   }
+  .level {
+    color: #038477;
+  }
   input::placeholder {
     @apply font-medium text-qss-base-300;
   }

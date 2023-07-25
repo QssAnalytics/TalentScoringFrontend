@@ -3,12 +3,13 @@ import { IAnswer } from "../types";
 import { Listbox } from "@headlessui/react";
 import { Icon } from "@iconify/react";
 interface ISelect {
-  label: string;
+  label?: string;
   options?: IAnswer[];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   register?: any;
   value?: string;
   disabled?: boolean;
+  defaultValue?: string;
 }
 
 const Select = ({
@@ -16,16 +17,17 @@ const Select = ({
   options,
   register,
   value,
+  defaultValue = "Seçin..",
   disabled = false,
 }: ISelect) => {
   const [selected, setSelected] = useState(value || options?.[0]?.answer_title);
-  console.log(selected);
+
   const getAnswerId = (answerTitle: string) =>
     options?.find(({ answer_title }) => answerTitle === answer_title)?.id;
 
   useEffect(() => {
-    value || setSelected(options?.[0]?.answer_title);
-  }, [value, options]);
+    setSelected(value || defaultValue);
+  }, [value, defaultValue]);
 
   return (
     <Listbox

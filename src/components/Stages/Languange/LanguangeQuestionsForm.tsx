@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import {
   useGetQuestionsQuery,
@@ -11,15 +11,16 @@ import { updateStageForm } from "../../../state/stages/stageFormSlice";
 import { useAppDispatch, useAppSelector } from "../../../state/hooks";
 import { GeneralQuestionsFormProps } from "../Education/GeneralQuestionsForm";
 import TextInput from "../../TextInput";
+import removeIcon from "../../../assets/Vector.svg";
 import SelectMult from "../../SelectMult";
+import * as yup from "yup";
+import { Icon } from "@iconify/react";
+import LanguageAdd, { AddLangFormValues } from "./LanguageAdd";
 
-export type LanguangeQuestionsFormValues = {
-  haveLanguageSkills: string;
-  languageSkills: string[];
-  enlangCert: string;
-  engLevel: { id: number; answer: string };
-  ruLevel: { id: number; answer: string };
-};
+const schema = yup.object({
+  languageSkills: yup.array().required(),
+});
+export type LanguangeQuestionsFormValues = yup.InferType<typeof schema>;
 
 const LanguangeQuestionsForm = ({
   stageIndex,
@@ -33,7 +34,7 @@ const LanguangeQuestionsForm = ({
     slug: nextSlugName,
     stage_name: nextStageName,
     stage_children: nextStageChildren,
-  } = stagesData?.[stageIndex] || {};
+  } = stagesData?.[stageIndex + 1] || {};
   const {
     slug: prevSlugName,
     stage_name: prevStageName,
@@ -64,17 +65,52 @@ const LanguangeQuestionsForm = ({
   const { register, handleSubmit, watch, reset, setValue } =
     useForm<LanguangeQuestionsFormValues>({
       defaultValues: {
-        haveLanguageSkills: "",
         languageSkills: [],
-        enlangCert: "",
-        engLevel: { id: 0, answer: "" },
-        ruLevel: { id: 0, answer: "" },
       },
     });
 
   const onSubmit: SubmitHandler<LanguangeQuestionsFormValues> = (data) =>
     console.log(data);
+  const [isAdding, setIsAdding] = useState(true);
+  const [isEditing, setIsEditing] = useState<{
+    edit: boolean;
+    data?: AddLangFormValues;
+  }>({ edit: false });
+  const [editingIndex, setEditingIndex] = useState<number | null>(null);
+  const [chooseLang, setChooseLang] = useState(false);
+  const handleAdd = (lang: LanguangeQuestionsFormValues) => {
+    const data = formData?.languageSkills;
+    setValue("languageSkills", [...data, lang]);
+    setIsAdding(false);
+  };
 
+  const handleRemove = (landIndex: number) => {
+    const filterData = formData?.languageSkills?.filter(
+      (_, index) => index !== landIndex
+    );
+
+    setValue("languageSkills", filterData);
+  };
+  const handleEdit = (langIndex: number) => {
+    const data = formData?.languageSkills?.[langIndex] as AddLangFormValues;
+    setEditingIndex(langIndex);
+    setIsEditing({ edit: true, data });
+  };
+
+  const editLang = (editLangData: AddLangFormValues) => {
+    // eslint-disable-next-line no-unsafe-optional-chaining
+    const data = formData?.languageSkills;
+    const editedData = data?.map((exp: AddLangFormValues, index: number) => {
+      if (index === editingIndex) {
+        return editLangData;
+      }
+      return exp;
+    });
+
+    setValue("languageSkills", editedData);
+    setIsEditing({ edit: false });
+    setEditingIndex(null);
+  };
   useEffect(() => {
     const subscription = watch((value) => {
       console.log(value);
@@ -96,144 +132,146 @@ const LanguangeQuestionsForm = ({
 
   const questions = questionsData?.[0]?.questions;
 
-  const inputProps = [
-    { register: register("haveLanguageSkills") },
-    { register: register("languageSkills") },
-    { register: register("enlangCert") },
-    { register: register("engLevel") },
-    { register: register("ruLevel") },
-  ];
-
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
       className="mt-5 flex-col flex gap-5"
     >
-      <div className="space-y-4">
-        <div className="space-y-2">
-          <label className="pl-2">{questions?.[0]?.question_title}*</label>
-
-          <div className="flex gap-5">
-            {questions?.[0]?.answers?.map(({ answer_title, id }, idx) => (
-              <Radio
-                key={id}
-                label={answer_title}
-                value={idx}
-                register={inputProps[0].register}
-              />
-            ))}
+      {chooseLang === false ? (
+        <>
+          <h3 className="pl-2">Əlavə xarici dil biliklərinizi qeyd edin</h3>
+          <div className=" flex items-center">
+            <button
+              className="add py-2 px-4 w-full h-12 rounded-2xl flex justify-evenly items-center"
+              type="button"
+              onClick={() => setChooseLang(true)}
+            >
+              {" "}
+              Əlavə et +{" "}
+            </button>
+            <div className="space-y-2">
+              <div className="flex gap-5 w-48 py-2 px-4">
+                <Radio value="Yoxdur" label="Yoxdur" />
+              </div>
+            </div>
           </div>
-        </div>
-
-        {formData?.haveLanguageSkills === "0" && (
-          <>
-            <SelectMult
-              placeholder="Dil Seçimi"
-              label={`${questions?.[1]?.question_title}*`}
-              options={questions?.[1]?.answers}
-              register={inputProps[1].register}
-              value={formData?.languageSkills}
-            />
-
-            {formData?.languageSkills?.find(
-              (lang) => lang === "İngilis dili"
-            ) && (
-              <>
-                <div className="space-y-2">
-                  <label className="pl-2">
-                    {questions?.[2]?.question_title}*
-                  </label>
-
-                  <div className="flex gap-5">
-                    {questions?.[2]?.answers?.map(
-                      ({ answer_title, id }, idx) => (
-                        <Radio
-                          key={id}
-                          label={answer_title}
-                          value={idx}
-                          register={inputProps[2].register}
+        </>
+      ) : isAdding ? (
+        <LanguageAdd
+          data={questions}
+          addLang={handleAdd}
+          setChooseLang={setChooseLang}
+        />
+      ) : isEditing.edit ? (
+        <LanguageAdd
+          data={questions}
+          addLang={handleAdd}
+          editData={isEditing?.data}
+          editLang={editLang}
+          setChooseLang={setChooseLang}
+        />
+      ) : (
+        <>
+          <h3 className="pl-2">Əlavə xarici dil biliklərinizi qeyd edin</h3>
+          <button
+            className="add py-2 px-4 w-full h-12 rounded-2xl flex justify-evenly items-center"
+            type="button"
+            onClick={() => setIsAdding(true)}
+          >
+            {" "}
+            Əlavə et +{" "}
+          </button>
+          <div className="titles flex px-16 justify-start gap-16">
+            <span>Dil</span>
+            <span>Səviyyə</span>
+            <span>Sertifikat</span>
+          </div>
+          <ul>
+            {formData?.languageSkills.map(
+              (lang: AddLangFormValues, index: number) => (
+                <li
+                  key={index}
+                  className="border flex-grow rounded-full flex justify-between items-center m-2 relative min-h-[46px] background"
+                >
+                  <div className="w-36 rounded-l-full flex items-center">
+                    <div className="info flex gap-5 p-2.5 ">
+                      <span>{index + 1}. </span>
+                      <span> {lang.language.answer}</span>
+                    </div>
+                  </div>
+                  <div className="border-r">
+                    <div className="level p-2.5">
+                      {lang.ieltsResult?.answer === "4.0" ||
+                      lang.ieltsResult?.answer === "4.5-5.0" ||
+                      lang.toeflResult?.answer === "32-45" ? (
+                        <span> B1 </span>
+                      ) : lang.ieltsResult?.answer === "5.5" ||
+                        lang.ieltsResult?.answer === "6.0" ||
+                        lang.ieltsResult?.answer === "6.5" ||
+                        lang.toeflResult?.answer === "46-59" ||
+                        lang.toeflResult?.answer === "60-78" ||
+                        lang.toeflResult?.answer === "70-93" ? (
+                        <span> B2 </span>
+                      ) : lang.ieltsResult?.answer === "7.0-7.5" ||
+                        lang.toeflResult?.answer === "94-109" ? (
+                        <span> C1 </span>
+                      ) : lang.ieltsResult?.answer === "8.0-9.0" ||
+                        lang.toeflResult?.answer === "110-120" ? (
+                        <span> C2 </span>
+                      ) : lang.toeflResult?.answer === "31" ? (
+                        <span> A2 </span>
+                      ) : (
+                        <span>{lang.langLevel?.substring(0, 2)}</span>
+                      )}
+                    </div>
+                  </div>
+                  <div className="w-48">
+                    <div className="certificate py-2.5 px-1.5">
+                      {lang.langCertName && lang.langCertResult && (
+                        <>
+                          {" "}
+                          <span>{lang.langCertName}</span>{" "}
+                          <span> {lang.langCertResult}</span>{" "}
+                        </>
+                      )}
+                      {lang.ieltsResult?.answer && (
+                        <p className="w-48"> IELTS {lang.ieltsResult.answer}</p>
+                      )}
+                      {lang.toeflResult?.answer && (
+                        <p className="w-48"> TOEFL {lang.toeflResult.answer}</p>
+                      )}
+                      {(lang.langCert === "1" || lang.engLangCert === "2") && (
+                        <span>Sertifikat yoxdur </span>
+                      )}
+                    </div>
+                  </div>
+                  <div className="rounded-r-full">
+                    <div className="settings flex justify-around p-2.5 gap-2 w-20 h-full items-center">
+                      <div className="edit" onClick={() => handleEdit(index)}>
+                        <Icon
+                          icon="fluent:pen-16-regular"
+                          className="cursor-pointer text-2xl text-[#ADADAD] hover:text-gray-600"
                         />
-                      )
-                    )}
-                  </div>
-                </div>
-
-                {formData?.enlangCert === "0" ? (
-                  <Select
-                    label={`${questions?.[3]?.question_title}*`}
-                    options={questions?.[3]?.answers}
-                    register={inputProps[3].register}
-                    value={formData?.engLevel?.answer}
-                  />
-                ) : formData?.enlangCert === "1" ? (
-                  <TextInput
-                    label={`${questions?.[4]?.question_title}*`}
-                    register={inputProps[3].register}
-                  />
-                ) : formData?.enlangCert === "2" ? (
-                  <div className="space-y-2">
-                    <label className="pl-2">
-                      {questions?.[6]?.question_title}*
-                    </label>
-                    <div className="grid grid-cols-3 gap-3">
-                      {questions?.[5]?.answers?.map(
-                        ({ answer_title, id }, idx) => (
-                          <Radio
-                            key={id}
-                            label={answer_title}
-                            value={idx}
-                            type="button"
-                            register={inputProps[3].register}
-                          />
-                        )
-                      )}
+                      </div>
+                      <div className="remove cursor-pointer">
+                        <img
+                          src={removeIcon}
+                          alt="remove"
+                          onClick={() => {
+                            formData?.languageSkills.length === 1 &&
+                              setIsAdding(true),
+                              handleRemove(index);
+                          }}
+                        />
+                      </div>
                     </div>
                   </div>
-                ) : null}
-              </>
+                </li>
+              )
             )}
-
-            {formData?.languageSkills?.find((lang) => lang === "Rus dili") && (
-              <>
-                <div className="space-y-2">
-                  <label className="pl-2">
-                    {questions?.[5]?.question_title}*
-                  </label>
-                  {formData?.languageSkills?.length > 1 ? (
-                    <div className="flex gap-5">
-                      {questions?.[5]?.answers?.map(
-                        ({ answer_title, id }, idx) => (
-                          <Radio
-                            key={id}
-                            label={answer_title.split(" ")[0]}
-                            value={idx}
-                            type="button"
-                            register={inputProps[4].register}
-                          />
-                        )
-                      )}
-                    </div>
-                  ) : (
-                    <div className="grid grid-cols-3 gap-3">
-                      {questions?.[5]?.answers?.map(
-                        ({ answer_title, id }, idx) => (
-                          <Radio
-                            key={id}
-                            label={answer_title}
-                            value={idx}
-                            type="button"
-                            register={inputProps[4].register}
-                          />
-                        )
-                      )}
-                    </div>
-                  )}
-                </div>
-              </>
-            )}
-          </>
-        )}
-      </div>
+          </ul>
+        </>
+      )}
 
       <LinkButton
         nav={{
@@ -244,7 +282,6 @@ const LanguangeQuestionsForm = ({
         label="Geri"
         className="absolute left-0 -bottom-20"
       />
-
       <LinkButton
         nav={{
           state: { stageName: nextStageName, subStageName: nextSubStageName },

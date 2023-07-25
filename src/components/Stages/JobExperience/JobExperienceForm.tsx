@@ -159,7 +159,7 @@ const JobExperienceForm = ({ stageIndex, subStageSlug }: GeneralQuestionsFormPro
                                         </div>
                                         <div className='separator absolute h-full w-px right-64'></div>
                                         <div className="dates w-40 flex justify-center">
-                                            {exp.startDate.split('-').reverse().join('/').slice(3)}  {exp.endDate && `-  ${exp.endDate?.split('-').reverse().join('/').slice(3)}`}
+                                            {exp.startDate.split('-').reverse().join('/').slice(3)}  {exp.endDate && `-  ${exp.currentWorking===true ? exp.endDate?.split('-').reverse().join('/') : exp.endDate?.split('-').reverse().join('/').slice(3)}`}
                                         </div>
                                         <div className='separator absolute h-full w-px right-20'></div>
                                         <div className="edit" onClick={() => handleEdit(index)} >
@@ -203,4 +203,3 @@ const JobExperienceForm = ({ stageIndex, subStageSlug }: GeneralQuestionsFormPro
 }
 
 export default JobExperienceForm
-

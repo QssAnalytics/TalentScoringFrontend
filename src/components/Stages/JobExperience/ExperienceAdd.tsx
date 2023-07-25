@@ -17,7 +17,7 @@ type ExperienceAdd = {
     isAdding?: any;
     setIsAdding?: any
     setDisplayRadio?: any
-    setIsEditing?: any
+    setIsEditing?: any;
 };
 
 const schema = yup
@@ -36,6 +36,7 @@ const schema = yup
 
 export type AddExpFormValues = yup.InferType<typeof schema>;
 
+
 const ExperienceAdd = ({
     data,
     addExp,
@@ -45,10 +46,11 @@ const ExperienceAdd = ({
     setDisplayRadio,
     isAdding,
     setIsAdding,
-    setIsEditing
+    setIsEditing,
 }: ExperienceAdd) => {
     const {
         register,
+        setValue,
         handleSubmit,
         watch,
         formState: { errors },
@@ -113,7 +115,7 @@ const ExperienceAdd = ({
                         <DateInput label='İşdən ayrılma tarixi:' type='date' register={inputProps[6].register} disabled={watch()?.currentWorking === true ? true : false} />
                     </div>
                     <label className='self-end'>Hal hazırda çalışıram {' '}
-                        <input type="checkbox" {...inputProps[7].register}  />
+                        <input type="checkbox" onClick={()=>setValue("endDate"," currently working")} {...inputProps[7].register}   />
                     </label>
                     <button className='save py-2 px-4 w-40 h-10 rounded-2xl flex justify-evenly self-center' type="button" onClick={handleClick}><span> Yadda saxla </span><img src={ok} alt="ok" /></button>
                     {!displayRadio && <button className='save py-2 px-4 w-40 h-10 rounded-2xl flex justify-evenly self-center bg-qss-secondary text-white' onClick={() => { isAdding ? setIsAdding() : setIsEditing() }}>Siyahıya bax</button>}
