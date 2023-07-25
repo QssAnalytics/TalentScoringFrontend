@@ -47,7 +47,7 @@ const LanguangeQuestionsForm = ({
   const { slug: subSlugName } = stage_children?.[0] || {};
 
   const { slug: nextSubSlugName, stage_name: nextSubStageName } =
-    nextStageChildren?.[1] || {};
+    nextStageChildren?.[0] || {};
 
   const {
     data: questionsData,
