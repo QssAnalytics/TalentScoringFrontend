@@ -7,7 +7,6 @@ interface IInputProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   register?: any;
   value?: string;
-  haveRadio?: boolean;
 }
 
 const TextInput = ({
@@ -15,11 +14,11 @@ const TextInput = ({
   type = "text",
   placeholder,
   register,
-  inputClassName
+  inputClassName,
 }: IInputProps) => {
   return (
     <div className={` ${inputClassName} space-y-2`}>
-     {label && <label className="pl-2 inline-flex">{label}</label> } 
+      {label && <label className="pl-2 inline-flex">{label}</label>}
       <div className="w-full relative">
         <input
           type={type}

@@ -5,19 +5,24 @@ import {
   useGetStageQuery,
 } from "../../../services/stage";
 import Radio from "../../RadioInput";
-import Select from "../../Select";
 import LinkButton from "../../LinkButton";
 import { updateStageForm } from "../../../state/stages/stageFormSlice";
 import { useAppDispatch, useAppSelector } from "../../../state/hooks";
 import { GeneralQuestionsFormProps } from "../Education/GeneralQuestionsForm";
-import TextInput from "../../TextInput";
+import SelectMult from "components/SelectMult";
+import { XCircleIcon } from "@heroicons/react/24/outline";
 
 export type SpecialSkillsFormValues = {
   haveSpecialSkills: string;
-  specialSkills: { id: number; answer: string };
+  specialSkills: string[];
   levelSkill: string;
   certSkill: "";
 };
+
+const levels = [
+  { answer_title: "Həvəskar", id: 0 },
+  { answer_title: "Peşəkar", id: 1 },
+];
 
 const SpecialSkillsForm = ({
   stageIndex,
@@ -31,7 +36,7 @@ const SpecialSkillsForm = ({
     slug: nextSlugName,
     stage_name: nextStageName,
     stage_children: nextStageChildren,
-  } = stagesData?.[stageIndex + 1] || {};
+  } = stagesData?.[stageIndex] || {};
 
   const {
     slug: prevSlugName,
@@ -45,7 +50,7 @@ const SpecialSkillsForm = ({
   const { slug: subSlugName } = stage_children?.[0] || {};
 
   const { slug: nextSubSlugName, stage_name: nextSubStageName } =
-    nextStageChildren?.[0] || {};
+    nextStageChildren?.[1] || {};
 
   const {
     data: questionsData,
@@ -60,15 +65,16 @@ const SpecialSkillsForm = ({
       ({ name }) => name === subStageSlug
     ) as { formData: SpecialSkillsFormValues }) || {};
 
-  const { register, handleSubmit, watch, reset } =
-    useForm<SpecialSkillsFormValues>({
-      defaultValues: {
-        haveSpecialSkills: "",
-        specialSkills: { id: 0, answer: "" },
-        levelSkill: "",
-        certSkill: "",
-      },
-    });
+  const { register, handleSubmit, watch, reset, setValue } = useForm<
+    SpecialSkillsFormValues | any
+  >({
+    defaultValues: {
+      haveSpecialSkills: "",
+      specialSkills: [],
+      levelSkill: "",
+      certSkill: "",
+    },
+  });
 
   const onSubmit: SubmitHandler<SpecialSkillsFormValues> = (data) =>
     console.log(data);
@@ -124,42 +130,61 @@ const SpecialSkillsForm = ({
 
         {formData?.haveSpecialSkills === "0" && (
           <>
-            <div className="space-y-2">
-              <label className="pl-2">{questions?.[1]?.question_title}*</label>
-
+            <div className="space-y-2 animate-fade-in">
               <div className="flex gap-5 flex-wrap w-full">
-                {questions?.[1]?.answers?.map(({ answer_title, id }, idx) => (
-                  <Radio
-                    key={id}
-                    label={answer_title}
-                    value={idx}
-                    register={inputProps[1].register}
-                  />
-                ))}
+                <SelectMult
+                  label={`${questions?.[1]?.question_title}*`}
+                  value={formData?.specialSkills}
+                  options={questions?.[1]?.answers}
+                  register={inputProps[1].register}
+                  placeholder={"Xüsusi bacarığını seç"}
+                />
               </div>
             </div>
 
-            <div className="space-y-2">
-              <label className="pl-2">{questions?.[2]?.question_title}*</label>
+            {formData?.specialSkills?.length > 0 ? (
+              <div className="space-y-2 animate-fade-in">
+                <label className="pl-2">
+                  {questions?.[2]?.question_title}*
+                </label>
 
-              <div className="flex gap-5">
-                {questions?.[2]?.answers?.map(({ answer_title, id }, idx) => (
-                  <Radio
-                    key={id}
-                    label={answer_title}
-                    value={idx}
-                    register={inputProps[2].register}
-                  />
-                ))}
+                <div className="flex gap-5 flex-col">
+                  {formData?.specialSkills?.map((item, idx) => (
+                    <div
+                      key={idx}
+                      className="flex justify-between animate-fade-in w-full gap-4"
+                    >
+                      <div className="py-2 px-2 gap-1 rounded-full whitespace-nowrap bg-qss-input flex justify-center items-center w-64">
+                        <span className="w-3/4 flex justify-center">
+                          {item}
+                        </span>
+                        <XCircleIcon
+                          onClick={() =>
+                            setValue(
+                              "specialSkills",
+                              formData?.specialSkills?.filter(
+                                (specialSkill) => specialSkill !== item
+                              )
+                            )
+                          }
+                          className="w-5 h-5 text-red-400 cursor-pointer"
+                        />
+                      </div>
+                      <div className="flex w-full justify-between">
+                        {levels?.map(({ answer_title, id }) => (
+                          <Radio
+                            key={id}
+                            label={answer_title}
+                            value={id}
+                            register={register(item)}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
-
-            <TextInput
-              value={watch("certSkill")}
-              label={`${questions?.[3]?.question_title}*`}
-              register={inputProps[3].register}
-              haveRadio
-            />
+            ) : null}
           </>
         )}
       </div>

@@ -3,22 +3,31 @@ import { IAnswer } from "../types";
 import { Listbox } from "@headlessui/react";
 import { Icon } from "@iconify/react";
 interface ISelect {
-  label?: string  ;
+  label?: string;
   options?: IAnswer[];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   register?: any;
   value?: string;
+  disabled?: boolean;
   defaultValue?: string;
 }
 
-const Select = ({ label, options, register, value,defaultValue= "Seçin..", }: ISelect) => {
+const Select = ({
+  label,
+  options,
+  register,
+  value,
+  defaultValue = "Seçin..",
+  disabled = false,
+}: ISelect) => {
   const [selected, setSelected] = useState(value || options?.[0]?.answer_title);
+
   const getAnswerId = (answerTitle: string) =>
     options?.find(({ answer_title }) => answerTitle === answer_title)?.id;
 
-    useEffect(() => {
-      setSelected(value || defaultValue);
-    }, [value, defaultValue]);
+  useEffect(() => {
+    setSelected(value || defaultValue);
+  }, [value, defaultValue]);
 
   return (
     <Listbox
@@ -29,7 +38,6 @@ const Select = ({ label, options, register, value,defaultValue= "Seçin..", }: I
       onChange={(value) => {
         setSelected(value);
         const curId = getAnswerId(value);
-        console.log(value);
         register.onChange({
           target: {
             name: register.name,
@@ -37,13 +45,14 @@ const Select = ({ label, options, register, value,defaultValue= "Seçin..", }: I
           },
         });
       }}
+      disabled={disabled}
     >
       <Listbox.Label>{label}</Listbox.Label>
       <div className="w-full relative">
         <Listbox.Button as={Fragment}>
           {({ value: defaultVal, open }) => (
             <Listbox.Label
-              className={`relative w-full text-left flex items-center  bg-qss-input py-2 px-4 rounded-full outline-none ${
+              className={`relative w-full text-left flex items-center border  bg-qss-input py-2 px-4 rounded-full outline-none ${
                 open && "text-qss-secondary border border-qss-base-200"
               } ${value ? "text-qss-secondary" : "text-qss-base-300"} `}
             >
