@@ -69,7 +69,7 @@ const LanguangeQuestionsForm = ({
       },
     });
 
-  const onSubmit: SubmitHandler<LanguangeQuestionsFormValues> = (data) =>{
+  const onSubmit: SubmitHandler<LanguangeQuestionsFormValues> = (data) => {
     console.log(data);
   }
 
@@ -78,6 +78,7 @@ const LanguangeQuestionsForm = ({
     edit: boolean;
     data?: AddLangFormValues;
   }>({ edit: false });
+  const [displayListButton, setDisplayListButton] = useState(false)
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [chooseLang, setChooseLang] = useState(false);
   const handleAdd = (lang: LanguangeQuestionsFormValues) => {
@@ -113,9 +114,9 @@ const LanguangeQuestionsForm = ({
     setIsEditing({ edit: false });
     setEditingIndex(null);
   };
-  
 
-  
+
+
 
   useEffect(() => {
     const subscription = watch((value) => {
@@ -127,7 +128,7 @@ const LanguangeQuestionsForm = ({
         })
       );
     });
-   
+
     reset(formData);
 
     return () => subscription.unsubscribe();
@@ -150,7 +151,7 @@ const LanguangeQuestionsForm = ({
             <button
               className="add py-2 px-4 w-full h-12 rounded-2xl flex justify-evenly items-center"
               type="button"
-              onClick={() => setChooseLang(true)}
+              onClick={() => { setChooseLang(true) }}
             >
               {" "}
               Əlavə et +{" "}
@@ -167,6 +168,9 @@ const LanguangeQuestionsForm = ({
           data={questions}
           addLang={handleAdd}
           setChooseLang={setChooseLang}
+          isAdding={isAdding}
+          setIsAdding={setIsAdding}
+          displayListButton={displayListButton}
         />
       ) : isEditing.edit ? (
         <LanguageAdd
@@ -175,6 +179,8 @@ const LanguangeQuestionsForm = ({
           editData={isEditing?.data}
           editLang={editLang}
           setChooseLang={setChooseLang}
+          setIsEditing={setIsEditing}
+          displayListButton={displayListButton}
         />
       ) : (
         <>
@@ -182,7 +188,7 @@ const LanguangeQuestionsForm = ({
           <button
             className="add py-2 px-4 w-full h-12 rounded-2xl flex justify-evenly items-center"
             type="button"
-            onClick={() => setIsAdding(true)}
+            onClick={() => { setIsAdding(true), setDisplayListButton(true) }}
           >
             {" "}
             Əlavə et +{" "}
@@ -202,12 +208,12 @@ const LanguangeQuestionsForm = ({
                   <div className="w-36 rounded-l-full flex items-center">
                     <div className="info flex gap-5 p-2.5 ">
                       <span>{index + 1}. </span>
-                      <span> {lang.language.answer}</span>
+                      <span> {lang.language?.answer}</span>
                     </div>
                   </div>
                   <div className="border-r">
                     <div className="level p-2.5">
-                     { lang.langLevel.substring(0,2)}
+                      {lang.langLevel?.substring(0, 2)}
                     </div>
                   </div>
                   <div className="w-48">

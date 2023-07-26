@@ -15,7 +15,11 @@ type LanguageAdd = {
     addLang?: any,
     editData?: AddLangFormValues | undefined;
     editLang?: any,
-    setChooseLang?: any
+    setChooseLang?: any;
+    isAdding?: any,
+    setIsAdding?: any,
+    setIsEditing?: any,
+    displayListButton?: any
 }
 
 const schema = yup
@@ -39,7 +43,11 @@ const LanguageAdd = ({
     addLang,
     editData,
     editLang,
-    setChooseLang
+    setChooseLang,
+    isAdding,
+    setIsAdding,
+    setIsEditing,
+    displayListButton
 }: LanguageAdd) => {
     const {
         register,
@@ -77,7 +85,6 @@ const LanguageAdd = ({
 
 
 
-        console.log(handleLangLevel(watch("engCertResult.answer"), watch("langLevel")))
     }
     const handleLangLevel = (engCertResult: string | undefined, langLevel: string) => {
         switch (engCertResult) {
@@ -276,6 +283,7 @@ const LanguageAdd = ({
                         }
 
                         <button className='save py-2 px-4 w-40 h-10 rounded-2xl flex justify-evenly self-center' type="button" onClick={handleClick}><span> Yadda saxla </span><img src={ok} alt="ok" /></button>
+                        {displayListButton && <button className='save py-2 px-4 w-40 h-10 rounded-2xl flex justify-evenly self-center bg-qss-secondary text-white' onClick={() => { isAdding ? setIsAdding() : setIsEditing() }}>Siyahıya bax</button>}
                     </>
                 }
             </>
