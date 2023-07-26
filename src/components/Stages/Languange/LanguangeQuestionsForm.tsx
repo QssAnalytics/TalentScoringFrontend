@@ -69,8 +69,10 @@ const LanguangeQuestionsForm = ({
       },
     });
 
-  const onSubmit: SubmitHandler<LanguangeQuestionsFormValues> = (data) =>
+  const onSubmit: SubmitHandler<LanguangeQuestionsFormValues> = (data) =>{
     console.log(data);
+  }
+
   const [isAdding, setIsAdding] = useState(true);
   const [isEditing, setIsEditing] = useState<{
     edit: boolean;
@@ -100,17 +102,21 @@ const LanguangeQuestionsForm = ({
   const editLang = (editLangData: AddLangFormValues) => {
     // eslint-disable-next-line no-unsafe-optional-chaining
     const data = formData?.languageSkills;
-    const editedData = data?.map((exp: AddLangFormValues, index: number) => {
+    const editedData = data?.map((lang: AddLangFormValues, index: number) => {
       if (index === editingIndex) {
         return editLangData;
       }
-      return exp;
+      return lang;
     });
 
     setValue("languageSkills", editedData);
     setIsEditing({ edit: false });
     setEditingIndex(null);
   };
+  
+
+  
+
   useEffect(() => {
     const subscription = watch((value) => {
       console.log(value);
@@ -121,7 +127,7 @@ const LanguangeQuestionsForm = ({
         })
       );
     });
-
+   
     reset(formData);
 
     return () => subscription.unsubscribe();
@@ -135,7 +141,7 @@ const LanguangeQuestionsForm = ({
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="mt-5 flex-col flex gap-5"
+      className="mt-5 flex-col flex gap-5 h-[460px] overflow-y-auto"
     >
       {chooseLang === false ? (
         <>
@@ -201,28 +207,7 @@ const LanguangeQuestionsForm = ({
                   </div>
                   <div className="border-r">
                     <div className="level p-2.5">
-                      {lang.ieltsResult?.answer === "4.0" ||
-                      lang.ieltsResult?.answer === "4.5-5.0" ||
-                      lang.toeflResult?.answer === "32-45" ? (
-                        <span> B1 </span>
-                      ) : lang.ieltsResult?.answer === "5.5" ||
-                        lang.ieltsResult?.answer === "6.0" ||
-                        lang.ieltsResult?.answer === "6.5" ||
-                        lang.toeflResult?.answer === "46-59" ||
-                        lang.toeflResult?.answer === "60-78" ||
-                        lang.toeflResult?.answer === "70-93" ? (
-                        <span> B2 </span>
-                      ) : lang.ieltsResult?.answer === "7.0-7.5" ||
-                        lang.toeflResult?.answer === "94-109" ? (
-                        <span> C1 </span>
-                      ) : lang.ieltsResult?.answer === "8.0-9.0" ||
-                        lang.toeflResult?.answer === "110-120" ? (
-                        <span> C2 </span>
-                      ) : lang.toeflResult?.answer === "31" ? (
-                        <span> A2 </span>
-                      ) : (
-                        <span>{lang.langLevel?.substring(0, 2)}</span>
-                      )}
+                     { lang.langLevel.substring(0,2)}
                     </div>
                   </div>
                   <div className="w-48">
@@ -234,11 +219,11 @@ const LanguangeQuestionsForm = ({
                           <span> {lang.langCertResult}</span>{" "}
                         </>
                       )}
-                      {lang.ieltsResult?.answer && (
-                        <p className="w-48"> IELTS {lang.ieltsResult.answer}</p>
+                      {lang.engLangCert === "0" && (
+                        <p className="w-48"> IELTS {lang.engCertResult?.answer}</p>
                       )}
-                      {lang.toeflResult?.answer && (
-                        <p className="w-48"> TOEFL {lang.toeflResult.answer}</p>
+                      {lang.engLangCert === "1" && (
+                        <p className="w-48"> TOEFL {lang.engCertResult?.answer}</p>
                       )}
                       {(lang.langCert === "1" || lang.engLangCert === "2") && (
                         <span>Sertifikat yoxdur </span>

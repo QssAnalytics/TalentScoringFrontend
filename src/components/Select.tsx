@@ -10,6 +10,7 @@ interface ISelect {
   value?: string;
   disabled?: boolean;
   defaultValue?: string;
+  onChange?:any;
 }
 
 const Select = ({
@@ -19,6 +20,7 @@ const Select = ({
   value,
   defaultValue = "Seçin..",
   disabled = false,
+  onChange
 }: ISelect) => {
   const [selected, setSelected] = useState(value || options?.[0]?.answer_title);
 
@@ -43,13 +45,13 @@ const Select = ({
             name: register.name,
             value: { id: curId, answer: value },
           },
-        });
+        },onChange);
       }}
       disabled={disabled}
     >
       <Listbox.Label>{label}</Listbox.Label>
       <div className="w-full relative">
-        <Listbox.Button as={Fragment}>
+        <Listbox.Button as={Fragment} >
           {({ value: defaultVal, open }) => (
             <Listbox.Label
               className={`relative w-full text-left flex items-center border  bg-qss-input py-2 px-4 rounded-full outline-none ${
