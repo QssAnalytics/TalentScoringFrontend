@@ -8,14 +8,18 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { IQuestionQuestion } from '../../../types';
 import TextInput from '../../TextInput';
 import ok from '../../../assets/ok.svg';
-import back from "./../../../assets/ic_round-arrow-back.svg"  
+import back from "./../../../assets/ic_round-arrow-back.svg"
 
 type LanguageAdd = {
     data: IQuestionQuestion[] | undefined;
     addLang?: any,
     editData?: AddLangFormValues | undefined;
     editLang?: any,
-    setChooseLang?:any
+    setChooseLang?: any;
+    isAdding?: any,
+    setIsAdding?: any,
+    setIsEditing?: any,
+    displayListButton?: any
 }
 
 const schema = yup
@@ -26,8 +30,7 @@ const schema = yup
         engLangCert: yup.string().required(),
         langCertName: yup.string().required(),
         langCertResult: yup.string().required(),
-        ieltsResult: yup.object({ id: yup.number(), answer: yup.string() }),
-        toeflResult: yup.object({ id: yup.number(), answer: yup.string() }),
+        engCertResult: yup.object({ id: yup.number(), answer: yup.string() }),
         langLevel: yup.string().required(),
     })
     .required();
@@ -40,17 +43,22 @@ const LanguageAdd = ({
     addLang,
     editData,
     editLang,
-    setChooseLang
- }: LanguageAdd) => {
+    setChooseLang,
+    isAdding,
+    setIsAdding,
+    setIsEditing,
+    displayListButton
+}: LanguageAdd) => {
     const {
         register,
         setValue,
         handleSubmit,
         watch,
+        reset,
         formState: { errors },
     } = useForm<AddLangFormValues>({
         defaultValues: editData,
-        resolver: yupResolver(schema),
+        // resolver: yupResolver(schema),
     });
     const inputProps = [
         { register: register("language") },
@@ -58,8 +66,7 @@ const LanguageAdd = ({
         { register: register("engLangCert") },
         { register: register("langCertName") },
         { register: register("langCertResult") },
-        { register: register("ieltsResult") },
-        { register: register("toeflResult") },
+        { register: register("engCertResult") },
         { register: register("langLevel") },
 
     ];
@@ -68,18 +75,56 @@ const LanguageAdd = ({
     });
 
     const handleClick = () => {
+
+        setValue("langLevel", handleLangLevel(watch("engCertResult.answer"), watch("langLevel")))
+
         editLang ?
             editLang(watch())
             :
             addLang(watch());
 
 
+
+    }
+    const handleLangLevel = (engCertResult: string | undefined, langLevel: string) => {
+        switch (engCertResult) {
+            case "4.0":
+            case "4.5-5.0":
+            case "32-45":
+                langLevel = "B1"
+                break;
+            case "5.5":
+            case "6.0":
+            case "6.5":
+            case "46-59":
+            case "60-78":
+            case "70-93":
+                langLevel = "B2"
+                break;
+            case "7.0-7.5":
+            case "94-109":
+                langLevel = "C1"
+                break;
+            case "8.0-9.0":
+            case "110-120":
+                langLevel = "C2"
+                break;
+            case "31":
+                langLevel = "A2"
+                break;
+
+            default:
+                langLevel = langLevel?.substring(0, 2)
+                break;
+        }
+
+        return langLevel
     }
 
     return (
         <>
             <>
-             <img src={back} alt="go back" className='cursor-pointer w-8 h-6' onClick={() => setChooseLang(false)} />
+                <img src={back} alt="go back" className='cursor-pointer w-8 h-6' onClick={() => setChooseLang(false)} />
                 <Select
                     label={`${data?.[0]?.question_title}*`}
                     options={data?.[0]?.answers}
@@ -121,25 +166,25 @@ const LanguageAdd = ({
                                         </div>
                                     </div>
                                 }
-                                 <div className="space-y-2">
-                                                <label className="pl-2">
-                                                    {watch()?.language?.answer?.replace(/\s+dili$/, '')} {data?.[1]?.question_title}*
-                                                </label>
+                                <div className="space-y-2">
+                                    <label className="pl-2">
+                                        {watch()?.language?.answer?.replace(/\s+dili$/, '')} {data?.[1]?.question_title}*
+                                    </label>
 
-                                                <div className="flex gap-5 flex-wrap">
-                                                    {data?.[1]?.answers?.map(
-                                                        ({ answer_title, id }) => (
-                                                            <Radio
-                                                                key={id}
-                                                                label={answer_title}
-                                                                value={answer_title}
-                                                                register={inputProps[7].register}
-                                                                spanClassName='text-sm'
-                                                            />
-                                                        )
-                                                    )}
-                                                </div>
-                                            </div>
+                                    <div className="flex gap-5 flex-wrap">
+                                        {data?.[1]?.answers?.map(
+                                            ({ answer_title, id }) => (
+                                                <Radio
+                                                    key={id}
+                                                    label={answer_title}
+                                                    value={answer_title}
+                                                    register={inputProps[6].register}
+                                                    spanClassName='text-sm'
+                                                />
+                                            )
+                                        )}
+                                    </div>
+                                </div>
                             </> :
                             <>
                                 <div className="space-y-2">
@@ -162,17 +207,19 @@ const LanguageAdd = ({
                                     </div>
                                 </div>
                                 <div className="space-y-2">
-                                    {watch().engLangCert === "0" &&
+                                    {watch().engLangCert === "0" && <>
                                         <Select label={data?.[5]?.question_title}
                                             options={data?.[5]?.answers}
                                             register={inputProps[5].register}
-                                            value={watch().ieltsResult?.answer} />
+                                            value={watch().engCertResult?.answer} />
+                                    </>
+
                                     }
                                     {watch().engLangCert === "1" &&
                                         <Select label={data?.[6]?.question_title}
                                             options={data?.[6]?.answers}
-                                            register={inputProps[6].register}
-                                            value={watch().toeflResult?.answer} />
+                                            register={inputProps[5].register}
+                                            value={watch().engCertResult?.answer} />
                                     }
                                     {watch().engLangCert === "3" &&
                                         <>
@@ -197,7 +244,7 @@ const LanguageAdd = ({
                                                                 key={id}
                                                                 label={answer_title}
                                                                 value={answer_title}
-                                                                register={inputProps[7].register}
+                                                                register={inputProps[6].register}
                                                                 spanClassName='text-sm'
                                                             />
                                                         )
@@ -210,29 +257,33 @@ const LanguageAdd = ({
                                 </div>
                             </>
                         }
-                        {watch().engLangCert === "2" && 
-                         <div className="space-y-2">
-                         <label className="pl-2">
-                             {watch()?.language?.answer?.replace(/\s+dili$/, '')} {data?.[1]?.question_title}*
-                         </label>
+                        {watch().engLangCert === "2" &&
+                            <div className="space-y-2">
+                                <label className="pl-2">
+                                    {watch()?.language?.answer?.replace(/\s+dili$/, '')} {data?.[1]?.question_title}*
+                                </label>
 
-                         <div className="flex gap-5 flex-wrap">
-                             {data?.[1]?.answers?.map(
-                                 ({ answer_title, id }) => (
-                                     <Radio
-                                         key={id}
-                                         label={answer_title}
-                                         value={answer_title}
-                                         register={inputProps[7].register}
-                                         spanClassName='text-sm'
-                                     />
-                                 )
-                             )}
-                         </div>
-                     </div>
+                                <div className="flex gap-5 flex-wrap">
+                                    {data?.[1]?.answers?.map(
+                                        ({ answer_title, id }) => (
+                                            <>
+                                                <Radio
+                                                    key={id}
+                                                    label={answer_title}
+                                                    value={answer_title}
+                                                    register={inputProps[6].register}
+                                                    spanClassName='text-sm'
+                                                />
+                                            </>
+
+                                        )
+                                    )}
+                                </div>
+                            </div>
                         }
-                       
+
                         <button className='save py-2 px-4 w-40 h-10 rounded-2xl flex justify-evenly self-center' type="button" onClick={handleClick}><span> Yadda saxla </span><img src={ok} alt="ok" /></button>
+                        {displayListButton && <button className='save py-2 px-4 w-40 h-10 rounded-2xl flex justify-evenly self-center bg-qss-secondary text-white' onClick={() => { isAdding ? setIsAdding() : setIsEditing() }}>Siyahıya bax</button>}
                     </>
                 }
             </>
