@@ -61,6 +61,9 @@
   .level {
     color: #038477;
   }
+  .background{
+    background-image: linear-gradient(to right,#f4f4f4 30%,white 30% 84%,#f4f4f4 80% );
+  }
   input::placeholder {
     @apply font-medium text-qss-base-300;
   }

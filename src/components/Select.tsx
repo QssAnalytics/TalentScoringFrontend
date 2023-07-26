@@ -10,6 +10,7 @@ interface ISelect {
   value?: ISelectedValue;
   disabled?: boolean;
   defaultValue?: string;
+  onChange?: any;
 }
 
 const Select = ({
@@ -19,6 +20,7 @@ const Select = ({
   value,
   defaultValue = "Seçin..",
   disabled = false,
+  onChange,
 }: ISelect) => {
   const [selected, setSelected] = useState(value);
 
@@ -30,12 +32,15 @@ const Select = ({
       className="flex flex-col gap-2 w-full"
       onChange={(value) => {
         setSelected(value);
-        register.onChange({
-          target: {
-            name: register.name,
-            value,
+        register.onChange(
+          {
+            target: {
+              name: register.name,
+              value,
+            },
           },
-        });
+          onChange
+        );
       }}
       disabled={disabled}
     >
