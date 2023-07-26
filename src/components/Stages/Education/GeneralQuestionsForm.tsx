@@ -10,14 +10,14 @@ import Select from "../../Select";
 import LinkButton from "../../LinkButton";
 import { updateStageForm } from "../../../state/stages/stageFormSlice";
 import { useAppDispatch, useAppSelector } from "../../../state/hooks";
+import { ISelectedValue } from "types";
 
 export type GeneralQuestionsFormValues = {
   firstName: string;
   lastName: string;
-  workExp: string;
-  curOccupation: { id: number; answer: string };
-  education: { id: number; answer: string };
-  educationGrant: { id: number; answer: string };
+  curOccupation: ISelectedValue;
+  education: ISelectedValue;
+  educationGrant: ISelectedValue;
 };
 
 export type GeneralQuestionsFormProps = {
@@ -59,10 +59,9 @@ const GeneralQuestionsForm = ({
       defaultValues: {
         firstName: "",
         lastName: "",
-        workExp: "",
-        curOccupation: { id: 0, answer: "" },
-        education: { id: 0, answer: "" },
-        educationGrant: { id: 0, answer: "" },
+        curOccupation: { answer: "", weight: "" },
+        education: { answer: "", weight: "" },
+        educationGrant: { answer: "", weight: "" },
       },
     });
 
@@ -101,48 +100,26 @@ const GeneralQuestionsForm = ({
         <TextInput label="Soyad*" register={register("lastName")} />
       </div>
 
-      <div className="space-y-2">
-        <label className="pl-2">{questions?.[0]?.question_title}*</label>
+      <Select
+        label={`${questions?.[0]?.question_title}*`}
+        options={questions?.[0]?.answers}
+        register={register("curOccupation")}
+        value={formData?.curOccupation}
+      />
 
-        <div className="flex gap-5">
-          {questions?.[0]?.answers?.map(({ answer_title, id }) => (
-            <Radio
-              key={id}
-              label={answer_title}
-              value={id}
-              register={register("workExp")}
-            />
-          ))}
-        </div>
-      </div>
+      <Select
+        label={`${questions?.[1]?.question_title}*`}
+        options={questions?.[1]?.answers}
+        register={register("education")}
+        value={formData?.education}
+      />
 
-      {formData?.workExp && (
-        <>
-          <Select
-            label={`${questions?.[1]?.question_title}*`}
-            options={questions?.[1]?.answers?.filter(
-              ({ answer_dependens_on }) =>
-                answer_dependens_on === parseInt(formData?.workExp)
-            )}
-            register={register("curOccupation")}
-            value={formData?.curOccupation?.answer}
-          />
-
-          <Select
-            label={`${questions?.[2]?.question_title}*`}
-            options={questions?.[2]?.answers}
-            register={register("education")}
-            value={formData?.education?.answer}
-          />
-
-          <Select
-            label={`${questions?.[3]?.question_title}*`}
-            options={questions?.[3]?.answers}
-            register={register("educationGrant")}
-            value={formData?.educationGrant?.answer}
-          />
-        </>
-      )}
+      <Select
+        label={`${questions?.[2]?.question_title}*`}
+        options={questions?.[2]?.answers}
+        register={register("educationGrant")}
+        value={formData?.educationGrant}
+      />
 
       <LinkButton
         nav={{

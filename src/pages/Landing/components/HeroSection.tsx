@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import HeroImg from "assets/hero-image.png";
+import HeroImg from "assets/hero-image.webp";
 import { useGetStageQuery } from "services/stage";
 
 const HeroSection = () => {

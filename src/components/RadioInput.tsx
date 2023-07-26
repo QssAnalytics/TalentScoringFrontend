@@ -1,3 +1,5 @@
+import { ISelectedValue } from "types";
+
 interface IRadioProps {
   label?: string;
   labelClassName?: string;
@@ -5,9 +7,8 @@ interface IRadioProps {
   spanClassName?: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   register?: any;
-  value?: string | number;
+  value?: ISelectedValue;
   type?: string;
-  setValue?: any;
 }
 
 const Radio = ({
@@ -15,7 +16,6 @@ const Radio = ({
   value,
   register,
   type = "default",
-  setValue,
   spanClassName,
 }: IRadioProps) => (
   <label className="bg-qss-input cursor-pointer relative py-2 max-w-[142px] w-full justify-center items-center flex rounded-full px-4">
@@ -28,6 +28,14 @@ const Radio = ({
       type="radio"
       value={value}
       {...register}
+      onChange={() => {
+        register.onChange({
+          target: {
+            name: register.name,
+            value,
+          },
+        });
+      }}
     />
     <span
       className={`text-qss-inputText whitespace-nowrap relative ${spanClassName} ${

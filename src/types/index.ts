@@ -53,3 +53,8 @@ export interface IAnswer {
   answer_weight: null;
   answer_dependens_on: number | null;
 }
+
+export interface ISelectedValue {
+  answer: string;
+  weight: string | null;
+}
