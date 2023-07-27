@@ -34,7 +34,11 @@ const schema = yup
     engLangCert: yup.string().required(),
     langCertName: yup.string().required(),
     langCertResult: yup.string().required(),
-    engCertResult: yup.object({ id: yup.number(), answer: yup.string() }),
+    engCertResult: yup.object({
+      answer: yup.string().required(),
+      weight: yup.string().required(),
+    })
+    .required(),
     langLevel: yup.string().required(),
   })
   .required();
@@ -210,11 +214,14 @@ const LanguageAdd = ({
                   <label className="pl-2">{data?.[4]?.question_title}*</label>
 
                   <div className="flex gap-5 flex-wrap">
-                    {data?.[4]?.answers?.map(({ answer_title, id }, idx) => (
+                    {data?.[4]?.answers?.map(({ answer_title, id,answer_weight }, idx) => (
                       <Radio
                         key={id}
                         label={answer_title}
-                        value={idx}
+                        value={{
+                          answer: idx,
+                          weight: answer_weight,
+                        }}
                         register={inputProps[2].register}
                         spanClassName="text-sm"
                       />
@@ -228,7 +235,7 @@ const LanguageAdd = ({
                         label={data?.[5]?.question_title}
                         options={data?.[5]?.answers}
                         register={inputProps[5].register}
-                        value={watch().engCertResult?.answer}
+                        value={watch().engCertResult}
                       />
                     </>
                   )}
@@ -237,7 +244,7 @@ const LanguageAdd = ({
                       label={data?.[6]?.question_title}
                       options={data?.[6]?.answers}
                       register={inputProps[5].register}
-                      value={watch().engCertResult?.answer}
+                      value={watch().engCertResult}
                     />
                   )}
                   {watch().engLangCert === "3" && (
@@ -264,11 +271,14 @@ const LanguageAdd = ({
                         </label>
 
                         <div className="flex gap-5 flex-wrap">
-                          {data?.[1]?.answers?.map(({ answer_title, id }) => (
+                          {data?.[1]?.answers?.map(({ answer_title, id,answer_weight }) => (
                             <Radio
                               key={id}
                               label={answer_title}
-                              value={answer_title}
+                              value={{
+                                answer: answer_title,
+                                weight: answer_weight,
+                              }}
                               register={inputProps[6].register}
                               spanClassName="text-sm"
                             />
@@ -288,12 +298,15 @@ const LanguageAdd = ({
                 </label>
 
                 <div className="flex gap-5 flex-wrap">
-                  {data?.[1]?.answers?.map(({ answer_title, id }) => (
+                  {data?.[1]?.answers?.map(({ answer_title, id,answer_weight }) => (
                     <>
                       <Radio
                         key={id}
                         label={answer_title}
-                        value={answer_title}
+                        value={{
+                          answer: answer_title,
+                          weight: answer_weight,
+                        }}
                         register={inputProps[6].register}
                         spanClassName="text-sm"
                       />
