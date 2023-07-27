@@ -5,7 +5,6 @@ import {
   useGetStageQuery,
 } from "../../../services/stage";
 import TextInput from "../../TextInput";
-import Radio from "../../RadioInput";
 import Select from "../../Select";
 import LinkButton from "../../LinkButton";
 import { updateStageForm } from "../../../state/stages/stageFormSlice";
@@ -47,6 +46,7 @@ const GeneralQuestionsForm = ({
     isLoading,
   } = useGetQuestionsQuery(subStageSlug);
 
+  console.log(subSlugName, subStageName);
   const dispatch = useAppDispatch();
 
   const { formData } =

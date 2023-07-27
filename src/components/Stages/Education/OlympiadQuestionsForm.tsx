@@ -10,12 +10,13 @@ import LinkButton from "../../LinkButton";
 import { updateStageForm } from "../../../state/stages/stageFormSlice";
 import { useAppDispatch, useAppSelector } from "../../../state/hooks";
 import { GeneralQuestionsFormProps } from "./GeneralQuestionsForm";
+import { ISelectedValue } from "types";
 
 export type OlympiadQuestionsFormValues = {
-  wonOlympics: string;
-  subjectOlympiad: { id: number; answer: string };
-  highestOlympiad: { id: number; answer: string };
-  rankOlympiad: { id: number; answer: string };
+  wonOlympics: ISelectedValue;
+  subjectOlympiad: ISelectedValue;
+  highestOlympiad: ISelectedValue;
+  rankOlympiad: ISelectedValue;
 };
 
 const OlympiadQuestionsForm = ({
@@ -57,14 +58,7 @@ const OlympiadQuestionsForm = ({
     ) as { formData: OlympiadQuestionsFormValues }) || {};
 
   const { register, handleSubmit, watch, reset } =
-    useForm<OlympiadQuestionsFormValues>({
-      defaultValues: {
-        wonOlympics: "",
-        subjectOlympiad: { id: 0, answer: "" },
-        highestOlympiad: { id: 0, answer: "" },
-        rankOlympiad: { id: 0, answer: "" },
-      },
-    });
+    useForm<OlympiadQuestionsFormValues>();
 
   const onSubmit: SubmitHandler<OlympiadQuestionsFormValues> = (data) =>
     console.log(data);
@@ -106,38 +100,40 @@ const OlympiadQuestionsForm = ({
         <div className="space-y-2">
           <label className="pl-2">{questions?.[0]?.question_title}*</label>
           <div className="flex gap-5">
-            {questions?.[0]?.answers?.map(({ answer_title, id }, idx) => (
-              <Radio
-                key={id}
-                label={answer_title}
-                value={idx}
-                register={inputProps[0].register}
-              />
-            ))}
+            {questions?.[0]?.answers?.map(
+              ({ id, answer_title, answer_weight }) => (
+                <Radio
+                  key={id}
+                  label={answer_title}
+                  value={formData?.wonOlympics}
+                  register={inputProps[0].register}
+                />
+              )
+            )}
           </div>
         </div>
 
-        {formData?.wonOlympics === "0" && (
+        {formData?.wonOlympics?.answer?.includes("Bəli") && (
           <>
             <Select
               label={`${questions?.[1]?.question_title}*`}
               options={questions?.[1]?.answers}
               register={inputProps[1].register}
-              value={formData?.subjectOlympiad?.answer}
+              value={formData?.subjectOlympiad}
             />
 
             <Select
               label={`${questions?.[2]?.question_title}*`}
               options={questions?.[2]?.answers}
               register={inputProps[2].register}
-              value={formData?.highestOlympiad?.answer}
+              value={formData?.highestOlympiad}
             />
 
             <Select
               label={`${questions?.[3]?.question_title}*`}
               options={questions?.[3]?.answers}
               register={inputProps[3].register}
-              value={formData?.rankOlympiad?.answer}
+              value={formData?.rankOlympiad}
             />
           </>
         )}

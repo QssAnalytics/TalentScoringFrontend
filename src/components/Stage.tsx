@@ -1,12 +1,12 @@
 import { Fragment, useEffect, useMemo, useState, useCallback } from "react";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation, Link } from "react-router-dom";
 import { useGetStageQuery } from "../services/stage";
 import ProgressBar from "./ProgressBar";
 import GeneralQuestionsForm from "./Stages/Education/GeneralQuestionsForm";
 import EducationQuestionsForm from "./Stages/Education/EducationQuestionsForm";
 import useGetSubStageName from "../hooks/useGetSubStageName";
 import OlympiadQuestionsForm from "./Stages/Education/OlympiadQuestionsForm";
-import LanguangeQuestionsForm from "./Stages/Languange/LanguangeQuestionsForm";
+import LanguangeQuestionsForm from "./Stages/Languange/LanguageQuestionsForm";
 import SpecialSkillsForm from "./Stages/SpecialSkills/SpecialSkillsQuestionsForm";
 import SportForm from "./Stages/Sport/SportQuestionsForm";
 import ProgramSkills from "./Stages/ProgramSkills/ProgramSkillsQuestionsForm";

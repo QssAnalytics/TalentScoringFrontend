@@ -5,24 +5,23 @@ import {
   useGetStageQuery,
 } from "../../../services/stage";
 import Radio from "../../RadioInput";
-import Select from "../../Select";
 import LinkButton from "../../LinkButton";
 import { updateStageForm } from "../../../state/stages/stageFormSlice";
 import { useAppDispatch, useAppSelector } from "../../../state/hooks";
 import { GeneralQuestionsFormProps } from "../Education/GeneralQuestionsForm";
-import TextInput from "../../TextInput";
 import removeIcon from "../../../assets/Vector.svg";
-import SelectMult from "../../SelectMult";
 import * as yup from "yup";
 import { Icon } from "@iconify/react";
-import LanguageAdd, { AddLangFormValues } from "./LanguageAdd";
+import LanguageAdd, { AddLangFormValues } from "./components/LanguageAdd";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 const schema = yup.object({
   languageSkills: yup.array().required(),
 });
-export type LanguangeQuestionsFormValues = yup.InferType<typeof schema>;
 
-const LanguangeQuestionsForm = ({
+export type LanguageQuestionsFormValues = yup.InferType<typeof schema>;
+
+const LanguageQuestionsForm = ({
   stageIndex,
   subStageSlug,
 }: GeneralQuestionsFormProps) => {
@@ -60,28 +59,29 @@ const LanguangeQuestionsForm = ({
   const { formData } =
     (useAppSelector((state) => state.stageForm)?.find(
       ({ name }) => name === subStageSlug
-    ) as { formData: LanguangeQuestionsFormValues }) || {};
+    ) as { formData: LanguageQuestionsFormValues }) || {};
 
   const { register, handleSubmit, watch, reset, setValue } =
-    useForm<LanguangeQuestionsFormValues>({
+    useForm<LanguageQuestionsFormValues>({
+      resolver: yupResolver(schema),
       defaultValues: {
         languageSkills: [],
       },
     });
 
-  const onSubmit: SubmitHandler<LanguangeQuestionsFormValues> = (data) => {
+  const onSubmit: SubmitHandler<LanguageQuestionsFormValues> = (data) => {
     console.log(data);
-  }
+  };
 
   const [isAdding, setIsAdding] = useState(true);
   const [isEditing, setIsEditing] = useState<{
     edit: boolean;
     data?: AddLangFormValues;
   }>({ edit: false });
-  const [displayListButton, setDisplayListButton] = useState(false)
+  const [displayListButton, setDisplayListButton] = useState(false);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [chooseLang, setChooseLang] = useState(false);
-  const handleAdd = (lang: LanguangeQuestionsFormValues) => {
+  const handleAdd = (lang: LanguageQuestionsFormValues) => {
     const data = formData?.languageSkills;
     setValue("languageSkills", [...data, lang]);
     setIsAdding(false);
@@ -115,16 +115,13 @@ const LanguangeQuestionsForm = ({
     setEditingIndex(null);
   };
 
-
-
-
   useEffect(() => {
     const subscription = watch((value) => {
       console.log(value);
       dispatch(
         updateStageForm({
           name: subStageSlug,
-          formData: value as LanguangeQuestionsFormValues,
+          formData: value as LanguageQuestionsFormValues,
         })
       );
     });
@@ -149,16 +146,20 @@ const LanguangeQuestionsForm = ({
           <h3 className="pl-2">Əlavə xarici dil biliklərinizi qeyd edin</h3>
           <div className=" flex items-center">
             <button
-              className="add py-2 px-4 w-full h-12 rounded-2xl flex justify-evenly items-center"
+              className="add py-2 px-4 w-full rounded-full flex justify-center items-center"
               type="button"
-              onClick={() => { setChooseLang(true) }}
+              onClick={() => {
+                setChooseLang(true);
+              }}
             >
-              {" "}
-              Əlavə et +{" "}
+              Əlavə et +
             </button>
             <div className="space-y-2">
               <div className="flex gap-5 w-48 py-2 px-4">
-                <Radio value="Yoxdur" label="Yoxdur" />
+                <Radio
+                  value={{ answer: "Yoxdur", weight: "" }}
+                  label="Yoxdur"
+                />
               </div>
             </div>
           </div>
@@ -188,7 +189,9 @@ const LanguangeQuestionsForm = ({
           <button
             className="add py-2 px-4 w-full h-12 rounded-2xl flex justify-evenly items-center"
             type="button"
-            onClick={() => { setIsAdding(true), setDisplayListButton(true) }}
+            onClick={() => {
+              setIsAdding(true), setDisplayListButton(true);
+            }}
           >
             {" "}
             Əlavə et +{" "}
@@ -226,10 +229,16 @@ const LanguangeQuestionsForm = ({
                         </>
                       )}
                       {lang.engLangCert === "0" && (
-                        <p className="w-48"> IELTS {lang.engCertResult?.answer}</p>
+                        <p className="w-48">
+                          {" "}
+                          IELTS {lang.engCertResult?.answer}
+                        </p>
                       )}
                       {lang.engLangCert === "1" && (
-                        <p className="w-48"> TOEFL {lang.engCertResult?.answer}</p>
+                        <p className="w-48">
+                          {" "}
+                          TOEFL {lang.engCertResult?.answer}
+                        </p>
                       )}
                       {(lang.langCert === "1" || lang.engLangCert === "2") && (
                         <span>Sertifikat yoxdur </span>
@@ -285,4 +294,4 @@ const LanguangeQuestionsForm = ({
   );
 };
 
-export default LanguangeQuestionsForm;
+export default LanguageQuestionsForm;
