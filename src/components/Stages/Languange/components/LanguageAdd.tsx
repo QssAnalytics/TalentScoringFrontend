@@ -24,7 +24,12 @@ type LanguageAdd = {
 const schema = yup
   .object({
     id: yup.string(),
-    language: yup.object({ id: yup.number(), answer: yup.string() }),
+    language: yup
+      .object({
+        answer: yup.string().required(),
+        weight: yup.string().required(),
+      })
+      .required(),
     langCert: yup.string().required(),
     engLangCert: yup.string().required(),
     langCertName: yup.string().required(),
@@ -131,7 +136,7 @@ const LanguageAdd = ({
           label={`${data?.[0]?.question_title}*`}
           options={data?.[0]?.answers}
           register={inputProps[0].register}
-          value={watch().language?.answer}
+          value={watch()?.language}
         />
         {watch()?.language?.answer && (
           <>
@@ -144,15 +149,20 @@ const LanguageAdd = ({
                   </label>
 
                   <div className="flex gap-5 flex-wrap">
-                    {data?.[2]?.answers?.map(({ answer_title, id }, idx) => (
-                      <Radio
-                        key={id}
-                        label={answer_title}
-                        value={idx}
-                        register={inputProps[1].register}
-                        spanClassName="text-sm"
-                      />
-                    ))}
+                    {data?.[2]?.answers?.map(
+                      ({ answer_title, answer_weight, id }) => (
+                        <Radio
+                          key={id}
+                          label={answer_title}
+                          value={{
+                            answer: answer_title,
+                            weight: answer_weight,
+                          }}
+                          register={inputProps[1].register}
+                          spanClassName="text-sm"
+                        />
+                      )
+                    )}
                   </div>
                 </div>
                 {watch().langCert === "0" && (
@@ -177,15 +187,20 @@ const LanguageAdd = ({
                   </label>
 
                   <div className="flex gap-5 flex-wrap">
-                    {data?.[1]?.answers?.map(({ answer_title, id }) => (
-                      <Radio
-                        key={id}
-                        label={answer_title}
-                        value={answer_title}
-                        register={inputProps[6].register}
-                        spanClassName="text-sm"
-                      />
-                    ))}
+                    {data?.[1]?.answers?.map(
+                      ({ answer_title, answer_weight, id }) => (
+                        <Radio
+                          key={id}
+                          label={answer_title}
+                          value={{
+                            answer: answer_title,
+                            weight: answer_weight,
+                          }}
+                          register={inputProps[6].register}
+                          spanClassName="text-sm"
+                        />
+                      )
+                    )}
                   </div>
                 </div>
               </>
