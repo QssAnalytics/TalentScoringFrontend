@@ -57,7 +57,7 @@ const OlympiadQuestionsForm = ({
       ({ name }) => name === subStageSlug
     ) as { formData: OlympiadQuestionsFormValues }) || {};
 
-  const { register, handleSubmit, watch, reset, control } =
+  const { register, handleSubmit, watch, reset } =
     useForm<OlympiadQuestionsFormValues>();
 
   const onSubmit: SubmitHandler<OlympiadQuestionsFormValues> = (data) =>

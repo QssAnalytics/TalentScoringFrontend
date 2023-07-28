@@ -55,6 +55,6 @@ export interface IAnswer {
 }
 
 export interface ISelectedValue {
-  answer: string | number;
+  answer: string;
   weight: string | null;
 }
