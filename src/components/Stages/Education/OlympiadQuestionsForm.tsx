@@ -12,7 +12,6 @@ import { useAppDispatch, useAppSelector } from "../../../state/hooks";
 import { GeneralQuestionsFormProps } from "./GeneralQuestionsForm";
 import { ISelectedValue } from "types";
 
-import { DevTool } from "@hookform/devtools";
 export type OlympiadQuestionsFormValues = {
   wonOlympics: ISelectedValue;
   subjectOlympiad: ISelectedValue;
@@ -130,7 +129,6 @@ const OlympiadQuestionsForm = ({
             />
           </>
         )}
-        <DevTool control={control} />
       </div>
 
       <LinkButton
