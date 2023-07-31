@@ -11,7 +11,7 @@ import TextInput from "../../TextInput";
 import LinkButton from "../../LinkButton";
 import { updateStageForm } from "../../../state/stages/stageFormSlice";
 import { useAppDispatch, useAppSelector } from "../../../state/hooks";
-
+import { useSelector } from 'react-redux';
 import {
   GeneralQuestionsFormProps,
   GeneralQuestionsFormValues,
@@ -20,14 +20,19 @@ import Select from "components/Select";
 import { ISelectedValue } from "types";
 
 import * as yup from "yup";
-import EducationAdd from "./components/EducationAdd";
+import EducationAdd, { AddEduFormValues } from "./components/EducationAdd";
+import Educations from "./components/Educations";
 
 const schema = yup.object({
-  bachelor: yup.array().required(),
-  master: yup.array().required(),
-  phd: yup.array().required(),
-});
+  education: yup.array().required(),
 
+});
+interface RootState {
+  dataa: {
+    currentPage:1,
+    tehsil:string
+  };
+}
 export type EducationQuestionsFormValues = yup.InferType<typeof schema>;
 
 const EducationQuestionsForm = ({
@@ -36,10 +41,13 @@ const EducationQuestionsForm = ({
 }: GeneralQuestionsFormProps) => {
   const { data: stagesData } = useGetStageQuery();
 
+
   const nav = useNavigate();
-
+  const page= useSelector((state: RootState) => state.dataa.currentPage);
+  const tehsil= useSelector((state: RootState) => state.dataa.tehsil);
   const { state } = useLocation();
-
+  console.log(tehsil);
+  
   const {
     slug: slugName,
     stage_name: stageName,
@@ -68,22 +76,22 @@ const EducationQuestionsForm = ({
     error: questionsError,
     isLoading,
   } = useGetQuestionsQuery(subStageSlug);
-
-  const { register, handleSubmit, watch, reset } =
+  
+  const { register, handleSubmit, watch, reset,setValue } =
     useForm<EducationQuestionsFormValues>({
       resolver: yupResolver(schema),
       defaultValues: {
-        bachelor: [],
-        master: [],
-        phd: [],
+        education:[]
       },
     });
 
   const onSubmit: SubmitHandler<EducationQuestionsFormValues> = (data) =>
     console.log(data);
 
-  const questions = questionsData?.[0]?.questions;
 
+
+
+  const questions = questionsData?.[0]?.questions;
   useEffect(() => {
     const subscription = watch((value) => {
       console.log(value);
@@ -94,6 +102,7 @@ const EducationQuestionsForm = ({
         })
       );
     });
+    
 
     reset(formData);
 
@@ -105,14 +114,24 @@ const EducationQuestionsForm = ({
   if (isLoading) return <div>Loading...</div>;
   if (questionsError) return <div>Error</div>;
 
-  console.log(questions);
+
+  const handleAddEdu = (eduData:AddEduFormValues) => {
+    const data = formData?.education;
+    setValue("education", [...data, eduData]);
+    // setIsAdding(false);
+  }
+
+  
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
       className="mt-7 flex-col flex gap-5"
     >
       <div className="space-y-7">
-        <EducationAdd />
+        {
+          page===1?<EducationAdd handleAddEdu={handleAddEdu} questions={questions} formData={formData}/>:<Educations formData={formData} setValue={setValue}/>
+        }
+        
       </div>
 
       <LinkButton

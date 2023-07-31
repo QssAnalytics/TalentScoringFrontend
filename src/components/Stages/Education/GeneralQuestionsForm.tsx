@@ -10,7 +10,9 @@ import LinkButton from "../../LinkButton";
 import { updateStageForm } from "../../../state/stages/stageFormSlice";
 import { useAppDispatch, useAppSelector } from "../../../state/hooks";
 import { ISelectedValue } from "types";
-
+import { useDispatch } from 'react-redux';
+import { Dispatch } from 'redux';
+import { addTehsil } from "state/dataSlice";
 export type GeneralQuestionsFormValues = {
   firstName: string;
   lastName: string;
@@ -70,6 +72,7 @@ const GeneralQuestionsForm = ({
   useEffect(() => {
     const subscription = watch((value) => {
       console.log(value);
+      dispatch(addTehsil(value.educationGrant.answer))
       dispatch(
         updateStageForm({
           name: subStageSlug,
