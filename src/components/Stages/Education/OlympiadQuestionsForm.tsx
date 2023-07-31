@@ -98,21 +98,13 @@ const OlympiadQuestionsForm = ({
     >
       <div className="space-y-7">
         <div className="space-y-2">
-          <label className="pl-2">{questions?.[0]?.question_title}*</label>
-          <div className="flex gap-5">
-            {questions?.[0]?.answers?.map(
-              ({ id, answer_title, answer_weight }) => (
-                <Radio
-                  key={id}
-                  label={answer_title}
-                  value={formData?.wonOlympics}
-                  register={inputProps[0].register}
-                />
-              )
-            )}
-          </div>
+          <Radio
+            label={questions?.[0]?.question_title}
+            options={questions?.[0]?.answers}
+            register={inputProps[0]?.register}
+            value={formData?.wonOlympics}
+          />
         </div>
-
         {formData?.wonOlympics?.answer?.includes("Bəli") && (
           <>
             <Select

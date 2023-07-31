@@ -81,6 +81,7 @@ const LanguageQuestionsForm = ({
   const [displayListButton, setDisplayListButton] = useState(false);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [chooseLang, setChooseLang] = useState(false);
+
   const handleAdd = (lang: LanguageQuestionsFormValues) => {
     const data = formData?.languageSkills;
     setValue("languageSkills", [...data, lang]);
