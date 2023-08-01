@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { Fragment, useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import {
   useGetQuestionsQuery,
@@ -15,6 +15,9 @@ import SelectMult from "../../SelectMult";
 import * as yup from 'yup';
 import removeIcon from "../../../assets/Vector.svg";
 import { yupResolver } from "@hookform/resolvers/yup";
+import DetailedSportInfo from "./ProLevelList";
+import SportLevels from "./components/SportLevels";
+import { ISelectedValue } from "types";
 
 
 const schema = yup
@@ -28,27 +31,36 @@ const schema = yup
     whichSport: yup
       .array().of(yup.object().shape({
         answer: yup.string().required(),
-        weight: yup.string().required(),
       }))
       .required(),
-    whichLevel: yup
-      .object({
-        answer: yup.string().required(),
-        weight: yup.string().required(),
-      })
-      .required(),
-    whichScore: yup
-      .object({
-        answer: yup.string().required(),
-        weight: yup.string().required(),
-      })
-      .required(),
-    whichPlace: yup
-      .object({
-        answer: yup.string().required(),
-        weight: yup.string().required(),
-      })
-      .required(),
+    professionals: yup
+      .array().of(yup.object().shape({
+        name: yup.string().required(),
+        level: yup.object().shape({
+          answer: yup.string().required(),
+          weight: yup.string().required()
+        }),
+        whichScore: yup
+          .object({
+            answer: yup.string().required(),
+            weight: yup.string().required(),
+          })
+          .required(),
+        whichPlace: yup
+          .object({
+            answer: yup.string().required(),
+            weight: yup.string().required(),
+          })
+          .required(),
+      })),
+    amateurs: yup
+      .array().of(yup.object().shape({
+        name: yup.string().required(),
+        level: yup.object().shape({
+          answer: yup.string().required(),
+          weight: yup.string().required()
+        })
+      })),
 
   })
   .required();
@@ -56,29 +68,24 @@ const schema = yup
 export type SportFormValues = yup.InferType<typeof schema>;
 
 
-const staticAnswers = [
-  {
-    id: 0,
-    answer_title: "Heveskar",
-    answer_weight: null
-  }
-  , {
-    id: 1,
-    answer_title: "Pesekar",
-    answer_weight: null
-  }
-]
+
+export interface IItem{
+  name:string,
+  level:ISelectedValue,
+  whichScore:ISelectedValue,
+  whichPlace:ISelectedValue
+}
 
 const SportForm = ({ stageIndex, subStageSlug }: GeneralQuestionsFormProps) => {
   const { data: stagesData } = useGetStageQuery();
 
   const { stage_children } = stagesData?.[stageIndex] || {};
+
   const {
     slug: nextSlugName,
     stage_name: nextStageName,
     stage_children: nextStageChildren,
-  } = stagesData?.[stageIndex + 1] || {};
-
+  } = stagesData?.[stageIndex] || {};
   const {
     slug: prevSlugName,
     stage_name: prevStageName,
@@ -86,13 +93,12 @@ const SportForm = ({ stageIndex, subStageSlug }: GeneralQuestionsFormProps) => {
   } = stagesData?.[2] || {};
 
   const { slug: prevSubSlugName, stage_name: prevSubStageName } =
-    prevStageChildren?.[0] || {};
+    prevStageChildren?.[1] || {};
+
 
   const { slug: subSlugName } = stage_children?.[0] || {};
-
   const { slug: nextSubSlugName, stage_name: nextSubStageName } =
-    nextStageChildren?.[0] || {};
-
+    nextStageChildren?.[1] || {};
   const {
     data: questionsData,
     error: questionsError,
@@ -105,17 +111,17 @@ const SportForm = ({ stageIndex, subStageSlug }: GeneralQuestionsFormProps) => {
       ({ name }) => name === subStageSlug
     ) as { formData: SportFormValues & any }) || ({} as any);
 
-  const { register, handleSubmit, watch, reset } = useForm<
+  const { register, handleSubmit, watch, reset,setValue } = useForm<
     SportFormValues
   >({
     defaultValues: {
       sport: { answer: "", weight: "" },
       whichSport: [],
-      whichLevel: { answer: "", weight: "" },
-      whichScore: { answer: "", weight: "" },
-      whichPlace: { answer: "", weight: "" },
+      professionals: [],
+      amateurs: [],
+
     },
-    resolver: yupResolver(schema)
+    // resolver: yupResolver(schema)
   });
 
   const onSubmit: SubmitHandler<SportFormValues> = (data) => console.log(data);
@@ -138,15 +144,43 @@ const SportForm = ({ stageIndex, subStageSlug }: GeneralQuestionsFormProps) => {
   if (isLoading) return <div>Loading...</div>;
   if (questionsError) return <div>Error</div>;
 
+  
+  const selectedLevel = (item: IItem) => {
+   
+  const amateurs = watch().amateurs || [];
+  const professionals = watch().professionals || [];
+  const isAmatExist = amateurs.some((i)=>item.name===i.name)
+  const isProExist = professionals.some((i)=>item.name===i.name)
+    if (item.level?.answer=== "Heveskar" && !isAmatExist) {
+      setValue("amateurs",[ ...amateurs,item])
+      if (isProExist) {
+        setValue(
+          'professionals',
+          professionals.filter((i) => item.name !== i.name)
+        );
+      }
+      console.log(amateurs)
+    }
+    else if(item.level?.answer=== "Pesekar" && !isProExist){
+      setValue("professionals",[ ...professionals,item])
+      if (isAmatExist) {
+        setValue(
+          'amateurs',
+          amateurs.filter((i) => item.name !== i.name)
+        );
+      }
+      console.log(item.level?.answer)
+
+      console.log(watch().professionals)
+    }
+  }
+
   const questions = questionsData?.[0]?.questions;
-  console.log(watch()?.sport?.answer)
   const inputProps = [
     { register: register("sport") },
     { register: register("whichSport") },
-    { register: register("whichLevel") },
-    { register: register("whichScore") },
-    { register: register("whichPlace") },
   ];
+  console.log(formData)
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
@@ -157,20 +191,16 @@ const SportForm = ({ stageIndex, subStageSlug }: GeneralQuestionsFormProps) => {
           <label className="pl-2">{questions?.[0]?.question_title}*</label>
 
           <div className="flex gap-5">
-            {questions?.[0]?.answers?.map(({ answer_weight, answer_title, id }) => (
-              <Radio
-                key={id}
-                label={answer_title}
-                value={{
-                  answer: answer_title,
-                  weight: answer_weight,
-                }}
-                register={inputProps[0].register}
-              />
-            ))}
+            <Radio
+              options={questions?.[0]?.answers}
+              value={formData?.sport}
+              register={inputProps[0].register}
+            />
           </div>
         </div>
-        <>
+
+        {formData?.sport.answer === "Bəli" && (
+          <>
             <SelectMult
               placeholder="Idman Secimi"
               label={`${questions?.[1]?.question_title}*`}
@@ -178,39 +208,18 @@ const SportForm = ({ stageIndex, subStageSlug }: GeneralQuestionsFormProps) => {
               register={inputProps[1].register}
               value={formData?.whichSport}
             />
+            <div className="pr-2 max-h-[230px] overflow-y-auto">
 
+              <label >{questions?.[2]?.question_title}</label>
 
-            <div className="pr-2">
-              <label >{questions?.[2]?.question_title}*</label>
-
-              {formData?.whichSport?.length !== 0 &&
-                formData?.whichSport?.map((item: any, index: any) => (
-                  <div
-                    className="p-2.5 relative flex gap-4 "
-                    key={index}
-                  >
-                    <span className="bg-qss-input cursor-pointer relative py-2 max-w-[142px] w-full justify-center items-center flex rounded-full px-4 gap-2">
-                      <span>{item} </span>
-                      <img src={removeIcon} alt="remove" />
-                    </span>
-                    {staticAnswers?.map(({ answer_weight, answer_title, id }) => (
-                      <Radio
-                        key={id}
-                        label={answer_title}
-                        value={{
-                          answer: answer_title,
-                          weight: answer_weight,
-                        }}
-                        register={inputProps[2].register}
-                      />
-                    ))}
-                  </div>
-                ))}
+              {formData?.whichSport?.map((item: any, index: number) => (
+                <Fragment key={index}>
+                  <SportLevels item={item} selectedLevel={selectedLevel}  questions={questions} subStageSlug={subStageSlug} />
+                </Fragment>
+              ))}
             </div>
           </>
-        {/* {formData?.sport.answer === "Bəli" && (
-         
-        )} */}
+        )}
       </div>
 
       <LinkButton

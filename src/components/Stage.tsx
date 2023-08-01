@@ -9,6 +9,7 @@ import OlympiadQuestionsForm from "./Stages/Education/OlympiadQuestionsForm";
 import LanguangeQuestionsForm from "./Stages/Languange/LanguageQuestionsForm";
 import SpecialSkillsForm from "./Stages/SpecialSkills/SpecialSkillsQuestionsForm";
 import SportForm from "./Stages/Sport/SportQuestionsForm";
+import SportForm2 from "./Stages/Sport/ProLevelList";
 import ProgramSkills from "./Stages/ProgramSkills/ProgramSkillsQuestionsForm";
 import JobExperienceForm from "./Stages/JobExperience/JobExperienceForm";
 import SpecialSkillsCertifcateQuestionsForm from "./Stages/SpecialSkills/SpecialSkillsCertifcateQuestionsForm";
@@ -101,6 +102,13 @@ const Stage = () => {
       case "idman-substage":
         return (
           <SportForm
+            stageIndex={stageIndex}
+            subStageSlug={subStageSlug || ""}
+          />
+        );
+      case "idman-substage2":
+        return (
+          <SportForm2
             stageIndex={stageIndex}
             subStageSlug={subStageSlug || ""}
           />
