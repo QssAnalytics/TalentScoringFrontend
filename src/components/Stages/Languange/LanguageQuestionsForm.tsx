@@ -126,8 +126,7 @@ const LanguageQuestionsForm = ({
         })
       );
     });
-   
-    
+
     reset(formData);
 
     return () => subscription.unsubscribe();
