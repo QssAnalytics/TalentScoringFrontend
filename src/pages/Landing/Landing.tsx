@@ -1,3 +1,4 @@
+import Chatbot from "components/Chatbot/Chatbot";
 import About from "./components/About";
 import Footer from "./components/Footer";
 import HeroSection from "./components/HeroSection";
@@ -16,20 +17,27 @@ const Landing = () => {
           <Footer />
         </div>
       </div>
-      <div className="absolute -top-20 -right-52 z-0">
-        <Circle />
+
+      <div>
+        <Chatbot />
       </div>
-      <div className=" absolute top-72 -right-40 -rotate-[45deg]">
-        <VectorTrip />
-      </div>
-      <div className="absolute -bottom-96 -left-96 z-0">
-        <Circle />
-      </div>
-      <div className=" absolute top-1/2 right-0 -rotate-[90deg]">
-        <VectorTrip />
-      </div>
-      <div className=" absolute -bottom-1/2 -right-96 rotate-[90deg]">
-        <VectorTrip />
+
+      <div>
+        <div className="absolute -top-20 -right-52 z-0">
+          <Circle />
+        </div>
+        <div className=" absolute top-72 -right-40 -rotate-[45deg]">
+          <VectorTrip />
+        </div>
+        <div className="absolute -bottom-96 -left-96 z-0">
+          <Circle />
+        </div>
+        <div className=" absolute top-1/2 right-0 -rotate-[90deg]">
+          <VectorTrip />
+        </div>
+        <div className=" absolute -bottom-1/2 -right-96 rotate-[90deg]">
+          <VectorTrip />
+        </div>
       </div>
     </div>
   );

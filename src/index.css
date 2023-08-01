@@ -16,6 +16,23 @@
   }
 }
 
+@layer components {
+  .chat-bubble {
+    @apply w-fit max-w-[256px] text-sm px-4  py-2 transition-all duration-500 rounded-xl;
+  }
+
+  .chat-bubble-l {
+    @apply chat-bubble bg-gray-200 rounded-bl-none;
+  }
+  .chat-bubble-r {
+    @apply chat-bubble bg-qss-secondary/20 ml-auto rounded-br-none;
+  }
+
+  .tooltip {
+    @apply break-words text-center text-white w-24 rounded-br-none chat-bubble opacity-0 -top-9 -left-24 scale-0 bg-qss-primary peer-hover:opacity-100 peer-hover:scale-100 text-sm p-1 transition-all duration-500 rounded-xl;
+  }
+}
+
 @layer base {
   html {
     @apply scroll-smooth;
@@ -30,7 +47,7 @@
   }
 
   input {
-    @apply text-qss-inputText bg-qss-input text-sm disabled:bg-gray-300;
+    @apply text-sm border text-qss-inputText bg-qss-input disabled:bg-gray-300;
   }
 
   .save,
@@ -40,10 +57,10 @@
   }
 
   input[type="text"] {
-    @apply py-2 px-4 rounded-full w-full focus:outline-qss-base-200;
+    @apply w-full px-4 py-2 rounded-full focus:outline-qss-base-200;
   }
   input[type="date"] {
-    @apply py-2 px-4 rounded-full w-full focus:outline-qss-base-200;
+    @apply w-full px-4 py-2 rounded-full focus:outline-qss-base-200;
   }
   input[type="date"]::-webkit-calendar-picker-indicator {
     opacity: 0;
@@ -54,7 +71,7 @@
     cursor: pointer;
   }
   input[type="number"] {
-    @apply py-2 px-4 rounded-full w-full focus:outline-qss-base-200;
+    @apply w-full px-4 py-2 rounded-full focus:outline-qss-base-200;
   }
   input[type="checkbox"] {
     accent-color: #038477;
@@ -75,11 +92,11 @@
   }
 
   select {
-    @apply text-qss-inputText appearance-none bg-qss-input py-2 px-4 rounded-full outline-none focus:text-qss-secondary focus:border focus:border-qss-base-200;
+    @apply px-4 py-2 rounded-full outline-none appearance-none text-qss-inputText bg-qss-input focus:text-qss-secondary focus:border focus:border-qss-base-200;
   }
 
   option {
-    @apply text-xs py-2 appearance-none;
+    @apply py-2 text-xs appearance-none;
   }
 
   p {
