@@ -1,5 +1,5 @@
 
-import  { useState } from "react";
+import  { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -16,21 +16,24 @@ import { Zoom } from "react-awesome-reveal";
 import { useDispatch } from 'react-redux';
 import { Dispatch } from 'redux';
 import { addData, addElave, addTehsilPage } from "state/dataSlice";
+import { EducationQuestionsFormValues } from '../EducationQuestionsForm';
+import { IQuestionQuestion } from "types";
 interface RootState {
   dataa: {
     tehsil:string,
     elave:boolean
   };
 }
+
 const schema = yup
   .object({
     id: yup.string().required(),
-    tehsil:yup.string(),
+    tehsil:yup.object({ answer: yup.string().required(), weight: yup.string().required() }),
     country: yup.string(),
     university: yup.string(),
-    specialty: yup.object({ answer: yup.string(), weight: yup.string() }),
+    specialty: yup.object({ answer: yup.string().required(), weight: yup.string().required() }),
     date: yup.object({ start: yup.string(), end: yup.string() }),
-    criteria: yup.object({ answer: yup.string(), weight: yup.string() }),
+    criteria: yup.string(),
     local: yup.object({
       examName: yup.string(),
       score: yup.string(),
@@ -49,8 +52,13 @@ const schema = yup
   .required();
 
 export type AddEduFormValues = yup.InferType<typeof schema>;
-
-const FormEducations = ({questions,formData,handleAddEdu,name}) => {
+type EducationAdd = {
+  name:string,
+  questions:IQuestionQuestion[] |undefined,
+  formData:EducationQuestionsFormValues,
+  handleAddEdu: () => void
+};
+const FormEducations = ({questions,formData,handleAddEdu,name}:EducationAdd) => {
   const {
     register,
     handleSubmit,
@@ -59,8 +67,27 @@ const FormEducations = ({questions,formData,handleAddEdu,name}) => {
     reset,
     formState: { errors },
   } = useForm<AddEduFormValues>({
-    resolver: yupResolver(schema),
+    defaultValues:{
+      id:"",
+      tehsil:"",
+      country: "",
+      university:"",
+      specialty: {answer:"", weight:""},
+      date:{start:"",end:""},
+      criteria: "",
+      local: {examName:"",score:"",maxScore:""},
+      Att: "",
+      SAT:"",
+      otherExam:{name:"",score:"",maxScore:""},
+    ielts:"",
+    toefl:"",
+    
+      application: []
+
+
+    }
   });
+  
   const [other,setOther] = useState(false)
   const dispatch: Dispatch = useDispatch();
   const onSubmit = handleSubmit((data) => {
@@ -68,8 +95,9 @@ const FormEducations = ({questions,formData,handleAddEdu,name}) => {
   });
   const tehsil= useSelector((state: RootState) => state.dataa.tehsil);
   const elave= useSelector((state: RootState) => state.dataa.elave);
+  const [ count,setCount] = useState(0)
   const copy = {
-    id: formData.education.length+1,
+    id:formData.education.length+1,
     country: watch().country,
     university: watch().university,
     specialty: watch().specialty,
@@ -108,6 +136,14 @@ const FormEducations = ({questions,formData,handleAddEdu,name}) => {
       ]
     },
   }
+  const handleDelete =useCallback((elem:any)=>{
+    const copyy  = watch("application")?.indexOf(elem)
+    if (copyy !==-1) {
+      watch("application")?.splice(copyy,1)
+    }
+
+    setCount(count+1)
+  },[count])
   const handleClick=()=>{
     if (tehsil!==name) {
       handleAddEdu(copy)
@@ -120,31 +156,36 @@ const FormEducations = ({questions,formData,handleAddEdu,name}) => {
     }
 
   }
+  console.log(watch().tehsil);
+  
   return (
     <div className="h-[460px] overflow-y-scroll">
       {
-        elave ===true?<Select register={register("tehsil")} label={`${formData.education.length + 1}-ci Təhsilinizi qeyd edin`} options={[{
+        elave ===true && formData?.education.length!==0?<Select register={register("tehsil")} label={`${formData.education.length + 1}-ci Təhsilinizi qeyd edin`} options={[{
           id: 11,
           answer_title: "Bakalavr",
+          stage_fit:"",
           answer_weight: null,
           answer_dependens_on: null
       },{
         id: 12,
         answer_title: "Magistratura",
+        stage_fit:"",
         answer_weight: null,
         answer_dependens_on: null
     },{
       id: 13,
       answer_title: "PhD",
+      stage_fit:"",
       answer_weight: null,
       answer_dependens_on: null
   }]}/>:null
       }
       <div className="mb-5 mt-3">
-        <label><span style={{color:'#038477'}}>{elave===true? watch()?.tehsil?.answer:name}-</span>{ `${questions?.[0]?.question_title}`}</label>
+        <label><span style={{color:'#038477'}}>{elave===true? watch().tehsil?.answer:name}-</span>{ `${questions?.[0]?.question_title}`}</label>
         <TextInput
           placeholder="Ölkə"
-          value={formData?.vocationalScore}
+          value={watch().country}
           register={register("country")}
           />
       </div>
@@ -152,7 +193,7 @@ const FormEducations = ({questions,formData,handleAddEdu,name}) => {
       <TextInput
           label={questions?.[1]?.question_title}
           placeholder="ADNSU"
-          value={formData?.vocationalScore}
+          value={watch().university}
           register={register("university")}
         />
       </div>
@@ -160,7 +201,7 @@ const FormEducations = ({questions,formData,handleAddEdu,name}) => {
       <Select
           label={questions?.[2]?.question_title}
           options={questions?.[2]?.answers}
-          value={formData?.vocationalScore}
+          value={watch().specialty}
           register={register("specialty")}
         />
       </div>
@@ -219,6 +260,7 @@ const FormEducations = ({questions,formData,handleAddEdu,name}) => {
             <div className="w-8/12">
             <SelectMult 
             options={questions?.[6]?.answers}
+            label=""
             placeholder='Attestat - GPA'
             register={register("application")}
             />
@@ -258,7 +300,7 @@ const FormEducations = ({questions,formData,handleAddEdu,name}) => {
             <SelectMult 
             options={questions?.[6]?.answers}
             placeholder='Attestat - GPA'
-          
+            label=""
             register={register("application")}
             />
             </div>
@@ -273,8 +315,9 @@ const FormEducations = ({questions,formData,handleAddEdu,name}) => {
         watch().criteria ==='Hər ikisi' || watch().criteria === 'Müraciyyət'?
         <div>
           {
-            watch().application?.map((elem,index)=>(
-              <div className="border rounded-xl p-5 mt-5" key={index}>
+            watch("application")?.map((elem,index)=>(
+              <div key={index} className={`${elem}`}>
+                 <div className={` border rounded-xl p-5 mt-5 `}>
               <div className="flex justify-between  mb-3">
                 <label><span style={{color:'#038477'}}>{elem}</span> üzrə, nəticəni qeyd edin</label>
                 <Icon icon="flat-color-icons:cancel"  onClick={()=> handleDelete(elem)} />
@@ -289,6 +332,8 @@ const FormEducations = ({questions,formData,handleAddEdu,name}) => {
               }
          
               </div>
+              </div>
+             
             ))
           }
         </div>:null

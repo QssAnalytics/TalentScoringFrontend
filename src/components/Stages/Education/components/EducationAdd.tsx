@@ -2,12 +2,20 @@ import Bakalavr from './Bakalavr';
 import Magistr from './Magistr';
 import Phd from './PhD';
 import {useSelector} from 'react-redux';
+import {IQuestionQuestion} from 'types';
+import {EducationQuestionsFormValues} from '../EducationQuestionsForm';
 interface RootState {
 	dataa: {
 		tehsilPage: number;
 	};
 }
-const EducationAdd = ({questions, formData, handleAddEdu}) => {
+
+interface Edu {
+	questions: IQuestionQuestion[];
+	formData: EducationQuestionsFormValues;
+	handleAddEdu: () => void;
+}
+const EducationAdd = ({questions, formData, handleAddEdu}: Edu) => {
 	const tehsilPage = useSelector((state: RootState) => state.dataa.tehsilPage);
 	const DisplayEducations = () => {
 		if (tehsilPage === 1) {

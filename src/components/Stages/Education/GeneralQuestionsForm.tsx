@@ -10,37 +10,44 @@ import LinkButton from "../../LinkButton";
 import { updateStageForm } from "../../../state/stages/stageFormSlice";
 import { useAppDispatch, useAppSelector } from "../../../state/hooks";
 import { ISelectedValue } from "types";
-import { useDispatch } from 'react-redux';
-import { Dispatch } from 'redux';
 import { addTehsil } from "state/dataSlice";
+import {useSelector} from 'react-redux';
 export type GeneralQuestionsFormValues = {
   firstName: string;
   lastName: string;
   curOccupation: ISelectedValue;
   education: ISelectedValue;
   educationGrant: ISelectedValue;
+  
 };
-
+interface RootState {
+	dataa: {
+		tehsil: string;
+	};
+}
 export type GeneralQuestionsFormProps = {
   subStageSlug: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   stageIndex: any;
+  num:number
 };
 
 const GeneralQuestionsForm = ({
   stageIndex,
   subStageSlug,
+  num
 }: GeneralQuestionsFormProps) => {
   const { data: stagesData } = useGetStageQuery();
-
+  const tehsil = useSelector((state: RootState) => state.dataa.tehsil);
   const {
     slug: slugName,
     stage_name: stageName,
     stage_children,
   } = stagesData?.[0] || {};
 
+
   const { slug: subSlugName, stage_name: subStageName } =
-    stage_children?.[stageIndex + 1] || {};
+  stage_children?.[stageIndex + 1] || {};
 
   const {
     data: questionsData,
@@ -48,7 +55,6 @@ const GeneralQuestionsForm = ({
     isLoading,
   } = useGetQuestionsQuery(subStageSlug);
 
-  console.log(subSlugName, subStageName);
   const dispatch = useAppDispatch();
 
   const { formData } =
@@ -68,11 +74,10 @@ const GeneralQuestionsForm = ({
     });
 
   const onSubmit: SubmitHandler<GeneralQuestionsFormValues> = (data) => data;
-
   useEffect(() => {
     const subscription = watch((value) => {
       console.log(value);
-      dispatch(addTehsil(value.educationGrant.answer))
+      dispatch(addTehsil(value.education.answer))
       dispatch(
         updateStageForm({
           name: subStageSlug,
@@ -80,7 +85,7 @@ const GeneralQuestionsForm = ({
         })
       );
     });
-
+   
     reset(formData);
     return () => subscription.unsubscribe();
   }, [subStageSlug, watch]);

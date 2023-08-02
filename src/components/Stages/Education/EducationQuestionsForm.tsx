@@ -20,7 +20,8 @@ import Select from "components/Select";
 import { ISelectedValue } from "types";
 
 import * as yup from "yup";
-import EducationAdd, { AddEduFormValues } from "./components/EducationAdd";
+import EducationAdd from "./components/EducationAdd";
+import { AddEduFormValues } from "./components/FormEducations";
 import Educations from "./components/Educations";
 
 const schema = yup.object({
@@ -101,6 +102,18 @@ const EducationQuestionsForm = ({
           formData: value as EducationQuestionsFormValues,
         })
       );
+      if (
+        tehsil === "Orta təhsil" ||
+        tehsil === "Peşə təhsili"
+      ) {
+        state.subStageName === "Olimpiada sualları"
+          ? nav(`/stages/${slugName}/${prevSubSlugName}`, {
+              state: { subStageName: prevSubStageName, stageName: stageName },
+            })
+          : nav(`/stages/${slugName}/${subSlugName}`, {
+              state: { subStageName: subStageName, stageName: stageName },
+            });
+      }
     });
     
 

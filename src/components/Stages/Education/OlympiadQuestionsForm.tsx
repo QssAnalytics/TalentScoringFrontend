@@ -11,7 +11,8 @@ import { updateStageForm } from "../../../state/stages/stageFormSlice";
 import { useAppDispatch, useAppSelector } from "../../../state/hooks";
 import { GeneralQuestionsFormProps } from "./GeneralQuestionsForm";
 import { ISelectedValue } from "types";
-
+import {useSelector} from 'react-redux';
+import RadioInput from "components/RadioInputt";
 export type OlympiadQuestionsFormValues = {
   wonOlympics: ISelectedValue;
   subjectOlympiad: ISelectedValue;
@@ -22,6 +23,7 @@ export type OlympiadQuestionsFormValues = {
 const OlympiadQuestionsForm = ({
   stageIndex,
   subStageSlug,
+
 }: GeneralQuestionsFormProps) => {
   const { data: stagesData } = useGetStageQuery();
 
@@ -37,7 +39,7 @@ const OlympiadQuestionsForm = ({
     stage_children: nextStageChildren,
   } = stagesData?.[stageIndex + 1] || {};
 
-  const { slug: prevSubSlugName } = stage_children?.[stageIndex + 1] || {};
+  const { slug: prevSubSlugName } = stage_children?.[stageIndex +1] || {};
 
   const { slug: subSlugName, stage_name: subStageName } =
     stage_children?.[stageIndex + 2] || {};
@@ -62,7 +64,7 @@ const OlympiadQuestionsForm = ({
 
   const onSubmit: SubmitHandler<OlympiadQuestionsFormValues> = (data) =>
     console.log(data);
-
+  
   useEffect(() => {
     const subscription = watch((value) => {
       console.log(value);
@@ -98,7 +100,7 @@ const OlympiadQuestionsForm = ({
     >
       <div className="space-y-7">
         <div className="space-y-2">
-          <Radio
+          <RadioInput
             label={questions?.[0]?.question_title}
             options={questions?.[0]?.answers}
             register={inputProps[0]?.register}

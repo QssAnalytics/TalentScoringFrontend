@@ -3,11 +3,21 @@ import {Icon} from '@iconify/react';
 import {useDispatch} from 'react-redux';
 import {Dispatch} from 'redux';
 import {addData, addElave} from 'state/dataSlice';
-
-function Educations({formData,setValue}) {
+import { EducationQuestionsFormValues } from '../EducationQuestionsForm';
+interface Edu{
+	formData:EducationQuestionsFormValues,
+	setValue: any
+}
+const Educations = ({formData,setValue}:Edu)=> {
 	const dispatch: Dispatch = useDispatch();
+	
 	const handleClick = ()=>{
-		dispatch(addElave(true))
+		if (formData?.education.length!==0) {
+			dispatch(addElave(true))
+		
+		}else{
+			dispatch(addElave(false))
+		}
 		dispatch(addData(-1))
 	}
     const handleDelete = (id: number) => {
