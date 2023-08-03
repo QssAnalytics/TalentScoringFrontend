@@ -51,29 +51,32 @@ const ProLevelList = ({
       ({ name }) => name === prevSubSlugName
     ) as { formData: SportFormValues & any }) || ({} as any);
 
-  const { register, watch, reset, handleSubmit } = useForm<SportFormValues>();
+  const { register, watch, reset, handleSubmit, setValue } =
+    useForm<SportFormValues>();
   const questions = questionsData?.[0]?.questions;
-  // formData?.professionals.concat(SportFormData?.professionals)
-  console.log(SportFormData, watch().professionals);
-
   const onSubmit: SubmitHandler<SportFormValues> = (data) => console.log(data);
-  const handleRemoveItem = (item: any) => {
+  const handleRemoveItem = (item: IItem) => {
     const updatedProfessionals = SportFormData?.professionals.filter(
       (i: IItem) => i?.name !== item?.name
     );
+    const newWhichSport = SportFormData?.whichSport?.filter(
+      (el: any) => el !== item.name
+    );
     dispatch(
       updateStageForm({
-        name: subStageSlug,
+        name: prevSubSlugName as string,
         formData: {
           ...SportFormData,
+          whichSport: newWhichSport,
           professionals: updatedProfessionals,
         },
       })
     );
-    console.log(updatedProfessionals);
+    console.log("updated pros", updatedProfessionals);
   };
 
-  console.log(SportFormData);
+  console.log("pros onclick", SportFormData?.professionals);
+  console.log("pros", SportFormData?.professionals);
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}

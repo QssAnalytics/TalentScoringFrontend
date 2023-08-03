@@ -65,11 +65,6 @@ const ProLevel = ({
       ...professionals.slice(selectedIndex + 1, professionals?.length),
     ];
 
-    // console.log(watch(), selectedIndex, newProfessionals, {
-    //   ...SportFormData,
-    //   professionals: newProfessionals,
-    // });
-
     dispatch(
       updateStageForm({
         name: subStageSlug as string,
