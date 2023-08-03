@@ -11,8 +11,8 @@ import { IItem, SportFormValues } from '../SportQuestionsForm';
 export type SportLevelProps = {
     questions?: any;
     subStageSlug?: any;
-    index?: number;
-    item?: any
+    index: number;
+    item: string
     key?: any
     selectedLevel?: any
 }
@@ -44,7 +44,7 @@ const schema = yup
 export type SportLevelValues = yup.InferType<typeof schema>;
 
 
-const SportLevels = ({ questions, subStageSlug, item, key, selectedLevel }: SportLevelProps) => {
+const SportLevels = ({ questions, subStageSlug, item, index, selectedLevel }: SportLevelProps) => {
 
     const dispatch = useAppDispatch();
 
@@ -60,49 +60,55 @@ const SportLevels = ({ questions, subStageSlug, item, key, selectedLevel }: Spor
     useEffect(() => {
         selectedLevel(watch())
         setValue("name", item)
-    }, [watch("level"), item])
-    console.log(watch())
-    console.log(formData);
+    }, [watch("level")])
+    console.log(watch(),"sport level")
 
+    const handleRemove = (index: number) => {
+        const newWhichSport = formData?.whichSport?.filter(
+            (el: any) => el !== item
+        );
+
+        let newProfessionals = formData?.professionals;
+        let newAmateurs = formData?.amateurs;
+            newProfessionals = formData?.professionals.filter((i: IItem) => {
+                i.name !== formData?.professionals[index]?.name
+                
+            })
+            newAmateurs = formData?.amateurs.filter((i: IItem) => {
+                i.name !== formData?.amateurs[index]?.name;
+
+            })
+
+
+        dispatch(
+            updateStageForm({
+                name: subStageSlug,
+                formData: {
+                    ...formData,
+                    whichSport: newWhichSport,
+                    professionals: newProfessionals,
+                    amateurs: newAmateurs
+                },
+            })
+        );
+    }
     return (
 
         <div
             className="p-2.5 relative flex gap-4 "
-            key={key}
+            key={index}
         >
             <span className="bg-qss-input cursor-pointer relative py-2 max-w-[142px] w-full justify-center items-center flex rounded-full px-4 gap-2">
                 <span>{item}</span>
                 <Icon
                     icon="typcn:delete-outline"
                     className="cursor-pointer text-2xl text-[#EE4A4A]/75 hover:text-[#EE4A4A]"
-                    onClick={() => {
-                        const newWhichSport = formData?.whichSport?.filter(
-                            (el: any) => el !== item
-                        );
-                        const newProfessionals = formData?.professionals.filter((i: IItem) => {
-                                i.name !== item.name
-                        })
-
-                        const newAmateurs = formData?.amateurs.filter((i: IItem) => {
-                                i.name !== item.name
-                        })
-                        dispatch(
-                            updateStageForm({
-                                name: subStageSlug,
-                                formData: {
-                                    ...formData,
-                                    whichSport: newWhichSport,
-                                    professionals: newProfessionals,
-                                    amateurs: newAmateurs
-                                },
-                            })
-                        );
-                    }}
+                    onClick={() => handleRemove(index)}
                 />
             </span>
             <Radio
                 options={staticAnswers}
-                value={watch().level}
+                value={formData?.amateurs?.find(({name}:{name:string})=> name === item)?.level || formData?.professionals?.find(({name}:{name:string})=> name === item)?.level}
                 register={register("level")}
             />
 

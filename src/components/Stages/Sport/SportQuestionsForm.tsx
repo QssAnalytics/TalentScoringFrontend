@@ -212,9 +212,9 @@ const SportForm = ({ stageIndex, subStageSlug }: GeneralQuestionsFormProps) => {
 
               <label >{questions?.[2]?.question_title}</label>
 
-              {formData?.whichSport?.map((item: any, index: number) => (
+              {formData?.whichSport?.map((item: string, index: number) => (
                 <Fragment key={index}>
-                  <SportLevels item={item} selectedLevel={selectedLevel}  questions={questions} subStageSlug={subStageSlug} />
+                  <SportLevels item={item} selectedLevel={selectedLevel}  questions={questions} subStageSlug={subStageSlug} index={index} />
                 </Fragment>
               ))}
             </div>
