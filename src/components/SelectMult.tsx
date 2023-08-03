@@ -39,7 +39,7 @@ const SelectMult = ({
             name: register.name,
             value: value,
           },
-        });
+        })
       }}
     >
       <Listbox.Label>{label}</Listbox.Label>
