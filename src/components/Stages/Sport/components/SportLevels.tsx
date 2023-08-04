@@ -17,19 +17,6 @@ export type SportLevelProps = {
   selectedLevel?: any;
 };
 
-const staticAnswers = [
-  {
-    id: 0,
-    answer_title: "Heveskar",
-    answer_weight: null,
-  },
-  {
-    id: 1,
-    answer_title: "Pesekar",
-    answer_weight: null,
-  },
-];
-
 const schema = yup
   .object({
     name: yup.string().required(),
@@ -92,7 +79,7 @@ const SportLevels = ({
       })
     );
   };
-  console.log(staticAnswers, questions?.[2]?.answers);
+  console.log(questions?.[2]);
   return (
     <div className="p-2.5 relative flex gap-4 " key={index}>
       <span className="bg-qss-input cursor-pointer relative py-2 max-w-[142px] w-full justify-center items-center flex rounded-full px-4 gap-2">

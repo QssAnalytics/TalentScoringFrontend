@@ -153,7 +153,8 @@ const Stage = () => {
                 ? "Dil Bilikləri"
                 : subStageName === "Xüsusi bacarıqlar substage"
                 ? "Xüsusi bacarıqlar"
-                : subStageName === "Idman substage"
+                : subStageName === "Idman substage" ||
+                  subStageName === "Idman substage2"
                 ? "İdman"
                 : subStageName === "İş təcrübəsi substage"
                 ? "İş təcrübəsi"

@@ -44,7 +44,6 @@ const ProLevel = ({
   SportFormData,
 }: IProItem) => {
   const dispatch = useAppDispatch();
-
   const { register, watch, setValue } = useForm<SportLevelValues>();
 
   const updateData = useCallback(() => {
@@ -72,6 +71,8 @@ const ProLevel = ({
       })
     );
   }, [watch().whichPlace, watch().whichScore]);
+  console.log(item?.whichPlace);
+  console.log(watch().whichPlace);
 
   return (
     <div
@@ -86,7 +87,9 @@ const ProLevel = ({
         <Icon
           icon="typcn:delete-outline"
           className="cursor-pointer text-2xl text-[#EE4A4A]/75 hover:text-[#EE4A4A]"
-          onClick={() => handleRemoveItem(item?.name)}
+          onClick={() => {
+            handleRemoveItem(item?.name);
+          }}
         />
       </div>
 

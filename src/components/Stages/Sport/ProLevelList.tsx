@@ -82,18 +82,19 @@ const ProLevelList = ({
       onSubmit={handleSubmit(onSubmit)}
       className="mt-7 flex-col flex gap-5"
     >
-      {SportFormData?.professionals?.map((item: any, index: number) => (
-        <Fragment key={index}>
-          <ProLevel
-            item={item}
-            index={index}
-            handleRemoveItem={() => handleRemoveItem(item)}
-            questions={questions}
-            subStageSlug={prevSubSlugName}
-            SportFormData={SportFormData}
-          />
-        </Fragment>
-      ))}
+      {SportFormData?.professionals.length !== 0 &&
+        SportFormData?.professionals?.map((item: any, index: number) => (
+          <Fragment key={index}>
+            <ProLevel
+              item={item}
+              index={index}
+              handleRemoveItem={() => handleRemoveItem(item)}
+              questions={questions}
+              subStageSlug={prevSubSlugName}
+              SportFormData={SportFormData}
+            />
+          </Fragment>
+        ))}
       <LinkButton
         nav={{
           state: { stageName: prevStageName, subStageName: prevSubStageName },
