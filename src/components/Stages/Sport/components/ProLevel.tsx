@@ -72,7 +72,8 @@ const ProLevel = ({
       })
     );
   }, [watch().whichPlace, watch().whichScore]);
-
+  console.log(item?.whichPlace);
+  console.log(watch().whichPlace);
   return (
     <div
       className=" border rounded-xl border-[#D8D8D8] p-2.5 mb-5 relative"

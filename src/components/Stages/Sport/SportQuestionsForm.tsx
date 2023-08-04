@@ -87,6 +87,12 @@ const SportForm = ({ stageIndex, subStageSlug }: GeneralQuestionsFormProps) => {
     stage_name: nextStageName,
     stage_children: nextStageChildren,
   } = stagesData?.[stageIndex] || {};
+
+  const {
+    slug: nextSlugNameCond,
+    stage_name: nextStageNameCond,
+    stage_children: nextStageChildrenCond,
+  } = stagesData?.[4] || {};
   const {
     slug: prevSlugName,
     stage_name: prevStageName,
@@ -99,6 +105,8 @@ const SportForm = ({ stageIndex, subStageSlug }: GeneralQuestionsFormProps) => {
   const { slug: subSlugName } = stage_children?.[0] || {};
   const { slug: nextSubSlugName, stage_name: nextSubStageName } =
     nextStageChildren?.[1] || {};
+  const { slug: nextSubSlugNameCond, stage_name: nextSubStageNameCond } =
+    nextStageChildrenCond?.[0] || {};
   const {
     data: questionsData,
     error: questionsError,
@@ -230,15 +238,31 @@ const SportForm = ({ stageIndex, subStageSlug }: GeneralQuestionsFormProps) => {
         label="Geri"
         className="absolute left-0 -bottom-20"
       />
-
-      <LinkButton
-        nav={{
-          state: { stageName: nextStageName, subStageName: nextSubStageName },
-          path: { slugName: nextSlugName, subSlugName: nextSubSlugName },
-        }}
-        label="Növbəti"
-        className="absolute right-0 -bottom-20"
-      />
+      {formData?.professionals.length === 0 ? (
+        <LinkButton
+          nav={{
+            state: {
+              stageName: nextStageNameCond,
+              subStageName: nextSubStageNameCond,
+            },
+            path: {
+              slugName: nextSlugNameCond,
+              subSlugName: nextSubSlugNameCond,
+            },
+          }}
+          label="Növbəti"
+          className="absolute right-0 -bottom-20"
+        />
+      ) : (
+        <LinkButton
+          nav={{
+            state: { stageName: nextStageName, subStageName: nextSubStageName },
+            path: { slugName: nextSlugName, subSlugName: nextSubSlugName },
+          }}
+          label="Növbəti"
+          className="absolute right-0 -bottom-20"
+        />
+      )}
     </form>
   );
 };
