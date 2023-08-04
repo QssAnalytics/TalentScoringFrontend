@@ -211,7 +211,7 @@ const SportForm = ({ stageIndex, subStageSlug }: GeneralQuestionsFormProps) => {
               value={formData?.whichSport}
             />
             <div className="pr-2 max-h-[230px] overflow-y-auto">
-            {formData?.whichSport.length !== 0 && (
+              {formData?.whichSport.length !== 0 && (
                 <label>{questions?.[2]?.question_title}</label>
               )}
 

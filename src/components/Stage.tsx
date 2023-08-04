@@ -9,6 +9,7 @@ import OlympiadQuestionsForm from "./Stages/Education/OlympiadQuestionsForm";
 import LanguangeQuestionsForm from "./Stages/Languange/LanguageQuestionsForm";
 import SpecialSkillsForm from "./Stages/SpecialSkills/SpecialSkillsQuestionsForm";
 import SportForm from "./Stages/Sport/SportQuestionsForm";
+import SportForm2 from "./Stages/Sport/ProLevelList";
 import ProgramSkills from "./Stages/ProgramSkills/ProgramSkillsQuestionsForm";
 import JobExperienceForm from "./Stages/JobExperience/JobExperienceForm";
 import SpecialSkillsCertifcateQuestionsForm from "./Stages/SpecialSkills/SpecialSkillsCertifcateQuestionsForm";
@@ -105,6 +106,13 @@ const Stage = () => {
             subStageSlug={subStageSlug || ""}
           />
         );
+      case "idman-substage2":
+        return (
+          <SportForm2
+            stageIndex={stageIndex}
+            subStageSlug={subStageSlug || ""}
+          />
+        );
       case "is-tecrubesi-substage":
         return (
           <JobExperienceForm
@@ -145,7 +153,8 @@ const Stage = () => {
                 ? "Dil Bilikləri"
                 : subStageName === "Xüsusi bacarıqlar substage"
                 ? "Xüsusi bacarıqlar"
-                : subStageName === "Idman substage"
+                : subStageName === "Idman substage" ||
+                  subStageName === "Idman substage2"
                 ? "İdman"
                 : subStageName === "İş təcrübəsi substage"
                 ? "İş təcrübəsi"

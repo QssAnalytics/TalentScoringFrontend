@@ -48,13 +48,13 @@ export interface IQuestionQuestion {
 
 export interface IAnswer {
   id: number;
-  stage_fit: null | string;
+  stage_fit?: null | string;
   answer_title: string;
   answer_weight: null;
-  answer_dependens_on: number | null;
+  answer_dependens_on?: number | null;
 }
 
 export interface ISelectedValue {
-  answer: string | number;
-  weight: string | null;
+  answer: string;
+  weight: string ;
 }
