@@ -1,6 +1,6 @@
 import { Icon } from "@iconify/react";
 import Select from "components/Select";
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { useAppDispatch } from "state/hooks";
@@ -44,7 +44,7 @@ const ProLevel = ({
   SportFormData,
 }: IProItem) => {
   const dispatch = useAppDispatch();
-
+  const [isAdding, setIsAdding] = useState(false);
   const { register, watch, setValue } = useForm<SportLevelValues>();
 
   const updateData = useCallback(() => {
@@ -74,6 +74,7 @@ const ProLevel = ({
   }, [watch().whichPlace, watch().whichScore]);
   console.log(item?.whichPlace);
   console.log(watch().whichPlace);
+
   return (
     <div
       className=" border rounded-xl border-[#D8D8D8] p-2.5 mb-5 relative"
@@ -87,7 +88,12 @@ const ProLevel = ({
         <Icon
           icon="typcn:delete-outline"
           className="cursor-pointer text-2xl text-[#EE4A4A]/75 hover:text-[#EE4A4A]"
-          onClick={() => handleRemoveItem(item?.name)}
+          onClick={() => {
+            handleRemoveItem(item?.name);
+            {
+              SportFormData?.professionals.length === 0 && setIsAdding(true);
+            }
+          }}
         />
       </div>
 
