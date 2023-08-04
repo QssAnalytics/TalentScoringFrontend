@@ -17,7 +17,7 @@ export type ProgramSkillsValues = {
   haveProgramSkills: string;
   whichProgram: string[];
   whichScore: string[];
-  whichLevel: { id: number; answer: string };
+  whichLevel: { answer: number; weight: string };
   whichLang: { id: number; answer: string };
   msOffice: string[];
   programs: string[];
@@ -109,10 +109,10 @@ const ProgramSkills = ({
     { register: register("msOffice") },
     { register: register("programs") },
     { register: register("design") },
-    { register: register("whichLevel") },
+    { register: register(`whichLevel`) },
   ];
 
-  console.log(questions);
+  console.log(formData);
 
   return (
     <form
@@ -161,16 +161,13 @@ const ProgramSkills = ({
                         {lang + " " + questions?.[2]?.question_title}*
                       </label>
                       <div className="flex gap-5">
-                        {questions?.[2]?.answers?.map(
-                          ({ answer_title, id }, idx) => (
+               
                             <Radio
-                              key={id}
-                              label={answer_title}
-                              value={answer_title}
-                              register={register(`whichLevel${lang}`)}
+                              options={questions?.[2]?.answers}
+                              value={watch(lang)}
+                              register={register(lang)}
                             />
-                          )
-                        )}
+                    
                       </div>
                     </div>
                   ))}
@@ -192,16 +189,14 @@ const ProgramSkills = ({
                         {lang + " " + questions?.[2]?.question_title}*
                       </label>
                       <div className="flex gap-1">
-                        {questions?.[4]?.answers?.map(
-                          ({ answer_title, id }, idx) => (
+        
                             <Radio
-                              key={id}
-                              label={answer_title}
-                              value={answer_title}
-                              register={register(`whichLevel${lang}`)}
+                           
+                              options={questions?.[4]?.answers}
+                              value={watch(lang)}
+                              register={register(lang)}
                             />
-                          )
-                        )}
+           
                       </div>
                     </div>
                   ))}
@@ -252,16 +247,13 @@ const ProgramSkills = ({
                         {lang + " " + questions?.[2]?.question_title}*
                       </label>
                       <div className="flex gap-1">
-                        {questions?.[4]?.answers?.map(
-                          ({ answer_title, id }, idx) => (
+                   
                             <Radio
-                              key={id}
-                              label={answer_title}
-                              value={answer_title}
-                              register={register(`whichLevel${lang}`)}
+                              options={questions?.[4]?.answers}
+                              value={watch(lang)}
+                              register={register(lang)}
                             />
-                          )
-                        )}
+               
                       </div>
                     </div>
                   ))}

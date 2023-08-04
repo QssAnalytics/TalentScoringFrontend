@@ -72,25 +72,24 @@ const ExperienceAdd = ({
     { register: { ...register("endDate") } },
     { register: { ...register("currentWorking") } },
   ];
-
+  
   return (
     <div className="relative flex flex-col gap-2" onSubmit={onSubmit}>
       {displayRadio && (
         <div className="space-y-2">
           <label className="pl-2">{data?.[0].question_title}</label>
           <div className="flex gap-5">
-            {data?.[0]?.answers?.map(({ answer_title, id }, idx) => (
+           
               <Radio
-                key={id}
-                label={answer_title}
-                value={idx}
+                options={data?.[0]?.answers}
+                value={watch("haveExperience")}
                 register={inputProps[0].register}
               />
-            ))}
+            
           </div>
         </div>
       )}
-      {(displayRadio ? watch()?.haveExperience === "0" : true) && (
+      {(displayRadio ? watch()?.haveExperience?.answer === "Bəli" : true) && (
         <>
           <TextInput
             label="Çalışdığınız müəssisənin adını qeyd edin.*"

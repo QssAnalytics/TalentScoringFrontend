@@ -30,8 +30,18 @@ const schema = yup
         weight: yup.string().required(),
       })
       .required(),
-    langCert: yup.string().required(),
-    engLangCert: yup.string().required(),
+    langCert: yup
+    .object({
+      answer: yup.string().required(),
+      weight: yup.string().required(),
+    })
+    .required(),
+    engLangCert: yup
+    .object({
+      answer: yup.string().required(),
+      weight: yup.string().required(),
+    })
+    .required(),
     langCertName: yup.string().required(),
     langCertResult: yup.string().required(),
     engCertResult: yup.object({
@@ -39,7 +49,12 @@ const schema = yup
       weight: yup.string().required(),
     })
     .required(),
-    langLevel: yup.string().required(),
+    langLevel: yup
+    .object({
+      answer: yup.string().required(),
+      weight: yup.string().required(),
+    })
+    .required(),
   })
   .required();
 
@@ -83,7 +98,7 @@ const LanguageAdd = ({
   const handleClick = () => {
     setValue(
       "langLevel",
-      handleLangLevel(watch("engCertResult.answer"), watch("langLevel"))
+      handleLangLevel(watch("engCertResult.answer"), watch("langLevel.answer"))
     );
 
     editLang ? editLang(watch()) : addLang(watch());
@@ -92,6 +107,8 @@ const LanguageAdd = ({
     engCertResult: string | undefined,
     langLevel: string
   ) => {
+    console.log(engCertResult);
+    
     switch (engCertResult) {
       case "4.0":
       case "4.5-5.0":
@@ -125,10 +142,10 @@ const LanguageAdd = ({
 
     return langLevel;
   };
-
+  
   return (
-    <>
-      <>
+    <div>
+      <div>
         <button
           onClick={() => setChooseLang(false)}
           className="bg-qss-input/75 w-fit rounded-full py-1 px-4 hover:bg-qss-input"
@@ -153,23 +170,16 @@ const LanguageAdd = ({
                   </label>
 
                   <div className="flex gap-5 flex-wrap">
-                    {data?.[2]?.answers?.map(
-                      ({ answer_title, answer_weight, id }) => (
+                
                         <Radio
-                          key={id}
-                          label={answer_title}
-                          value={{
-                            answer: answer_title,
-                            weight: answer_weight,
-                          }}
+                        options={data?.[2]?.answers}
+                          value={watch("langCert")}
                           register={inputProps[1].register}
-                          spanClassName="text-sm"
                         />
-                      )
-                    )}
+                      
                   </div>
                 </div>
-                {watch().langCert === "0" && (
+                {watch().langCert?.answer === "Bəli" && (
                   <div className="space-y-2">
                     <label className="pl-2">{data?.[3]?.question_title}</label>
                     <div className="certificate flex gap-3">
@@ -191,20 +201,15 @@ const LanguageAdd = ({
                   </label>
 
                   <div className="flex gap-5 flex-wrap">
-                    {data?.[1]?.answers?.map(
-                      ({ answer_title, answer_weight, id }) => (
+            
                         <Radio
-                          key={id}
-                          label={answer_title}
-                          value={{
-                            answer: answer_title,
-                            weight: answer_weight,
-                          }}
+                        options={data?.[1]?.answers}
+                    
+                          value={watch("langLevel")}
                           register={inputProps[6].register}
-                          spanClassName="text-sm"
+                      
                         />
-                      )
-                    )}
+                 
                   </div>
                 </div>
               </>
@@ -214,22 +219,18 @@ const LanguageAdd = ({
                   <label className="pl-2">{data?.[4]?.question_title}*</label>
 
                   <div className="flex gap-5 flex-wrap">
-                    {data?.[4]?.answers?.map(({ answer_title, id,answer_weight }, idx) => (
+                    
                       <Radio
-                        key={id}
-                        label={answer_title}
-                        value={{
-                          answer: idx,
-                          weight: answer_weight,
-                        }}
+                        options={data?.[4]?.answers}
+                        value={watch("engLangCert")}
                         register={inputProps[2].register}
-                        spanClassName="text-sm"
+                        
                       />
-                    ))}
+                   
                   </div>
                 </div>
                 <div className="space-y-2">
-                  {watch().engLangCert === "0" && (
+                  {watch().engLangCert?.answer === "İELTS" && (
                     <>
                       <Select
                         label={data?.[5]?.question_title}
@@ -239,7 +240,7 @@ const LanguageAdd = ({
                       />
                     </>
                   )}
-                  {watch().engLangCert === "1" && (
+                  {watch().engLangCert?.answer === "TOEFL" && (
                     <Select
                       label={data?.[6]?.question_title}
                       options={data?.[6]?.answers}
@@ -247,7 +248,7 @@ const LanguageAdd = ({
                       value={watch().engCertResult}
                     />
                   )}
-                  {watch().engLangCert === "3" && (
+                  {watch().engLangCert?.answer === "Yoxdur" && (
                     <>
                       <div className="space-y-2">
                         <label className="pl-2">
@@ -271,18 +272,13 @@ const LanguageAdd = ({
                         </label>
 
                         <div className="flex gap-5 flex-wrap">
-                          {data?.[1]?.answers?.map(({ answer_title, id,answer_weight }) => (
-                            <Radio
-                              key={id}
-                              label={answer_title}
-                              value={{
-                                answer: answer_title,
-                                weight: answer_weight,
-                              }}
-                              register={inputProps[6].register}
-                              spanClassName="text-sm"
-                            />
-                          ))}
+                        <Radio
+                        options={data?.[1]?.answers}
+                    
+                          value={watch("langLevel")}
+                          register={inputProps[6].register}
+                      
+                        />
                         </div>
                       </div>
                     </>
@@ -290,7 +286,7 @@ const LanguageAdd = ({
                 </div>
               </>
             )}
-            {watch().engLangCert === "2" && (
+            {watch().engLangCert?.answer === "Öz sertifikatın" && (
               <div className="space-y-2">
                 <label className="pl-2">
                   {watch()?.language?.answer?.replace(/\s+dili$/, "")}{" "}
@@ -298,20 +294,13 @@ const LanguageAdd = ({
                 </label>
 
                 <div className="flex gap-5 flex-wrap">
-                  {data?.[1]?.answers?.map(({ answer_title, id,answer_weight }) => (
-                    <>
-                      <Radio
-                        key={id}
-                        label={answer_title}
-                        value={{
-                          answer: answer_title,
-                          weight: answer_weight,
-                        }}
-                        register={inputProps[6].register}
-                        spanClassName="text-sm"
-                      />
-                    </>
-                  ))}
+                <Radio
+                        options={data?.[1]?.answers}
+                    
+                          value={watch("langLevel")}
+                          register={inputProps[6].register}
+                      
+                        />
                 </div>
               </div>
             )}
@@ -319,7 +308,7 @@ const LanguageAdd = ({
             <button
               type="button"
               onClick={handleClick}
-              className=" bg-qss-input px-12 py-2.5 items-center gap-1 font-medium text-base flex mx-auto rounded-full"
+              className=" bg-qss-input px-12 py-2.5 items-center gap-1 font-medium text-base flex mt-5 mx-auto rounded-full"
             >
               Yadda saxla
               <Icon icon="ic:round-done" className="text-xl" />
@@ -336,8 +325,8 @@ const LanguageAdd = ({
             )}
           </>
         )}
-      </>
-    </>
+      </div>
+    </div>
   );
 };
 

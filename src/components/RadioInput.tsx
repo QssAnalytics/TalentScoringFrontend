@@ -14,6 +14,7 @@ const Radio = ({ options, label, register, value }: IRadioProps) => {
 
   return (
     <RadioGroup
+    className="w-full"
       value={selected}
       onChange={(value) => {
         setSelected(value);
@@ -27,12 +28,12 @@ const Radio = ({ options, label, register, value }: IRadioProps) => {
       }}
     >
       <RadioGroup.Label>{label}</RadioGroup.Label>
-      <div className="flex gap-5 mt-2">
+      <div className="flex flex-wrap gap-5 mt-2 w-full">
         {options?.map(({ id, answer_title, answer_weight }) => (
           <RadioGroup.Option
             key={id}
             value={{ answer: answer_title, weight: answer_weight }}
-            className="bg-qss-input py-2 cursor-pointer w-full max-w-[142px] px-4 gap-1 justify-center items-center flex rounded-full"
+            className="bg-qss-input py-2 cursor-pointe flex-wrap  w-full text-sm max-w-[142px] px-4 gap-1 justify-center items-center flex rounded-full"
           >
             <span
               className={`whitespace-nowrap relative flex flex-1 justify-center ${

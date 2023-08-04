@@ -19,6 +19,7 @@ export type SpecialSkillsFormValues = {
   certSkill: "";
 };
 
+
 const levels = [
   { answer_title: "Həvəskar", id: 0 },
   { answer_title: "Peşəkar", id: 1 },
@@ -107,6 +108,8 @@ const SpecialSkillsForm = ({
     { register: register("certSkill") },
   ];
 
+console.log(watch());
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
@@ -117,18 +120,17 @@ const SpecialSkillsForm = ({
           <label className="pl-2">{questions?.[0]?.question_title}*</label>
 
           <div className="flex gap-5">
-            {questions?.[0]?.answers?.map(({ answer_title, id }, idx) => (
+            
               <Radio
-                key={id}
-                label={answer_title}
-                value={idx}
+                options={questions?.[0]?.answers}
+                value={formData?.haveSpecialSkills}
                 register={inputProps[0].register}
               />
-            ))}
+           
           </div>
         </div>
 
-        {formData?.haveSpecialSkills === "0" && (
+        {formData?.haveSpecialSkills?.answer === "Bəli" && (
           <>
             <div className="space-y-2 animate-fade-in">
               <div className="flex gap-5 flex-wrap w-full">
@@ -170,15 +172,14 @@ const SpecialSkillsForm = ({
                           className="w-5 h-5 text-red-400 cursor-pointer"
                         />
                       </div>
-                      <div className="flex w-full justify-between">
-                        {levels?.map(({ answer_title, id }) => (
-                          <Radio
-                            key={id}
-                            label={answer_title}
-                            value={id}
+                      <div className="flex  w-full justify-between">
+                        
+                          <Radio          
+                            options={levels}
+                            value={watch(item)}
                             register={register(item)}
                           />
-                        ))}
+                       
                       </div>
                     </div>
                   ))}

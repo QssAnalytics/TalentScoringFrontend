@@ -136,11 +136,12 @@ const LanguageQuestionsForm = ({
   if (questionsError) return <div>Error</div>;
 
   const questions = questionsData?.[0]?.questions;
-
+  console.log(formData);
+  
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="mt-5 flex-col flex gap-5 h-[460px] overflow-y-auto"
+      className="mt-5 flex-col flex gap-5 h-[460px] overflow-y-auto overflow-hidden"
     >
       {chooseLang === false ? (
         <>
@@ -156,10 +157,12 @@ const LanguageQuestionsForm = ({
               Əlavə et +
             </button>
             <div className="space-y-2">
-              <div className="flex gap-5 w-48 py-2 px-4">
+              <div className="flex gap-5 w-48 py-2 px-4 -mt-3">
                 <Radio
                   value={{ answer: "Yoxdur", weight: "" }}
-                  label="Yoxdur"
+                  register={"nese"}
+                  options={[{answer_title:"Yoxdur", answer_dependens_on:null,answer_weight:null,id:123,stage_fit:""}]}
+           
                 />
               </div>
             </div>
@@ -229,19 +232,19 @@ const LanguageQuestionsForm = ({
                           <span> {lang.langCertResult}</span>{" "}
                         </>
                       )}
-                      {lang.engLangCert === "0" && (
+                      {lang.engLangCert?.answer === "IELTS" && (
                         <p className="w-48">
                           {" "}
                           IELTS {lang.engCertResult?.answer}
                         </p>
                       )}
-                      {lang.engLangCert === "1" && (
+                      {lang.engLangCert?.answer === "TOEFL" && (
                         <p className="w-48">
                           {" "}
                           TOEFL {lang.engCertResult?.answer}
                         </p>
                       )}
-                      {(lang.langCert === "1" || lang.engLangCert === "2") && (
+                      {(lang.langCert?.answer === "1" || lang.engLangCert?.answer === "Sertifikat yoxdur") && (
                         <span>Sertifikat yoxdur </span>
                       )}
                     </div>
