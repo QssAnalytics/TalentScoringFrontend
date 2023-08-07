@@ -49,9 +49,8 @@ const Select = ({
         <Listbox.Button as={Fragment}>
           {({ value, open }) => (
             <Listbox.Label
-              className={`relative w-full text-left flex items-center border  bg-qss-input py-2 px-4 rounded-full outline-none ${
-                open && "text-qss-secondary border border-qss-base-200"
-              } ${value?.answer ? "text-qss-secondary" : "text-qss-base-300"} `}
+              className={`relative w-full text-left flex items-center border  bg-qss-input py-2 px-4 rounded-full outline-none ${open && "text-qss-secondary border border-qss-base-200"
+                } ${value?.answer ? "text-qss-secondary" : "text-qss-base-300"} `}
             >
               {value?.answer || defaultValue}
               <span className={`absolute right-6 ${open && "rotate-180"}`}>
@@ -82,11 +81,10 @@ const Select = ({
                   {answer_title}
                 </span>
                 <span
-                  className={`${
-                    value?.answer === answer_title
-                      ? "bg-qss-secondary"
-                      : "opacity-0 group-hover:opacity-100 bg-white"
-                  } w-3 h-3 inline-flex  rounded-full border border-qss-base-200`}
+                  className={`${value?.answer === answer_title
+                    ? "bg-qss-secondary"
+                    : "opacity-0 group-hover:opacity-100 bg-white"
+                    } w-3 h-3 inline-flex  rounded-full border border-qss-base-200`}
                 ></span>
               </>
             </Listbox.Option>

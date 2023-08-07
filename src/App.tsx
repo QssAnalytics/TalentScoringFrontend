@@ -5,6 +5,8 @@ import ReportFront from "./assets/report-front.png";
 import ReportBack from "./assets/report-back.png";
 import { useAppDispatch, useAppSelector } from "./state/hooks";
 import { setShowReport } from "./state/report/reportSlice";
+import Login from "pages/Auth/Login/Login";
+import Register from "pages/Auth/Register/Register";
 const App = () => {
   const { showReport } = useAppSelector((state) => state.reportState);
   const dispatch = useAppDispatch();
@@ -13,6 +15,8 @@ const App = () => {
       <Routes>
         <Route index element={<Landing />} />
         <Route path={"/stages/:stageSlug/:subStageSlug"} element={<Stages />} />
+        <Route path={"/login"} element={<Login />} />
+        <Route path={"/register"} element={<Register />} />
       </Routes>
 
       {showReport && (

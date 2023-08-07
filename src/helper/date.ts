@@ -6,8 +6,9 @@ export const getDayForMonthly = (
   selectedYear: number,
   selectedMonth: number
 ) => {
+
   // Get the number of days in the selected month
-  const daysInMonth = new Date(selectedYear, selectedMonth + 1, 0).getDate();
+  const daysInMonth = new Date(selectedYear, selectedMonth, 0).getDate();
 
   const days = [];
 

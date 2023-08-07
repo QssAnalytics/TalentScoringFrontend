@@ -10,8 +10,8 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <Provider store={store}>
     <Router>
       <StrictMode>
-      <App />
+        <App />
       </StrictMode>
     </Router>
-  </Provider>
+  </Provider >
 );
