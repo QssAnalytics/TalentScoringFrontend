@@ -27,7 +27,7 @@ const Radio = ({ options, label, register, value }: IRadioProps) => {
       }}
     >
       <RadioGroup.Label>{label}</RadioGroup.Label>
-      <div className="flex flex-wrap gap-5 mt-2 w-full">
+      <div className="flex flex-wrap  gap-3 mt-2 w-full">
         {options?.map(({ id, answer_title, answer_weight }) => (
           <RadioGroup.Option
             key={id}

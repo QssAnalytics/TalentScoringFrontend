@@ -72,7 +72,8 @@ const GeneralQuestionsForm = ({
         educationGrant: { answer: "", weight: "" },
       },
     });
-
+    console.log(tehsil);
+    
   const onSubmit: SubmitHandler<GeneralQuestionsFormValues> = (data) => data;
   useEffect(() => {
     const subscription = watch((value) => {
@@ -100,13 +101,7 @@ const GeneralQuestionsForm = ({
       onSubmit={handleSubmit(onSubmit)}
       className="mt-5 flex-col flex gap-5"
     >
-      <div className="grid grid-cols-2 gap-4">
-        <TextInput
-          label="Ad*"
-          register={register("firstName", { required: true })}
-        />
-        <TextInput label="Soyad*" register={register("lastName")} />
-      </div>
+
 
       <Select
         label={`${questions?.[0]?.question_title}*`}

@@ -249,60 +249,60 @@ const LanguageAdd = ({
                     />
                   )}
                   {watch().engLangCert?.answer === "Yoxdur" && (
-                    <>
-                      <div className="space-y-2">
-                        <label className="pl-2">
-                          {data?.[3]?.question_title}
-                        </label>
-                        <div className="certificate flex gap-3">
-                          <TextInput
-                            inputClassName="w-3/5"
-                            register={inputProps[3].register}
-                          />
-                          <TextInput
-                            inputClassName="w-2/5"
-                            register={inputProps[4].register}
-                          />
-                        </div>
-                      </div>
-                      <div className="space-y-2">
-                        <label className="pl-2">
-                          {watch()?.language?.answer?.replace(/\s+dili$/, "")}{" "}
-                          {data?.[1]?.question_title}*
-                        </label>
-
-                        <div className="flex gap-5 flex-wrap">
-                        <Radio
-                        options={data?.[1]?.answers}
-                    
-                          value={watch("langLevel")}
-                          register={inputProps[6].register}
-                      
-                        />
-                        </div>
-                      </div>
-                    </>
-                  )}
+                  <div className="space-y-2">
+                  <label className="pl-2">
+                    {watch()?.language?.answer?.replace(/\s+dili$/, "")}{" "}
+                    {data?.[1]?.question_title}*
+                  </label>
+ 
+                  <div className="flex gap-5 flex-wrap">
+                  <Radio
+                  options={data?.[1]?.answers}
+              
+                    value={watch("langLevel")}
+                    register={inputProps[6].register}
+                
+                  />
+                  </div>
                 </div>
-              </>
             )}
             {watch().engLangCert?.answer === "Öz sertifikatın" && (
-              <div className="space-y-2">
-                <label className="pl-2">
-                  {watch()?.language?.answer?.replace(/\s+dili$/, "")}{" "}
-                  {data?.[1]?.question_title}*
-                </label>
+               <>
+               <div className="space-y-2">
+                 <label className="pl-2">
+                   {data?.[3]?.question_title}
+                 </label>
+                 <div className="certificate flex gap-3">
+                   <TextInput
+                     inputClassName="w-3/5"
+                     register={inputProps[3].register}
+                   />
+                   <TextInput
+                     inputClassName="w-2/5"
+                     register={inputProps[4].register}
+                   />
+                 </div>
+               </div>
+               <div className="space-y-2">
+                 <label className="pl-2">
+                   {watch()?.language?.answer?.replace(/\s+dili$/, "")}{" "}
+                   {data?.[1]?.question_title}*
+                 </label>
 
-                <div className="flex gap-5 flex-wrap">
-                <Radio
-                        options={data?.[1]?.answers}
-                    
-                          value={watch("langLevel")}
-                          register={inputProps[6].register}
-                      
-                        />
-                </div>
-              </div>
+                 <div className="flex gap-5 flex-wrap">
+                 <Radio
+                 options={data?.[1]?.answers}
+             
+                   value={watch("langLevel")}
+                   register={inputProps[6].register}
+               
+                 />
+                 </div>
+               </div>
+             </>
+           )}
+         </div>
+       </>
             )}
 
             <button

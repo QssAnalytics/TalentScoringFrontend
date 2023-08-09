@@ -31,7 +31,7 @@ const schema = yup.object({
 interface RootState {
   dataa: {
     currentPage:1,
-    tehsil:string
+    tehsil:string,
   };
 }
 export type EducationQuestionsFormValues = yup.InferType<typeof schema>;
@@ -46,6 +46,7 @@ const EducationQuestionsForm = ({
   const nav = useNavigate();
   const page= useSelector((state: RootState) => state.dataa.currentPage);
   const tehsil= useSelector((state: RootState) => state.dataa.tehsil);
+  
   const { state } = useLocation();
   console.log(tehsil);
   
@@ -103,8 +104,7 @@ const EducationQuestionsForm = ({
         })
       );
       if (
-        tehsil === "Orta təhsil" ||
-        tehsil === "Peşə təhsili"
+        tehsil === "Orta təhsil"
       ) {
         state.subStageName === "Olimpiada sualları"
           ? nav(`/stages/${slugName}/${prevSubSlugName}`, {
@@ -154,6 +154,7 @@ const EducationQuestionsForm = ({
         }}
         type="outline"
         label="Geri"
+        disabled={formData?.education?.length!==0?true:false}
         className="absolute left-0 -bottom-20"
       />
 

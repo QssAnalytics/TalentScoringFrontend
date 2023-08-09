@@ -14,11 +14,16 @@ import * as yup from "yup";
 import { Icon } from "@iconify/react";
 import LanguageAdd, { AddLangFormValues } from "./components/LanguageAdd";
 import { yupResolver } from "@hookform/resolvers/yup";
-
+import { useSelector } from "react-redux";
+import { addPop, addRemove } from "state/dataSlice";
 const schema = yup.object({
   languageSkills: yup.array().required(),
 });
-
+interface RootState {
+	dataa: {
+		removeFunc: boolean;
+	};
+}
 export type LanguageQuestionsFormValues = yup.InferType<typeof schema>;
 
 const LanguageQuestionsForm = ({
@@ -72,7 +77,8 @@ const LanguageQuestionsForm = ({
   const onSubmit: SubmitHandler<LanguageQuestionsFormValues> = (data) => {
     console.log(data);
   };
-
+  const remove = useSelector((state: RootState) => state.dataa.removeFunc);
+	const [idd,setId] = useState(0)
   const [isAdding, setIsAdding] = useState(true);
   const [isEditing, setIsEditing] = useState<{
     edit: boolean;
@@ -87,14 +93,22 @@ const LanguageQuestionsForm = ({
     setValue("languageSkills", [...data, lang]);
     setIsAdding(false);
   };
+ 
 
+  
   const handleRemove = (landIndex: number) => {
-    const filterData = formData?.languageSkills?.filter(
-      (_, index) => index !== landIndex
-    );
-
-    setValue("languageSkills", filterData);
+    dispatch(addPop(true))
+		setId(landIndex)
+   
   };
+  if (remove===true) {
+    const filterData = formData?.languageSkills?.filter(
+      (_, index) => index !== idd
+    );
+    formData?.languageSkills.length === 1 && setIsAdding(true);
+    setValue("languageSkills", filterData);
+		dispatch(addRemove(false))
+	}
   const handleEdit = (langIndex: number) => {
     const data = formData?.languageSkills?.[langIndex] as AddLangFormValues;
     setEditingIndex(langIndex);
@@ -262,8 +276,7 @@ const LanguageQuestionsForm = ({
                           src={removeIcon}
                           alt="remove"
                           onClick={() => {
-                            formData?.languageSkills.length === 1 &&
-                              setIsAdding(true),
+                           
                               handleRemove(index);
                           }}
                         />

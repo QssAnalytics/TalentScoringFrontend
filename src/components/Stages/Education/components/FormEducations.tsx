@@ -12,7 +12,7 @@ import TextInput from "../../../TextInput";
 
 import DateInput from "components/DateInput";
 import SelectMult from "components/SelectMult";
-import { Zoom } from "react-awesome-reveal";
+
 import { useDispatch } from 'react-redux';
 import { Dispatch } from 'redux';
 import { addData, addElave, addTehsilPage } from "state/dataSlice";
@@ -72,7 +72,7 @@ const FormEducations = ({questions,formData,handleAddEdu,name}:EducationAdd) => 
   } = useForm<AddEduFormValues>({
     defaultValues:{
       id:"",
-      tehsil:"",
+      tehsil:{answer:"", weight:""},
       country: "",
       university:"",
       specialty: {answer:"", weight:""},
@@ -147,6 +147,8 @@ const FormEducations = ({questions,formData,handleAddEdu,name}:EducationAdd) => 
 
     setCount(count+1)
   },[count])
+  console.log(tehsil,name);
+  
   const handleClick=()=>{
     if (tehsil!==name) {
       handleAddEdu(copy)
@@ -159,12 +161,20 @@ const FormEducations = ({questions,formData,handleAddEdu,name}:EducationAdd) => 
     }
 
   }
-  console.log(watch().tehsil);
+
   
   return (
     <div className="h-[460px] overflow-y-scroll">
       {
-        elave ===true && formData?.education.length!==0?<Select register={register("tehsil")} label={`${formData.education.length + 1}-ci Təhsilinizi qeyd edin`} options={[{
+        elave ===true && formData?.education.length!==0?<Select register={register("tehsil")} label={`${formData.education.length + 1}-ci Təhsilinizi qeyd edin`} options={[
+          {
+            id: 10,
+            answer_title: "Peşə təhsili",
+            stage_fit:"",
+            answer_weight: null,
+            answer_dependens_on: null
+        },
+        {
           id: 11,
           answer_title: "Bakalavr",
           stage_fit:"",
@@ -185,7 +195,7 @@ const FormEducations = ({questions,formData,handleAddEdu,name}:EducationAdd) => 
   }]}/>:null
       }
       <div className="mb-5 mt-3">
-        <label><span style={{color:'#038477'}}>{elave===true? watch().tehsil?.answer:name}-</span>{ `${questions?.[0]?.question_title}`}</label>
+        <label><span style={{color:'#038477'}}>{elave===true? watch("tehsil").answer:name}-</span>{ `${questions?.[0]?.question_title}`}</label>
         <TextInput
           placeholder="Ölkə"
           value={watch().country}
@@ -194,7 +204,7 @@ const FormEducations = ({questions,formData,handleAddEdu,name}:EducationAdd) => 
       </div>
       <div className="mb-5">
       <TextInput
-          label={questions?.[1]?.question_title}
+          label={tehsil==="Peşə təhsili"?"Kollecin adı ":questions?.[1]?.question_title}
           placeholder="ADNSU"
           value={watch().university}
           register={register("university")}
@@ -210,12 +220,14 @@ const FormEducations = ({questions,formData,handleAddEdu,name}:EducationAdd) => 
       </div>
 
 
-        <label>{questions?.[3]?.question_title}</label>
+        
         <div className="flex  items-center gap-3 mb-3">
         <DateInput
+        label={tehsil==="Peşə təhsili"?"Kollecə qəbul olma tarixi ":"Universitetə  qəbul olma tarixi"}
         type="date"
         register={register("date.start")}/>
         <DateInput
+        label={tehsil==="Peşə təhsili"?"Kolleci bitirmə tarixi ":"Universiteti  bitirmə tarixi"}
         type="date"
         register={register("date.end")}
         />
@@ -229,7 +241,7 @@ const FormEducations = ({questions,formData,handleAddEdu,name}:EducationAdd) => 
         </div>
         {
           watch()?.criteria?.answer === 'Lokal imtahan'?
-            <Zoom>
+            <div>
                 <label>
         {questions?.[5]?.question_title}
     
@@ -250,7 +262,7 @@ const FormEducations = ({questions,formData,handleAddEdu,name}:EducationAdd) => 
             register={register("local.maxScore")}
         />
         </div>
-            </Zoom>
+            </div>
           :null
         }
         {

@@ -4,9 +4,11 @@ import Phd from './PhD';
 import {useSelector} from 'react-redux';
 import {IQuestionQuestion} from 'types';
 import {EducationQuestionsFormValues} from '../EducationQuestionsForm';
+import PesheTehsil from './PesheTehsil';
 interface RootState {
 	dataa: {
 		tehsilPage: number;
+		tehsil: string;
 	};
 }
 
@@ -17,9 +19,18 @@ interface Edu {
 }
 const EducationAdd = ({questions, formData, handleAddEdu}: Edu) => {
 	const tehsilPage = useSelector((state: RootState) => state.dataa.tehsilPage);
+	const tehsil = useSelector((state: RootState) => state.dataa.tehsil);
 	const DisplayEducations = () => {
 		if (tehsilPage === 1) {
-			return <Bakalavr questions={questions} formData={formData} handleAddEdu={handleAddEdu} />;
+			return (
+				<div>
+					{tehsil === 'Peşə təhsili' ? (
+						<PesheTehsil questions={questions} formData={formData} handleAddEdu={handleAddEdu} />
+					) : (
+						<Bakalavr questions={questions} formData={formData} handleAddEdu={handleAddEdu} />
+					)}
+				</div>
+			);
 		} else if (tehsilPage === 2) {
 			return <Magistr questions={questions} formData={formData} handleAddEdu={handleAddEdu} />;
 		} else if (tehsilPage === 3) {

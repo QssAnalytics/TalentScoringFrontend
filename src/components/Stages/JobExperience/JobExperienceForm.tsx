@@ -10,7 +10,8 @@ import { Icon } from '@iconify/react';
 import * as yup from "yup";
 import { yupResolver } from '@hookform/resolvers/yup';
 import ExperienceAdd, { AddExpFormValues } from './ExperienceAdd';
-
+import { useSelector } from 'react-redux';
+import { addPop, addRemove } from 'state/dataSlice';
 const schema = yup.object({
     experiences: yup.array().required()
 })
@@ -20,7 +21,11 @@ export interface JobExperienceListItemProps {
     item: JobExperienceValues;
     index: number;
 }
-
+interface RootState {
+	dataa: {
+		removeFunc: boolean;
+	};
+}
 const JobExperienceForm = ({ stageIndex, subStageSlug }: GeneralQuestionsFormProps) => {
     const handleAdd = (exp: JobExperienceValues) => {
         const data = formData?.experiences;
@@ -28,6 +33,8 @@ const JobExperienceForm = ({ stageIndex, subStageSlug }: GeneralQuestionsFormPro
         setIsAdding(false)
         setDisplayRadio(false)
     }
+    const remove = useSelector((state: RootState) => state.dataa.removeFunc);
+    const [idd,setId] = useState(0)
     const [isAdding, setIsAdding] = useState(true);
     const [isEditing, setIsEditing] = useState<{
         edit: boolean;
@@ -55,12 +62,13 @@ const JobExperienceForm = ({ stageIndex, subStageSlug }: GeneralQuestionsFormPro
     };
 
     const handleRemove = (expIndex: number) => {
-        const filterData = formData?.experiences?.filter(
-            (_, index) => index !== expIndex
-        );
+        dispatch(addPop(true))
+		setId(expIndex)
 
-        setValue("experiences", filterData);
     };
+ 
+       
+    
 
     const handleEdit = (expIndex: number) => {
         const data = formData?.experiences?.[expIndex] as AddExpFormValues;
@@ -122,7 +130,14 @@ const JobExperienceForm = ({ stageIndex, subStageSlug }: GeneralQuestionsFormPro
             ({ name }) => name === subStageSlug
         ) as { formData: JobExperienceValues }) || {};
 
-
+        if (remove===true) {
+            const filterData = formData?.experiences?.filter(
+                (_, index) => index !== idd
+            );
+            formData?.experiences.length===1 && setIsAdding(true),
+            setValue("experiences", filterData);
+            dispatch(addRemove(false))
+        }
 
     useEffect(() => {
         const subscription = watch((value) => {
@@ -170,7 +185,7 @@ const JobExperienceForm = ({ stageIndex, subStageSlug }: GeneralQuestionsFormPro
 
                                         </div>
                                         <div className="remove cursor-pointer">
-                                            <img src={removeIcon} alt="remove" onClick={() => {formData?.experiences.length===1 && setIsAdding(true), handleRemove(index)}} />
+                                            <img src={removeIcon} alt="remove" onClick={() => { handleRemove(index)}} />
                                         </div>
                                     </li>
                                 ))}

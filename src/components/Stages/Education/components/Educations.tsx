@@ -1,34 +1,50 @@
-import React from 'react';
+
 import {Icon} from '@iconify/react';
 import {useDispatch} from 'react-redux';
 import {Dispatch} from 'redux';
-import {addData, addElave} from 'state/dataSlice';
+import {addData, addElave, addPop, addRemove, changeTehsilPage} from 'state/dataSlice';
 import { EducationQuestionsFormValues } from '../EducationQuestionsForm';
+import {useSelector} from 'react-redux';
+import { useCallback, useEffect, useState } from 'react';
+
 interface Edu{
 	formData:EducationQuestionsFormValues,
 	setValue: any
 }
+interface RootState {
+	dataa: {
+		removeFunc: boolean;
+	};
+}
 const Educations = ({formData,setValue}:Edu)=> {
 	const dispatch: Dispatch = useDispatch();
-	
+	const remove = useSelector((state: RootState) => state.dataa.removeFunc);
+	const [idd,setId] = useState(0)
 	const handleClick = ()=>{
 		if (formData?.education.length!==0) {
 			dispatch(addElave(true))
 		
 		}else{
 			dispatch(addElave(false))
+			dispatch(changeTehsilPage(1))
+			
 		}
 		dispatch(addData(-1))
 	}
-    const handleDelete = (id: number) => {
-        const copy = formData?.education?.filter(
-          (x) => x.id !== id
-          
-        );
-        setValue('education',copy)
-    
-        
-      };
+    const handleDelete =(id:number)=>{
+		dispatch(addPop(true))
+		setId(id)
+       
+	}; 
+	if (remove===true) {
+		const copy = formData?.education?.filter(
+			(x) => x.id !== idd
+			
+		);
+		setValue('education',copy)
+		dispatch(addRemove(false))
+	}
+	
 	return (
 		<div>
 			{formData?.education?.map((elem, index) => (
