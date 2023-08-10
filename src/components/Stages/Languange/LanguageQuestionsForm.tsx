@@ -17,6 +17,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 
 const schema = yup.object({
   languageSkills: yup.array().required(),
+  haveLanguageSkills: yup.object().required()
 });
 
 export type LanguageQuestionsFormValues = yup.InferType<typeof schema>;
@@ -61,11 +62,12 @@ const LanguageQuestionsForm = ({
       ({ name }) => name === subStageSlug
     ) as { formData: LanguageQuestionsFormValues }) || {};
 
-  const { register, handleSubmit, watch, reset, setValue } =
+  const { register, handleSubmit, watch, reset: ParentReset, setValue } =
     useForm<LanguageQuestionsFormValues>({
       resolver: yupResolver(schema),
       defaultValues: {
         languageSkills: [],
+        haveLanguageSkills: {}
       },
     });
 
@@ -80,7 +82,7 @@ const LanguageQuestionsForm = ({
   }>({ edit: false });
   const [displayListButton, setDisplayListButton] = useState(false);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
-  const [chooseLang, setChooseLang] = useState(false);
+  const [chooseLang, setChooseLang] = useState(true);
 
   const handleAdd = (lang: LanguageQuestionsFormValues) => {
     const data = formData?.languageSkills;
@@ -118,7 +120,7 @@ const LanguageQuestionsForm = ({
 
   useEffect(() => {
     const subscription = watch((value) => {
-      console.log(value);
+      // console.log(value);
       dispatch(
         updateStageForm({
           name: subStageSlug,
@@ -127,7 +129,7 @@ const LanguageQuestionsForm = ({
       );
     });
 
-    reset(formData);
+    ParentReset(formData);
 
     return () => subscription.unsubscribe();
   }, [subStageSlug, watch]);
@@ -136,47 +138,40 @@ const LanguageQuestionsForm = ({
   if (questionsError) return <div>Error</div>;
 
   const questions = questionsData?.[0]?.questions;
-  console.log(formData);
-  
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
       className="mt-5 flex-col flex gap-5 h-[460px] overflow-y-auto overflow-hidden"
     >
-      {chooseLang === false ? (
+      {isAdding ? (
         <>
-          <h3 className="pl-2">Əlavə xarici dil biliklərinizi qeyd edin</h3>
-          <div className=" flex items-center">
-            <button
-              className="add py-2 px-4 w-full rounded-full flex justify-center items-center"
-              type="button"
-              onClick={() => {
-                setChooseLang(true);
-              }}
-            >
-              Əlavə et +
-            </button>
-            <div className="space-y-2">
-              <div className="flex gap-5 w-48 py-2 px-4 -mt-3">
-                <Radio
-                  value={{ answer: "Yoxdur", weight: "" }}
-                  register={"nese"}
-                  options={[{answer_title:"Yoxdur", answer_dependens_on:null,answer_weight:null,id:123,stage_fit:""}]}
-           
-                />
-              </div>
-            </div>
+          <h3 className="pl-2">{questions?.[1].question_title}</h3>
+          <div className="flex items-center relative">
+            <LanguageAdd
+              data={questions}
+              addLang={handleAdd}
+              setChooseLang={setChooseLang}
+              isAdding={isAdding}
+              setIsAdding={setIsAdding}
+              displayListButton={displayListButton}
+              formData={formData}
+              parentReset={ParentReset}
+            />
+            {
+              formData?.languageSkills?.length === 0 &&
+              (<div className="">
+                <div className="flex gap-5 w-48 py-2 px-4">
+                  <Radio
+                    value={watch('haveLanguageSkills')}
+                    register={register('haveLanguageSkills')}
+                    options={questions?.[0].answers}
+                  />
+                </div>
+              </div>)
+            }
           </div>
         </>
-      ) : isAdding ? (
-        <LanguageAdd
-          data={questions}
-          addLang={handleAdd}
-          setChooseLang={setChooseLang}
-          isAdding={isAdding}
-          setIsAdding={setIsAdding}
-          displayListButton={displayListButton}
-        />
       ) : isEditing.edit ? (
         <LanguageAdd
           data={questions}
@@ -206,7 +201,7 @@ const LanguageQuestionsForm = ({
             <span>Sertifikat</span>
           </div>
           <ul>
-            {formData?.languageSkills.map(
+            {formData?.languageSkills?.map(
               (lang: AddLangFormValues, index: number) => (
                 <li
                   key={index}
@@ -220,7 +215,7 @@ const LanguageQuestionsForm = ({
                   </div>
                   <div className="border-r">
                     <div className="level p-2.5">
-                      {lang.langLevel?.substring(0, 2)}
+                      {lang.langLevel?.answer?.substring(0, 2)}
                     </div>
                   </div>
                   <div className="w-48">

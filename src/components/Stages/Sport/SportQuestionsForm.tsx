@@ -122,7 +122,7 @@ const SportForm = ({ stageIndex, subStageSlug }: GeneralQuestionsFormProps) => {
   const { register, handleSubmit, watch, reset, setValue } =
     useForm<SportFormValues>({
       defaultValues: {
-        sport: { answer: "", weight: "" },
+        sport: {},
         whichSport: [],
         professionals: [],
         amateurs: [],
@@ -146,6 +146,30 @@ const SportForm = ({ stageIndex, subStageSlug }: GeneralQuestionsFormProps) => {
     return () => subscription.unsubscribe();
   }, [subStageSlug, watch]);
 
+  useEffect(() => {
+    if (formData?.sport?.answer === "Yoxdur") {
+      reset({
+        ...formData,
+        whichSport: [],
+        professionals: [],
+        amateurs: [],
+      })
+    }
+
+  }, [formData?.sport?.answer])
+
+  useEffect(() => {
+    if (formData?.whichSport?.length !== 0 && formData?.whichSport?.length !== undefined) {
+      reset({
+        ...formData,
+        sport: {}
+      })
+    }
+  }, [formData?.whichSport?.length])
+
+
+
+
   if (isLoading) return <div>Loading...</div>;
   if (questionsError) return <div>Error</div>;
 
@@ -162,7 +186,6 @@ const SportForm = ({ stageIndex, subStageSlug }: GeneralQuestionsFormProps) => {
           professionals.filter((i) => item.name !== i.name)
         );
       }
-      console.log(amateurs);
     } else if (item.level?.answer === "Peşəkar" && !isProExist) {
       setValue("professionals", [...professionals, item]);
       if (isAmatExist) {
@@ -171,18 +194,16 @@ const SportForm = ({ stageIndex, subStageSlug }: GeneralQuestionsFormProps) => {
           amateurs.filter((i) => item.name !== i.name)
         );
       }
-      console.log(item.level?.answer);
-
-      console.log(watch().professionals);
     }
   };
 
   const questions = questionsData?.[0]?.questions;
+  console.log(questions);
+
   const inputProps = [
     { register: register("sport") },
     { register: register("whichSport") },
   ];
-  console.log(formData);
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
@@ -190,9 +211,16 @@ const SportForm = ({ stageIndex, subStageSlug }: GeneralQuestionsFormProps) => {
     >
       <div className="space-y-7 ">
         <div className="space-y-2">
-          <label className="pl-2">{questions?.[0]?.question_title}*</label>
-
-          <div className="flex gap-5">
+          <label className="pl-2">{questions?.[1]?.question_title}*</label>
+          <div className="flex items-center gap-5">
+            <div className="w-[70%]">
+              <SelectMult
+                placeholder="Idman Secimi"
+                options={questions?.[1]?.answers}
+                register={inputProps[1].register}
+                value={formData?.whichSport}
+              />
+            </div>
             <Radio
               options={questions?.[0]?.answers}
               value={formData?.sport}
@@ -200,35 +228,23 @@ const SportForm = ({ stageIndex, subStageSlug }: GeneralQuestionsFormProps) => {
             />
           </div>
         </div>
+        <div className="pr-2 max-h-[230px] overflow-y-auto">
+          {formData?.whichSport?.length !== 0 && (
+            <label>{questions?.[2]?.question_title}</label>
+          )}
 
-        {formData?.sport.answer === "Bəli" && (
-          <>
-            <SelectMult
-              placeholder="Idman Secimi"
-              label={`${questions?.[1]?.question_title}*`}
-              options={questions?.[1]?.answers}
-              register={inputProps[1].register}
-              value={formData?.whichSport}
-            />
-            <div className="pr-2 max-h-[230px] overflow-y-auto">
-              {formData?.whichSport.length !== 0 && (
-                <label>{questions?.[2]?.question_title}</label>
-              )}
-
-              {formData?.whichSport?.map((item: string, index: number) => (
-                <Fragment key={index}>
-                  <SportLevels
-                    item={item}
-                    selectedLevel={selectedLevel}
-                    questions={questions}
-                    subStageSlug={subStageSlug}
-                    index={index}
-                  />
-                </Fragment>
-              ))}
-            </div>
-          </>
-        )}
+          {formData?.whichSport?.map((item: string, index: number) => (
+            <Fragment key={index}>
+              <SportLevels
+                item={item}
+                selectedLevel={selectedLevel}
+                questions={questions}
+                subStageSlug={subStageSlug}
+                index={index}
+              />
+            </Fragment>
+          ))}
+        </div>
       </div>
 
       <LinkButton
@@ -240,7 +256,7 @@ const SportForm = ({ stageIndex, subStageSlug }: GeneralQuestionsFormProps) => {
         label="Geri"
         className="absolute left-0 -bottom-20"
       />
-      {formData?.professionals.length === 0 ? (
+      {formData?.professionals?.length === 0 ? (
         <LinkButton
           nav={{
             state: {

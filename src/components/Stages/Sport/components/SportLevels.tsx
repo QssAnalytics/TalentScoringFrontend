@@ -53,7 +53,6 @@ const SportLevels = ({
     selectedLevel(watch());
     setValue("name", item);
   }, [watch("level")]);
-  console.log(watch(), "sport level");
 
   const handleRemove = (item: string) => {
     const newWhichSport = formData?.whichSport?.filter(
@@ -79,7 +78,7 @@ const SportLevels = ({
       })
     );
   };
-  console.log(questions?.[2]);
+
   return (
     <div className="p-2.5 relative flex gap-4 " key={index}>
       <span className="bg-qss-input cursor-pointer relative py-2 max-w-[142px] w-full justify-center items-center flex rounded-full px-4 gap-2">

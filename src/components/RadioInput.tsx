@@ -9,12 +9,13 @@ interface IRadioProps {
   value: ISelectedValue;
 }
 
+
 const Radio = ({ options, label, register, value }: IRadioProps) => {
   const [selected, setSelected] = useState(options?.[0]);
 
   return (
     <RadioGroup
-    className="w-full"
+      className="w-full"
       value={selected}
       onChange={(value) => {
         setSelected(value);
@@ -35,21 +36,19 @@ const Radio = ({ options, label, register, value }: IRadioProps) => {
             className="bg-qss-input py-2 cursor-pointe flex-wrap  w-full text-sm max-w-[142px] px-4 gap-1 justify-center items-center flex rounded-full"
           >
             <span
-              className={`whitespace-nowrap relative flex flex-1 justify-center ${
-                value?.answer === answer_title
-                  ? "text-qss-secondary"
-                  : "text-qss-inputText"
-              }`}
+              className={`whitespace-nowrap relative flex flex-1 justify-center ${value?.answer === answer_title
+                ? "text-qss-secondary"
+                : "text-qss-inputText"
+                }`}
             >
               {answer_title}
             </span>
 
             <div
-              className={`w-2.5 h-2.5 outline rounded-full outline-qss-base-200 ${
-                value?.answer === answer_title
-                  ? "bg-qss-secondary"
-                  : "bg-qss-background"
-              }`}
+              className={`w-2.5 h-2.5 outline rounded-full outline-qss-base-200 ${value?.answer === answer_title
+                ? "bg-qss-secondary"
+                : "bg-qss-background"
+                }`}
             />
           </RadioGroup.Option>
         ))}

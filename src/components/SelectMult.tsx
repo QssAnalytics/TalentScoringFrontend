@@ -5,7 +5,7 @@ import { Icon } from "@iconify/react";
 
 interface ISelectMult {
   placeholder: string;
-  label: string;
+  label?: string;
   options?: IAnswer[];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   register?: any;
@@ -47,14 +47,12 @@ const SelectMult = ({
         <Listbox.Button as={Fragment}>
           {({ value, open }) => (
             <Listbox.Label
-              className={`relative w-full text-left flex items-center text-qss-inputText bg-qss-input py-2 px-4 rounded-full outline-none ${
-                open && "  text-qss-secondary border border-qss-base-200"
-              }`}
+              className={`relative w-full text-left flex items-center text-qss-inputText bg-qss-input py-2 px-4 rounded-full outline-none ${open && "  text-qss-secondary border border-qss-base-200"
+                }`}
             >
               <span
-                className={`w-96 overflow-hidden whitespace-nowrap flex ${
-                  value.length > 0 ? "text-qss-inputText" : "text-qss-base-300"
-                }`}
+                className={`w-96 overflow-hidden whitespace-nowrap flex ${value.length > 0 ? "text-qss-inputText" : "text-qss-base-300"
+                  }`}
               >
                 {value.join(", ") || placeholder}
               </span>
@@ -83,11 +81,10 @@ const SelectMult = ({
                     {answer_title}
                   </span>
                   <span
-                    className={`${
-                      selected
+                    className={`${selected
                         ? "bg-qss-secondary"
                         : "opacity-0 group-hover:opacity-100 bg-white"
-                    } w-3 h-3 inline-flex  rounded-full border border-qss-base-200`}
+                      } w-3 h-3 inline-flex  rounded-full border border-qss-base-200`}
                   ></span>
                 </>
               )}
