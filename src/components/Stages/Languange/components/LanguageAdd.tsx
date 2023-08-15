@@ -96,13 +96,14 @@ const LanguageAdd = ({
     { register: register("engCertResult") },
     { register: register("langLevel") },
   ];
+
   const onSubmit = handleSubmit((data) => {
     console.log(data);
   });
   const handleClick = () => {
     setValue(
       "langLevel",
-      handleLangLevel(watch("engCertResult.answer"), watch("langLevel.answer"))
+      handleLangLevel(watch("engCertResult.answer"), watch("langLevel"))
     );
 
     editLang ? editLang(watch()) : addLang(watch());
@@ -117,7 +118,7 @@ const LanguageAdd = ({
       case "4.0":
       case "4.5-5.0":
       case "32-45":
-        langLevel = "B1";
+        langLevel.answer = "B1";
         break;
       case "5.5":
       case "6.0":
@@ -125,25 +126,23 @@ const LanguageAdd = ({
       case "46-59":
       case "60-78":
       case "70-93":
-        langLevel = "B2";
+        langLevel.answer = "B2";
         break;
       case "7.0-7.5":
       case "94-109":
-        langLevel = "C1";
+        langLevel.answer = "C1";
         break;
       case "8.0-9.0":
       case "110-120":
-        langLevel = "C2";
+        langLevel.answer = "C2";
         break;
       case "31":
-        langLevel = "A2";
+        langLevel.answer = "A2";
         break;
-
       default:
-        langLevel = langLevel?.substring(0, 2);
+        langLevel.answer;
         break;
     }
-
     return langLevel;
   };
 
@@ -155,13 +154,17 @@ const LanguageAdd = ({
   }, [formData?.haveLanguageSkills?.answer])
 
   useEffect(() => {
-    if (watch().language !== undefined) {
+    if (watch().language !== undefined && editData === undefined) {
       parentReset({
         ...formData,
         haveLanguageSkills: {}
       })
+      console.log(watch('language'));
+
     }
   }, [watch("language")])
+
+
   return (
     <div className="w-full">
       <div>
@@ -210,7 +213,6 @@ const LanguageAdd = ({
                   </label>
 
                   <div className="flex gap-5 flex-wrap">
-
                     <Radio
                       options={data?.[2]?.answers}
                       value={watch("langLevel")}

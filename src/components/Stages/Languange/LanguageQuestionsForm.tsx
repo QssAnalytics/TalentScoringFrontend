@@ -139,6 +139,9 @@ const LanguageQuestionsForm = ({
 
   const questions = questionsData?.[0]?.questions;
 
+  console.log(watch('languageSkills'));
+
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}

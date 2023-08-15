@@ -52,7 +52,6 @@ const stageFormSlice = createSlice({
           ...state.slice(index + 1),
         ];
       }
-
       state.push(action.payload);
     },
   },

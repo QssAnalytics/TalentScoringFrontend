@@ -18,7 +18,7 @@ const Radio = ({ options, label, register, value }: IRadioProps) => {
       className="w-full"
       value={selected}
       onChange={(value) => {
-        setSelected(value);
+        setSelected(selected);
         register.onChange({
           target: {
             name: register.name,

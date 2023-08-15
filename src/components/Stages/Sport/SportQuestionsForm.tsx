@@ -1,4 +1,4 @@
-import { Fragment, useEffect } from "react";
+import { Fragment, useCallback, useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import {
   useGetQuestionsQuery,
@@ -131,7 +131,6 @@ const SportForm = ({ stageIndex, subStageSlug }: GeneralQuestionsFormProps) => {
     });
 
   const onSubmit: SubmitHandler<SportFormValues> = (data) => console.log(data);
-
   useEffect(() => {
     const subscription = watch((value) => {
       dispatch(
@@ -145,8 +144,11 @@ const SportForm = ({ stageIndex, subStageSlug }: GeneralQuestionsFormProps) => {
 
     return () => subscription.unsubscribe();
   }, [subStageSlug, watch]);
+  const [count, setCount] = useState(false)
+
 
   useEffect(() => {
+    setCount(!count)
     if (formData?.sport?.answer === "Yoxdur") {
       reset({
         ...formData,
@@ -155,20 +157,18 @@ const SportForm = ({ stageIndex, subStageSlug }: GeneralQuestionsFormProps) => {
         amateurs: [],
       })
     }
-
   }, [formData?.sport?.answer])
 
   useEffect(() => {
-    if (formData?.whichSport?.length !== 0 && formData?.whichSport?.length !== undefined) {
+    setCount(!count)
+    if (watch('whichSport').length !== 0) {
+
       reset({
         ...formData,
         sport: {}
       })
     }
   }, [formData?.whichSport?.length])
-
-
-
 
   if (isLoading) return <div>Loading...</div>;
   if (questionsError) return <div>Error</div>;
@@ -195,15 +195,18 @@ const SportForm = ({ stageIndex, subStageSlug }: GeneralQuestionsFormProps) => {
         );
       }
     }
-  };
+  }
+  console.log(formData);
+
 
   const questions = questionsData?.[0]?.questions;
-  console.log(questions);
 
   const inputProps = [
     { register: register("sport") },
     { register: register("whichSport") },
   ];
+
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}

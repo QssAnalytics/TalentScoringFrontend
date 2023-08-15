@@ -7,7 +7,7 @@ interface ISelect {
   options?: IAnswer[];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   register?: any;
-  value?: ISelectedValue;
+  value?: ISelectedValue | null;
   disabled?: boolean;
   defaultValue?: string;
   onChange?: any;
@@ -24,7 +24,6 @@ const Select = ({
 }: ISelect) => {
   const [selected, setSelected] = useState(value);
 
-  console.log(value);
 
   return (
     <Listbox

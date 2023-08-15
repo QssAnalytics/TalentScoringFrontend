@@ -80,11 +80,13 @@ const SpecialSkillsCertifcateQuestionsForm = ({
 
     return () => subscription.unsubscribe();
   }, [subStageSlug, watch]);
+  console.log(prevFormData);
 
   if (isLoading) return <div>Loading...</div>;
   if (questionsError) return <div>Error</div>;
 
   const questions = questionsData?.[0]?.questions;
+  console.log();
 
   return (
     <form
@@ -96,7 +98,7 @@ const SpecialSkillsCertifcateQuestionsForm = ({
           <div className="flex flex-col gap-5">
             {prevFormData?.specialSkills?.map(
               (specialSkill: string, idx: Key | null | undefined) => (
-                <TextInput
+                < TextInput
                   key={idx}
                   value={watch()}
                   label={`${specialSkill} ${questions?.[3]?.question_title

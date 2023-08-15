@@ -92,9 +92,9 @@ const SpecialSkillsForm = ({
     });
     reset(formData);
     return () => subscription.unsubscribe();
-
-
   }, [subStageSlug, watch]);
+  console.log(formData);
+
 
   useEffect(() => {
     if (formData?.haveSpecialSkills?.answer === "Yoxdur") {
@@ -176,13 +176,17 @@ const SpecialSkillsForm = ({
                         {item}
                       </span>
                       <XCircleIcon
-                        onClick={() =>
+                        onClick={() => {
                           setValue(
                             "specialSkills",
                             formData?.specialSkills?.filter(
                               (specialSkill) => specialSkill !== item
                             )
                           )
+                          setValue(
+                            `${item}`, undefined
+                          )
+                        }
                         }
                         className="w-5 h-5 text-red-400 cursor-pointer"
                       />
